@@ -3,6 +3,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 import autoImport from 'astro-auto-import';
+import expressiveCode from 'astro-expressive-code';
 import icon from 'astro-icon';
 import pagefind from 'astro-pagefind';
 import { defineConfig } from 'astro/config';
@@ -15,10 +16,6 @@ export default defineConfig({
   },
   markdown: {
     processor: unified(),
-    shikiConfig: {
-      theme: 'github-dark',
-      wrap: true,
-    },
   },
   integrations: [
     autoImport({
@@ -52,6 +49,14 @@ export default defineConfig({
         './src/components/ui/FeatureGrid.astro',
         './src/components/ui/ProgressBar.astro',
       ],
+    }),
+    expressiveCode({
+      themes: ['github-dark', 'github-light'],
+      styleOverrides: {
+        borderRadius: '0.5rem',
+        codePaddingBlock: '1.25rem',
+        codePaddingInline: '1.5rem',
+      },
     }),
     mdx(),
     icon(),
