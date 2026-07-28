@@ -1054,7 +1054,6 @@
     max-width: 760px;
     margin: 0 auto;
     overflow-wrap: break-word;
-    overflow: hidden;
 
     color: var(--text-secondary);
     font-size: var(--text-base);
@@ -1113,7 +1112,6 @@
   }
   .prose .expressive-code {
     margin: var(--space-8) 0;
-    max-width: 100%;
   }
   .prose table {
     width: 100%;
@@ -1321,4 +1319,13 @@
     background-color: var(--surface-footer);
     color: var(--text-inverse);
   }
+}
+
+/* ══════════════════════════════════════════════════════════
+   UNLAYERED — higher priority than any @layer
+   Fix expressive-code overflow on mobile (EC CSS is unlayered)
+   ══════════════════════════════════════════════════════════ */
+.prose .expressive-code {
+  max-width: 100%;
+  overflow-x: clip;
 }
