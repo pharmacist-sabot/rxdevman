@@ -1054,6 +1054,7 @@
     max-width: 760px;
     margin: 0 auto;
     overflow-wrap: break-word;
+    overflow: hidden;
 
     color: var(--text-secondary);
     font-size: var(--text-base);
