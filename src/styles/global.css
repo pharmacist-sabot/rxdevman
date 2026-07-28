@@ -822,6 +822,7 @@
   .blog-layout-grid .prose {
     grid-column: 2;
     min-width: 0;
+    width: 100%;
   }
   .blog-left-sidebar {
     grid-column: 1;
