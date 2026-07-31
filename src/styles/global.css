@@ -3,7 +3,7 @@
    Layers: reset → base → components → utilities → overrides
    ══════════════════════════════════════════════════════════ */
 
-@layer reset, base, components, utilities, overrides;
+@layer reset, base, components, utilities;
 
 /* ══════════════════════════════════════════════════════════
    DESIGN TOKENS
@@ -822,6 +822,7 @@
   .blog-layout-grid .prose {
     grid-column: 2;
     min-width: 0;
+    width: 100%;
   }
   .blog-left-sidebar {
     grid-column: 1;
@@ -1110,88 +1111,8 @@
     font-size: 0.875em;
     word-break: break-word;
   }
-  .prose pre {
-    background-color: #1e1e1e;
-    color: #f8fafc;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-md);
-    padding: 3.5rem var(--space-6) var(--space-6) var(--space-6);
+  .prose .expressive-code {
     margin: var(--space-8) 0;
-    overflow-x: auto;
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    line-height: 1.6;
-    font-weight: 400;
-    white-space: pre;
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
-    position: relative;
-  }
-  .prose pre::before {
-    content: 'rxdevman';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 40px;
-    background: #2d2d2d;
-    border-bottom: 1px solid #404040;
-    border-radius: var(--radius-md) var(--radius-md) 0 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-gray-400);
-    font-size: var(--text-xs);
-    font-family: var(--font-sans);
-    font-weight: 500;
-    letter-spacing: 0.5px;
-  }
-  .prose pre::after {
-    content: '';
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #ff5f56;
-    box-shadow:
-      20px 0 0 #ffbd2e,
-      40px 0 0 #27c93f;
-  }
-  .prose pre > code {
-    background: none;
-    border: none;
-    padding: 0;
-    color: inherit;
-    font-size: inherit;
-    line-height: inherit;
-  }
-  .prose pre > code > .line {
-    display: block;
-    position: relative;
-    min-height: 1.2em;
-  }
-  @media (max-width: 768px) {
-    .prose pre {
-      white-space: pre-wrap;
-      border-radius: 0;
-      padding: var(--space-12) var(--space-4) var(--space-4) var(--space-4);
-      font-size: var(--text-xs);
-    }
-    .prose pre::before {
-      border-radius: 0;
-      height: 36px;
-      font-size: var(--text-xs);
-    }
-    .prose pre::after {
-      top: 12px;
-      left: 12px;
-      width: 10px;
-      height: 10px;
-      box-shadow:
-        16px 0 0 #ffbd2e,
-        32px 0 0 #27c93f;
-    }
   }
   .prose table {
     width: 100%;
@@ -1402,13 +1323,10 @@
 }
 
 /* ══════════════════════════════════════════════════════════
-   @layer overrides
+   UNLAYERED — higher priority than any @layer
+   Fix expressive-code overflow on mobile (EC CSS is unlayered)
    ══════════════════════════════════════════════════════════ */
-@layer overrides {
-  .prose pre.shiki,
-  .prose pre.shiki code {
-    background: unset;
-    color: unset;
-    border-bottom-width: 3px;
-  }
+.prose .expressive-code {
+  max-width: 100%;
+  overflow-x: clip;
 }
