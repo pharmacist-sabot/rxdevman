@@ -15,60 +15,6 @@
 <style>
   .table-wrapper {
     margin: var(--space-10) 0;
-    border: 1px solid var(--card-border-color);
-    border-radius: var(--radius-md);
-    overflow: hidden;
     overflow-x: auto;
-    background-color: var(--card-bg-color);
-    box-shadow: 0 4px 12px var(--shadow-color);
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-    white-space: normal;
-  }
-
-  :global(thead tr) {
-    border-bottom: 2px solid var(--card-border-color);
-  }
-
-  :global(th) {
-    padding: var(--space-4) var(--space-5);
-    text-align: left;
-    font-weight: 600;
-    font-family: var(--font-sans);
-    color: var(--font-color);
-    background-color: color-mix(in srgb, var(--card-bg-color) 80%, var(--card-border-color));
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-
-  :global(tbody tr) {
-    border-bottom: 1px solid var(--card-border-color);
-    transition: background-color var(--duration-200) var(--ease);
-  }
-
-  :global(tbody tr:last-child) {
-    border-bottom: none;
-  }
-
-  :global(tbody tr:hover) {
-    background-color: color-mix(in srgb, var(--card-bg-color) 50%, var(--card-border-color));
-  }
-
-  :global(td) {
-    padding: var(--space-4) var(--space-5);
-    color: var(--font-color-light);
-    vertical-align: top;
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-
-  :global(td code) {
-    background-color: var(--card-border-color);
-    color: var(--brand-color);
-    font-size: 0.85em;
   }
 </style>

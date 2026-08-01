@@ -1114,20 +1114,24 @@
   }
   .prose table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     margin: var(--space-8) 0;
     font-size: var(--text-sm);
     border: 1px solid var(--border-default);
     border-radius: var(--radius-md);
     overflow: hidden;
+    background: transparent;
+  }
+  .prose thead tr {
+    background-color: var(--surface-accent);
   }
   .prose th {
-    background-color: var(--surface-accent);
-    color: var(--text-primary);
-    font-weight: 600;
+    padding: var(--space-4) var(--space-5);
     text-align: left;
-    padding: var(--space-3) var(--space-4);
-    border-bottom: 2px solid var(--border-default);
+    font-weight: 600;
+    color: var(--text-primary);
+    background-color: var(--surface-accent);
     overflow-wrap: break-word;
     word-break: break-word;
   }
@@ -1139,7 +1143,7 @@
   .prose tr:last-child td {
     border-bottom: none;
   }
-  .prose tr:hover td {
+  .prose tbody tr:hover td {
     background-color: var(--surface-page);
   }
 
