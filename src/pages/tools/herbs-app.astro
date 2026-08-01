@@ -4,7 +4,6 @@ import FeatureGrid from '@/components/ui/FeatureGrid.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
 const appUrl = 'https://herbs-app.rxdevman.com/';
-const repoUrl = 'https://github.com/suradet-ps/herbs-app';
 ---
 
 <BaseLayout title="Project: บัญชียาสมุนไพร รพ.สระโบสถ์">
@@ -24,14 +23,6 @@ const repoUrl = 'https://github.com/suradet-ps/herbs-app';
                   class="cta-button launch-button"
                 >
                     เปิดใช้งานระบบ
-                </a>
-                <a
-                  href={repoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="repo-link"
-                >
-                    ดู Source Code
                 </a>
             </div>
         </header>
@@ -74,16 +65,6 @@ const repoUrl = 'https://github.com/suradet-ps/herbs-app';
                 </FeatureCard>
             </FeatureGrid>
 
-            <div class="tech-stack-section">
-                <h2>Tech Stack</h2>
-                <div class="stack-items">
-                    <span class="stack-item">Vue.js 3</span>
-                    <span class="stack-item">Vite</span>
-                    <span class="stack-item">Google Apps Script</span>
-                    <span class="stack-item">Google Sheets</span>
-                    <span class="stack-item">CSS Variables</span>
-                </div>
-            </div>
         </div>
     </div>
 </BaseLayout>
