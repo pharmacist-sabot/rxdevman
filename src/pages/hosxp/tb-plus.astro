@@ -1,0 +1,86 @@
+---
+import FeatureCard from '@/components/ui/FeatureCard.astro';
+import FeatureGrid from '@/components/ui/FeatureGrid.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const downloadUrl = 'https://github.com/suradet-ps/tb-plus/releases/download/v1.8.0/TB.Plus_1.8.0_x64_en-US.msi';
+---
+
+<BaseLayout title="TB Plus — ระบบบริหารจัดการคลินิกวัณโรค">
+  <div class="project-showcase">
+    <header class="project-header">
+      <svg class="title-icon" viewBox="4 8 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.5 9h-0.2C7.4 9 5 11.4 5 14.4c0 3.3 2.2 5.6 5.5 5.6 1 0 1-1 1-2v-8c0-1 0-1-1-1z" fill="#2a9d99" stroke="#238582" stroke-width="0.1" />
+        <path d="M13.5 9h0.2c2.9 0 5.3 2.4 5.3 5.4 0 3.3-2.2 5.6-5.5 5.6-1 0-1-1-1-2v-8c0-1 0-1 1-1z" fill="#0075de" stroke="#005bab" stroke-width="0.1" fill-opacity="0.9" />
+        <text x="8.1" y="15.8" font-family="system-ui,-apple-system,sans-serif" font-weight="800" font-size="4" fill="#ffffff" text-anchor="middle">T</text>
+        <text x="15.9" y="15.8" font-family="system-ui,-apple-system,sans-serif" font-weight="800" font-size="4" fill="#ffffff" text-anchor="middle">B</text>
+        <path d="M10.5 9.2h-0.2C7.4 9.2 5.2 11.3 5.2 14.3" stroke="#ffffff" stroke-width="0.15" fill="none" stroke-opacity="0.4" />
+        <path d="M13.5 9.2h0.2c2.9 0 5.1 2.3 5.1 5.3" stroke="#ffffff" stroke-width="0.15" fill="none" stroke-opacity="0.4" />
+      </svg>
+      <h1>TB Plus</h1>
+      <p class="subtitle">
+        <span class="title-line">ระบบบริหารจัดการคลินิกวัณโรค โรงพยาบาลสระโบสถ์</span>
+        <span class="desc-line">แอปพลิเคชันเดสก์ท็อปสำหรับจัดการผู้ป่วยวัณโรค เชื่อมต่อ HOSxP โดยตรง</span>
+      </p>
+
+      <div class="button-group">
+        <a
+          href={downloadUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="cta-button launch-button"
+        >
+          ดาวน์โหลดสำหรับ Windows
+        </a>
+      </div>
+    </header>
+
+    <div class="screenshot-container">
+      <img
+        src="/images/hosxp/tb-plus.png"
+        alt="Screenshot of TB Plus application"
+        class="main-screenshot"
+      />
+    </div>
+
+    <div class="project-details">
+      <h2>คุณสมบัติหลัก</h2>
+      <FeatureGrid>
+        <FeatureCard title="คัดกรองผู้ป่วย" icon="magnifying-glass">
+          ค้นหาผู้ป่วยที่ได้รับยาวัณโรคจากระบบ HOSxP เพื่อคัดกรองและลงทะเบียนผู้ป่วยใหม่เข้าคลินิก
+        </FeatureCard>
+        <FeatureCard title="แดชบอร์ดผู้ป่วย" icon="chart-bar">
+          ภาพรวมผู้ป่วยวัณโรคที่กำลังรักษา พร้อมระบบ Alert อัตโนมัติที่ตรวจสอบสถานะการกินยาและนัดหมาย
+        </FeatureCard>
+        <FeatureCard title="ประวัติผู้ป่วย" icon="document-text">
+          ดูประวัติการรักษาแบบเต็มรูปแบบ Timeline การจ่ายยา ผล follow-up และการบันทึกผลข้างเคียง
+        </FeatureCard>
+        <FeatureCard title="คำนวณขนาดยา" icon="calculator">
+          คำนวณขนาดยาตามน้ำหนักผู้ป่วย ตรวจสอบความปลอดภัย และแจ้งเตือนเมื่อยาเกินขนาด
+        </FeatureCard>
+        <FeatureCard title="แผนที่โรค" icon="map">
+          แสดงตำแหน่งผู้ป่วยบนแผนที่เพื่อวิเคราะห์การกระจายโรคและสนับสนุนการสอบสวนโรค
+        </FeatureCard>
+        <FeatureCard title="รายงาน HA" icon="chart-bar-square">
+          สถิติและรายงานสำหรับการตรวจรับรองมาตรฐาน HA รวมถึงอัตราการรักษาสำเร็จ
+        </FeatureCard>
+      </FeatureGrid>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .project-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .title-icon { width: 80px; height: 80px; animation: float 3s ease-in-out infinite; }
+  .subtitle {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .desc-line { color: var(--font-color-light); }
+</style>
