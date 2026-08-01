@@ -36,9 +36,9 @@ Heap ต้องทำ allocation ซึ่งหมายถึงการข
 
 หัวใจของ Ownership สรุปได้ด้วยกฎเพียงสามข้อ ข้อแรก ทุก value ใน Rust ต้องมี **owner เพียงหนึ่งเดียวเท่านั้น** ไม่มีข้อยกเว้น ไม่มีการแชร์ ownership ข้อที่สอง เมื่อ owner หลุดออกจาก scope ข้อมูลนั้นจะ **ถูกทำลายทันที** โดยอัตโนมัติ ไม่ต้องรอ garbage collector มาเก็บ และข้อสุดท้าย ณ เวลาใดๆ จะมีได้เพียง **หนึ่ง mutable reference** หรือ **หลาย immutable references** เท่านั้น ไม่มีทางมีทั้งสองอย่างพร้อมกัน
 
-<PullQuote>
-ทุก value ต้องมี owner เพียงหนึ่งเดียว และเมื่อ owner หลุดจาก scope ข้อมูลจะถูกทำลายทันที
-</PullQuote>
+<InfoBox title="กฎของ Ownership" type="info">
+  ทุก value ต้องมี owner เพียงหนึ่งเดียว และเมื่อ owner หลุดจาก scope ข้อมูลจะถูกทำลายทันที
+</InfoBox>
 
 กฎเหล่านี้อาจฟังดูเข้มงวด แต่มันคือรากฐานที่ทำให้ Rust สามารถรับประกัน memory safety ได้โดยไม่ต้องพึ่ง garbage collector
 
@@ -48,9 +48,9 @@ Heap ต้องทำ allocation ซึ่งหมายถึงการข
 
 ```
 Stack                          Heap
-┌─────────────────┐           ┌───────────────┐
+┌─────────────────┐           ┌───────────────────┐
 │ ptr   ──────────┼──────────>│ h │ e │ l │ l │ o │
-├─────────────────┤           └───────────────┘
+├─────────────────┤           └───────────────────┘
 │ len = 5         │
 ├─────────────────┤
 │ capacity = 5    │
@@ -132,9 +132,9 @@ fn main() {
 }
 ```
 
-<PullQuote>
-Stack-only types ใช้ Copy, Heap types ใช้ Move + Drop — ทั้งสองไม่มีทาง overlap กันได้
-</PullQuote>
+<InfoBox title="Stack vs Heap: Copy vs Move" type="info">
+  Stack-only types ใช้ Copy, Heap types ใช้ Move + Drop — ทั้งสองไม่มีทาง overlap กันได้
+</InfoBox>
 
 ที่น่าสนใจคือ Rust **ไม่อนุญาตให้ type ใดๆ ที่มี Drop** มา implement Copy Trait ได้ เพราะนั่นจะสร้างความขัดแย้งในตรรกะการจัดการ Heap นี่คือการใช้ Type System เข้ามาบังคับใช้กฎของ Ownership อย่างเข้มงวด
 
@@ -205,9 +205,9 @@ fn change(some_string: &mut String) {
 
 Ownership ไม่ใช่แค่เรื่องของการจัดการหน่วยความจำ แต่มันคือการสร้าง **"สัญญา"** ระหว่าง code แต่ละส่วน ว่าใครมีสิทธิ์ทำลายหรือใครมีสิทธิ์ใช้ข้อมูล
 
-<PullQuote>
-Ownership คือ contract ระหว่าง Code — ใครมีสิทธิ์ทำลาย ใครมีสิทธิ์ใช้ ทุกอย่างถูกกำหนดไว้ชัดเจน ณ compile time
-</PullQuote>
+<InfoBox title="Ownership คือ Contract" type="info">
+  Ownership คือ contract ระหว่าง Code — ใครมีสิทธิ์ทำลาย ใครมีสิทธิ์ใช้ ทุกอย่างถูกกำหนดไว้ชัดเจน ณ compile time
+</InfoBox>
 
 สิ่งที่ควรจดจำคือ memory safety ถูกตรวจสอบ ณ compile-time ไม่มี runtime overhead เหมือน GC การ assign หรือส่งค่าใน function คือการโอนย้าย ownership ซึ่งป้องกัน double free ได้โดยธรรมชาติ Stack-only types ใช้ Copy ส่วน Heap types ใช้ Move + Drop โดยไม่มีทาง overlap กัน และ References ช่วยให้เข้าถึงข้อมูลโดยไม่ต้องโอน ownership ลด overhead ของการ clone
 
@@ -216,3 +216,11 @@ Ownership คือ contract ระหว่าง Code — ใครมีส�
 ในบทความถัดไป เราจะเจาะลึกเรื่อง **Lifetimes** ซึ่งเป็นอีกหนึ่งกลไกสำคัญที่ทำให้ Rust สามารถรับประกันความปลอดภัยของ References ได้อย่างสมบูรณ์แบบ
 
 </NarrativeSection>
+
+---
+
+**Credit & Reference**
+
+- [The Rust Programming Language - What is Ownership?](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
+- [The Rust Programming Language - References and Borrowing](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)
+- [The Rust Programming Language - The Stack and the Heap](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#the-stack-and-the-heap)
