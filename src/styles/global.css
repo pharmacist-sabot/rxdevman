@@ -1101,11 +1101,9 @@
     margin-bottom: 0;
     color: inherit;
   }
-  .prose code {
+  .prose :not(pre) > code {
     font-family: var(--font-mono);
-    background-color: var(--surface-accent);
     color: var(--color-red-700);
-    border: 1px solid var(--border-default);
     padding: 0.15em 0.4em;
     border-radius: var(--radius-sm);
     font-size: 0.875em;

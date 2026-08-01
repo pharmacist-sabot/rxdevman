@@ -17,7 +17,6 @@ tags: ['Rust', 'Macros', 'println', 'Programming']
 
 ถ้าเราลอง expand `println!("Hello, world!")` ด้วย `cargo expand` จะพบว่ามันถูกแปลงไปเป็นแบบนี้
 
-<CodeExplainer title="สิ่งที่ println! ถูก expand ไปเป็น">
 ```rust
 #![feature(prelude_import)]
 extern crate std;
@@ -29,7 +28,6 @@ fn main() {
     };
 }
 ```
-</CodeExplainer>
 
 พูดง่ายๆ คือ `println!` ถูก expand ให้เรียก `format_args!` macro เพื่อสร้าง `fmt::Arguments` object แล้วส่งต่อให้ internal function ชื่อ `std::io::_print` เพื่อทำงานจริงๆ นั่นเอง
 
@@ -56,7 +54,7 @@ fn main() {
 
 ### Auto-referencing ทำงานอย่างไร?
 
-ลองดูตัวอย่างนี้:
+ลองดูตัวอย่างนี้
 
 ```rust
 let name = String::from("Rust");
@@ -72,50 +70,22 @@ println!("{}", name);
 
 `println!` ไม่ได้อยู่ตัวเดียว มันเป็นส่วนหนึ่งของ macro family ที่ทำงานบนพื้นฐานเดียวกัน
 
-<Table>
-  <tr slot="head">
-    <th>Macro</th>
-    <th>หน้าที่</th>
-  </tr>
-  <tr slot="body">
-    <td><code>print!</code></td>
-    <td>เหมือน <code>println!</code> แต่ไม่ใส่ newline</td>
-  </tr>
-  <tr slot="body">
-    <td><code>println!</code></td>
-    <td>พิมพ์ + newline</td>
-  </tr>
-  <tr slot="body">
-    <td><code>eprint!</code></td>
-    <td>พิมพ์ไปที่ stderr ไม่มี newline</td>
-  </tr>
-  <tr slot="body">
-    <td><code>eprintln!</code></td>
-    <td>พิมพ์ไปที่ stderr + newline</td>
-  </tr>
-  <tr slot="body">
-    <td><code>format!</code></td>
-    <td>สร้าง String กลับมา ไม่ได้พิมพ์</td>
-  </tr>
-  <tr slot="body">
-    <td><code>write!</code></td>
-    <td>เขียนไปที่ buffer ที่ระบุ</td>
-  </tr>
-  <tr slot="body">
-    <td><code>writeln!</code></td>
-    <td>เขียนไปที่ buffer + newline</td>
-  </tr>
-</Table>
+- **`print!`** - เหมือน `println!` แต่ไม่ใส่ newline
+- **`println!`** - พิมพ์ + newline
+- **`eprint!`** - พิมพ์ไปที่ stderr ไม่มี newline
+- **`eprintln!`** - พิมพ์ไปที่ stderr + newline
+- **`format!`** - สร้าง String กลับมา ไม่ได้พิมพ์
+- **`write!`** - เขียนไปที่ buffer ที่ระบุ
+- **`writeln!`** - เขียนไปที่ buffer + newline
 
-ทุกตัวในตารางนี้ล้วนแล้วแต่ใช้ `format_args!` เป็นแกนหลักในการทำงาน ต่างกันแค่ว่าจะส่ง output ไปที่ไหน
+ทุกตัวล้วนแล้วแต่ใช้ `format_args!` เป็นแกนหลักในการทำงาน ต่างกันแค่ว่าจะส่ง output ไปที่ไหน
 
 ---
 
 ## ลงมือใช้งาน
 
-วิธีใช้งาน `println!` นั้นง่ายมาก
+วิธีใช้งาน `println!` นั้นง่ายมากครับ
 
-<CodeExplainer title="ตัวอย่างการใช้งาน println! หลากหลายรูปแบบ">
 ```rust
 fn main() {
     // ไม่มี argument
@@ -144,13 +114,12 @@ fn main() {
     println!("{:06}", 42);  // 000042
 
     // Right-align
-    println!("{:>10}", "right");  //      right
+    println!("{:>10}", "right");  //       right
 
     // Mixed
     println!("{name:>10} is {age:>3}", name = "Bob", age = 25);
 }
 ```
-</CodeExplainer>
 
 สิ่งที่ควรรู้คือ format string ของ Rust รองรับ syntax มากมาย เช่น `{}` สำหรับ Display, `{:?}` สำหรับ Debug, `{:x}` สำหรับ hex, `{:b}` สำหรับ binary ซึ่งทั้งหมดนี้ถูก parse และ validate ในขณะ compile time
 
@@ -160,9 +129,9 @@ fn main() {
 
 สิ่งที่น่าสนใจคือ `println!` ไม่ได้ทำงานคนเดียว มันพึ่งพา `format_args!` macro ซึ่งเป็น builtin macro ของ compiler ในการสร้าง `fmt::Arguments` object
 
-<PullQuote>
+<InfoBox title="Zero-cost abstraction ของ fmt::Arguments" type="info">
   <code>fmt::Arguments</code> เป็น type ที่เก็บข้อมูลเกี่ยวกับ format string และ argument ไว้ด้วยกัน โดยไม่ต้อง alloc memory บน heap เลย (ต่างจาก <code>format!</code> ที่จะสร้าง String กลับมา) นี่คือเหตุผลว่าทำไม <code>println!</code> ถึงมี performance ดี
-</PullQuote>
+</InfoBox>
 
 ความน่าสนใจอีกอย่างคือ implementation ภายในของ `fmt::Arguments` นั้นเป็น **private** ทั้งหมด ทีม Rust standard library สามารถเปลี่ยนวิธีเก็บข้อมูลภายในได้โดยไม่ต้อง break code ที่เขียนไว้ เพียงแค่ update `format_args!` macro ให้เข้ากันได้
 
@@ -174,7 +143,6 @@ fn main() {
   <code>println!</code> จะ lock stdout ทุกครั้งที่เรียก ถ้าใช้ใน hot loop อาจเป็น performance bottleneck วิธีแก้คือ lock ไว้ก่อน
 </InfoBox>
 
-<CodeExplainer title="การ lock stdout เพื่อประสิทธิภาพ">
 ```rust
 use std::io::{stdout, Write};
 
@@ -183,7 +151,6 @@ for i in 0..1000 {
     writeln!(lock, "line {}", i).unwrap();
 }
 ```
-</CodeExplainer>
 
 <InfoBox title="Panic เมื่อเขียนไม่ได้" type="danger">
   ถ้า stdout เป็น non-blocking และเกิด error <code>println!</code> จะ panic ทันที ใน production code ควรใช้ <code>writeln!</code> กับ locked writer แทน
