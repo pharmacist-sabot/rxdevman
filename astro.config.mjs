@@ -51,7 +51,7 @@ export default defineConfig({
       ],
     }),
     expressiveCode({
-      themes: ['github-dark', 'github-light'],
+      themes: ['andromeeda'],
       styleOverrides: {
         borderRadius: '0.5rem',
         codePaddingBlock: '1.25rem',
