@@ -150,27 +150,27 @@ Zod schema are covered; no silent regression can slip through.
 
 ---
 
-## Phase 3: Dark Mode & Theme System
+## Phase 3: Dark Mode & Theme System ✅
 
 The design tokens are already structured for this — it's a matter of wiring
 them up.
 
-- [ ] **Add `[data-theme="dark"]` remap** in `global.css` — override semantic
+- [x] **Add `[data-theme="dark"]` remap** in `global.css` — override semantic
       tokens (surfaces, text, borders, brand) under a dark palette. Keep the same
       token _names_ so no component changes. The gray scale shifts from warm light
       to warm dark (not AMOLED black — a reading-app dark, not a terminal dark).
-- [ ] **Add `[data-theme="sepia"]` remap** — a warm, low-contrast reading mode
+- [x] **Add `[data-theme="sepia"]` remap** — a warm, low-contrast reading mode
       for long articles. Sepia background, slightly muted text, reduced blue light.
       This serves the "developer reading book notes at 11pm" use case.
-- [ ] **Respect `prefers-color-scheme`** — default to the OS preference when
+- [x] **Respect `prefers-color-scheme`** — default to the OS preference when
       no explicit theme is set. Store user preference in `localStorage`.
-- [ ] **Theme toggle component** — a small, accessible toggle in the navbar
+- [x] **Theme toggle component** — a small, accessible toggle in the navbar
       (or footer) that cycles light → dark → sepia. Keyboard-accessible, announces
       current theme to screen readers via `aria-label`.
-- [ ] **Verify all components render correctly in all three themes** — check
+- [x] **Verify all components render correctly in all three themes** — check
       blog post cards, code blocks (Andromeeda theme needs its own dark variant),
       InfoBox, GitCommand, ToolCard, navbar, mobile overlay.
-- [ ] **Code block theme switching** — the `astro-expressive-code` integration
+- [x] **Code block theme switching** — the `astro-expressive-code` integration
       uses `andromeeda` theme. Add a dark-appropriate theme (e.g., `github-dark`)
       and switch based on the active theme. This may require configuring
       `expressiveCode` to accept multiple themes.
