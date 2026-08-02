@@ -1,5 +1,6 @@
 ---
 import Navbar from '@/components/layout/Navbar.astro';
+import OfflineIndicator from '@/components/ui/OfflineIndicator.astro';
 import ProgressBar from '@/components/ui/ProgressBar.astro';
 import '@/styles/global.css';
 
@@ -23,20 +24,27 @@ const currentYear = new Date().getFullYear();
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#E5E7E0" />
+    <meta name="theme-color" content="#ff6b35" id="theme-color-meta" />
     <title>{`${title} | rxdevman`}</title>
     <link rel="alternate" type="application/rss+xml" title="rxdevman" href="/rss.xml" />
     <script is:inline>
-      (function () {
-        const stored = localStorage.getItem('theme');
-        if (stored) {
-          document.documentElement.setAttribute('data-theme', stored);
-        }
-        else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          document.documentElement.setAttribute('data-theme', 'dark');
-        }
-      })();
-    </script>
+(function () {
+  const THEME_COLORS = { light: '#ff6b35', dark: '#ff6b35', sepia: '#c8850a' };
+  const stored = localStorage.getItem('theme');
+  if (stored) {
+    document.documentElement.setAttribute('data-theme', stored);
+    const meta = document.getElementById('theme-color-meta');
+    if (meta)
+      meta.setAttribute('content', THEME_COLORS[stored] || THEME_COLORS.light);
+  }
+  else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    const meta = document.getElementById('theme-color-meta');
+    if (meta)
+      meta.setAttribute('content', THEME_COLORS.dark);
+  }
+})();
+</script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -54,6 +62,7 @@ const currentYear = new Date().getFullYear();
     <slot name="head" />
   </head>
   <body>
+    <OfflineIndicator />
     <ProgressBar />
 
     <Navbar />
@@ -100,6 +109,12 @@ const currentYear = new Date().getFullYear();
       </div>
     </footer>
 
-
+    <script is:inline>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js', { scope: '/' });
+        });
+      }
+    </script>
   </body>
 </html>

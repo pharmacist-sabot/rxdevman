@@ -216,16 +216,16 @@ homepage shows recent posts; no new sharing, social, or multi-user features.
 Astro outputs static HTML + CSS + JS. A service worker can cache the shell
 and let readers access content offline — the same content they'd get online.
 
-- [ ] **PWA manifest** — the `site.webmanifest` already exists. Verify it has
+- [x] **PWA manifest** — the `site.webmanifest` already exists. Verify it has
       proper name, description, icons, theme colors, and `display: standalone`.
-- [ ] **Service worker** — cache the app shell (HTML, CSS, JS, fonts, images)
+- [x] **Service worker** — cache the app shell (HTML, CSS, JS, fonts, images)
       on install. Serve from cache when offline, update in background. Use
       `workbox` or a lightweight custom SW.
-- [ ] **Offline indicator** — a calm, non-intrusive banner when the network is
+- [x] **Offline indicator** — a calm, non-intrusive banner when the network is
       unavailable: "You're offline — reading cached content." Not a toast storm.
-- [ ] **Search works offline** — Pagefind builds a static index. Cache the
+- [x] **Search works offline** — Pagefind builds a static index. Cache the
       index files so search works without network.
-- [ ] **View counter degrades gracefully** — when offline, the POST to
+- [x] **View counter degrades gracefully** — when offline, the POST to
       `/api/track` will fail silently (no error shown to reader). On reconnect,
       the next page load will track normally.
 
