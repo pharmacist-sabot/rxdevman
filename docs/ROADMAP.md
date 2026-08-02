@@ -263,17 +263,17 @@ all GitHub Actions pinned to SHAs; SECURITY.md exists.
 
 ## Phase 7: Performance Budgets (verified, not claimed)
 
-- [ ] **Measure a baseline first** — on a mid-tier device (throttled CPU +
+- [x] **Measure a baseline first** — on a mid-tier device (throttled CPU +
       network): cold first-paint, LCP, CLS, FID/INP, total bundle size (JS + CSS),
       page weight (HTML + images). Record in `docs/perf-baseline.md`.
-- [ ] **Set CI-enforced budgets** — bundle size ceiling that fails the build;
+- [x] **Set CI-enforced budgets** — bundle size ceiling that fails the build;
       Lighthouse score thresholds. Calibrated to real numbers, not guesses.
-- [ ] **Image audit** — verify all images use Astro `<Image>` for WebP
+- [x] **Image audit** — verify all images use Astro `<Image>` for WebP
       conversion and responsive srcsets. Check for any `<img>` tags that bypass
       optimization.
-- [ ] **Font loading audit** — the current approach uses `media="print" onload`
+- [x] **Font loading audit** — the current approach uses `media="print" onload`
       for non-render-blocking. Verify font-display is `swap` and no FOIT occurs.
-- [ ] **Verify no layout shift** from async-loaded components (ViewCounter,
+- [x] **Verify no layout shift** from async-loaded components (ViewCounter,
       ProgressBar). These should have reserved space or load without shifting.
 
 **Acceptance:** budgets enforced in CI; baseline doc exists; no regression
