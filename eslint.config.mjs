@@ -13,7 +13,7 @@ export default antfu({
     quotes: 'single',
   },
 }, {
-  ignores: ['**/*.md', '**/*.md/**', 'public/sw.js'],
+  ignores: ['**/*.md', '**/*.md/**', 'public/sw.js', '.github/**'],
 }, {
   files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx', '**/*.astro'],
   rules: {

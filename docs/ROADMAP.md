@@ -25,7 +25,7 @@ acceptance is checked against it.
 ## Current State (verified against the repo, not assumed)
 
 - **Stack**: Astro 7.x (CSR + SSG hybrid), TypeScript 6.x, MDX, Supabase
-  (PostgreSQL + GoTrue), Vercel Edge Network. Version `1.22.6`. No server of
+  (PostgreSQL + GoTrue), Vercel Edge Network. Version `2.0.0`. No server of
   our own — the browser talks to Supabase's PostgREST for read-only counts,
   and the API route uses the service role key server-side for writes.
 - **Security model**: CSP headers in `vercel.json`, RLS on all Supabase tables
@@ -50,7 +50,7 @@ acceptance is checked against it.
 
 ### Gaps found while reading the repo (these shape the phases below)
 
-1. **No DESIGN.md.** The design tokens exist in CSS but have no documentation
+1. **No `design.md`.** The design tokens exist in CSS but have no documentation
    explaining _why_ these choices serve a developer knowledge base. Without a
    design document, future contributors make aesthetic decisions by feel, not
    by system. (Phase 1.)
@@ -58,7 +58,7 @@ acceptance is checked against it.
    two things that must never silently break — the **view-counting pipeline**
    (hash correctness, RPC atomicity) and the **content schema validation**
    (Zod frontmatter) — have zero coverage. (Phase 2.)
-3. **No CONTRIBUTING.md, no AGENTS.md, no SECURITY.md.** The README has a
+3. **No `contributing.md`, no `agents.md`, no `security.md`.** The README has a
    short contributing section, but no formal guidelines for code style, commit
    conventions (beyond commitlint), review process, or security disclosure.
    (Phase 1.)
@@ -90,21 +90,21 @@ acceptance is checked against it.
 
 The project needs its identity on paper before it builds on top of it.
 
-- [x] **Write `DESIGN.md`** — document the design system that already exists
+- [x] **Write `docs/design.md`** — document the design system that already exists
       in `global.css`: why IBM Plex Sans + Source Code Pro, why the warm gray
       palette (not cold), why 4px spacing, why fluid type scales, the layer
       architecture (reset → base → components → utilities), and the token
       hierarchy (primitive → semantic → component → legacy aliases). This is the
       _rationale_, not the code — the code is the source of truth.
-- [x] **Write `SECURITY.md`** — document the security posture: CSP headers,
+- [x] **Write `docs/security.md`** — document the security posture: CSP headers,
       Supabase RLS model, service role key usage, IP hashing strategy, the
       `pg_cron` cleanup, and how to report vulnerabilities. Note what `unsafe-inline`
       in the CSP means and the plan to tighten it.
-- [x] **Write `CONTRIBUTING.md`** — formalize what the README has: branch
+- [x] **Write `docs/contributing.md`** — formalize what the README has: branch
       naming, conventional commits (commitlint is already enforced), code style
       (ESLint config), how to add a blog post (frontmatter schema, MDX
       components available), and the PR review process.
-- [x] **Write `AGENTS.md`** — conventions for AI agents working in this repo:
+- [x] **Write `docs/agents.md`** — conventions for AI agents working in this repo:
       file structure, component patterns, token usage, no inline hex colors
       (route through tokens), how to add new pages, the Supabase access pattern.
 - [x] **Clean up legacy token aliases** in `global.css` — the `/* Legacy
@@ -114,8 +114,8 @@ Aliases */` section (lines 153–168) exists for backward compatibility. Audit
 - [x] **Verify `.env` is not in git history** — check `git log --all --full-history -- .env` and
       remove if tracked. Add `.env` to `.gitignore` explicitly if not already.
 
-**Acceptance:** DESIGN.md describes rxdevman, not generic best practices;
-SECURITY.md exists; CONTRIBUTING.md exists; AGENTS.md exists; legacy aliases
+**Acceptance:** design.md describes rxdevman, not generic best practices;
+security.md exists; contributing.md exists; agents.md exists; legacy aliases
 removed or justified; `.env` not in git history.
 
 ---
@@ -133,7 +133,8 @@ them.
       different hash, different date produces different hash, the hash is
       consistently formatted.
 - [x] **Zod frontmatter schema tests** — validate that the schema in
-      `src/content/config.ts` (or wherever the Zod schema lives) rejects missing
+      `src/lib/content-schema.ts` (extracted from `src/content.config.ts` so it's
+      testable without Astro's virtual modules) rejects missing
       required fields, rejects invalid dates, rejects invalid category values, and
       accepts valid frontmatter.
 - [x] **RelatedPosts scoring tests** — the tag/category scoring algorithm in
@@ -242,7 +243,7 @@ indicator appears and disappears cleanly.
       `unsafe-eval` is actually needed (Astro 7 may not require it). Remove if
       possible; document why if not. Add `upgrade-insecure-requests` if the site
       should be HTTPS-only.
-- [x] **Add `SECURITY.md`** (if not done in Phase 1) — document the security
+- [x] **Add `docs/security.md`** (if not done in Phase 1) — document the security
       model: CSP, Supabase RLS, IP hashing, service role key usage, how to report
       vulnerabilities.
 - [x] **CodeQL + dependency audit** — CodeQL is already in CI. Add
@@ -257,7 +258,7 @@ indicator appears and disappears cleanly.
       Verify CodeQL action is also pinned.
 
 **Acceptance:** CSP has no unnecessary `unsafe-*`; `bun audit` passes in CI;
-all GitHub Actions pinned to SHAs; SECURITY.md exists.
+all GitHub Actions pinned to SHAs; security.md exists.
 
 ---
 
@@ -283,7 +284,7 @@ merges without a noted exception.
 
 ## Phase 8: First Stable Release (v2.0.0)
 
-The current version is `1.22.6`. The roadmap above adds significant
+The current version is `2.0.0`. The roadmap above adds significant
 capability (dark mode, RSS, offline, tests, security hardening). A v2.0.0
 marks the point where RxDev Man is a _complete_ developer knowledge base.
 
