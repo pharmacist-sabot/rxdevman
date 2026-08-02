@@ -158,6 +158,88 @@
 }
 
 /* ══════════════════════════════════════════════════════════
+   DARK THEME
+   Warm dark — not AMOLED black, a reading-app dark.
+   ══════════════════════════════════════════════════════════ */
+[data-theme='dark'] {
+  /* ── Surfaces ── */
+  --surface-page: #1a1b1e;
+  --surface-accent: #2a2b2e;
+  --surface-card: #232428;
+  --surface-dark: #111214;
+  --surface-footer: #0d0e10;
+
+  /* ── Borders ── */
+  --border-default: #3a3b3e;
+  --border-accent: #2e2f32;
+
+  /* ── Text ── */
+  --text-primary: #d1d1d1;
+  --text-secondary: #a0a0a0;
+  --text-muted: #6b6b6b;
+  --text-heading: #e8e8e8;
+  --text-inverse: #1a1b1e;
+
+  /* ── Brand (slightly desaturated for dark bg) ── */
+  --brand-red: #ff6b35;
+  --brand-orange: #f0a830;
+  --brand-orange-hover: color-mix(in srgb, var(--brand-orange), black 10%);
+  --brand-btn-shadow: #c08407;
+  --brand-btn-border: #a06d0a;
+
+  /* ── Shadows (lighter on dark) ── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 15px 40px rgba(0, 0, 0, 0.5);
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --shadow-hover-color: rgba(0, 0, 0, 0.5);
+
+  color-scheme: dark;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SEPIA THEME
+   Warm, low-contrast reading mode for long articles.
+   ══════════════════════════════════════════════════════════ */
+[data-theme='sepia'] {
+  /* ── Surfaces ── */
+  --surface-page: #f4ecd8;
+  --surface-accent: #e8dcc4;
+  --surface-card: #faf5e8;
+  --surface-dark: #2c2416;
+  --surface-footer: #1e180f;
+
+  /* ── Borders ── */
+  --border-default: #d4c9ab;
+  --border-accent: #e0d5bc;
+
+  /* ── Text (muted for less eye strain) ── */
+  --text-primary: #5c4b32;
+  --text-secondary: #7a6950;
+  --text-muted: #a09078;
+  --text-heading: #3d2e1a;
+  --text-inverse: #f4ecd8;
+
+  /* ── Brand (warmer on sepia) ── */
+  --brand-red: #d44000;
+  --brand-orange: #c8850a;
+  --brand-orange-hover: color-mix(in srgb, var(--brand-orange), white 10%);
+  --brand-btn-shadow: #a06d0a;
+  --brand-btn-border: #8a5e0a;
+
+  /* ── Shadows (warm tint) ── */
+  --shadow-sm: 0 1px 2px rgba(60, 40, 10, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(60, 40, 10, 0.1), 0 2px 4px -1px rgba(60, 40, 10, 0.06);
+  --shadow-lg: 0 8px 24px -4px rgba(60, 40, 10, 0.12);
+  --shadow-xl: 0 15px 40px rgba(60, 40, 10, 0.15);
+  --shadow-color: rgba(60, 40, 10, 0.1);
+  --shadow-hover-color: rgba(60, 40, 10, 0.18);
+
+  color-scheme: light;
+}
+
+/* ══════════════════════════════════════════════════════════
    KEYFRAME ANIMATIONS
    ══════════════════════════════════════════════════════════ */
 @keyframes wiggle {

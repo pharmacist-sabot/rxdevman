@@ -51,7 +51,12 @@ export default defineConfig({
       ],
     }),
     expressiveCode({
-      themes: ['andromeeda'],
+      themes: ['andromeeda', 'dracula'],
+      useDarkModeMediaQuery: false,
+      themeCssSelector: theme =>
+        theme.type === 'dark'
+          ? '[data-theme="dark"], [data-theme="sepia"]'
+          : ':root:not([data-theme="dark"]):not([data-theme="sepia"])',
       styleOverrides: {
         borderRadius: '0.5rem',
         codePaddingBlock: '1.25rem',
