@@ -54,3 +54,6 @@ jobs:
 
       - name: Build Production
         run: bun run build
+
+      - name: Bundle Size Check
+        run: bun run size

@@ -13,7 +13,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
-    "audit": "bun audit"
+    "audit": "bun audit",
+    "size": "size-limit",
+    "size:why": "size-limit --why"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
@@ -38,11 +40,13 @@
     "@antfu/eslint-config": "^9.0.0",
     "@commitlint/cli": "^21.0.0",
     "@commitlint/config-conventional": "^21.0.0",
+    "@size-limit/preset-app": "^13.0.3",
     "eslint": "^10.3.0",
     "eslint-plugin-astro": "^3.0.0",
     "eslint-plugin-format": "^2.0.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.4",
+    "size-limit": "^13.0.3",
     "vitest": "^4.1.10"
   },
   "overrides": {
@@ -53,5 +57,12 @@
     "*.{js,ts,tsx,vue,md,mdx,astro}": [
       "eslint --fix"
     ]
-  }
+  },
+  "size-limit": [
+    {
+      "path": "dist/client/_astro/*.js",
+      "limit": "10 KB",
+      "gzip": true
+    }
+  ]
 }
