@@ -86,32 +86,32 @@ acceptance is checked against it.
 
 ---
 
-## Phase 1: Foundation — Documentation & Design System
+## Phase 1: Foundation — Documentation & Design System ✅
 
 The project needs its identity on paper before it builds on top of it.
 
-- [ ] **Write `DESIGN.md`** — document the design system that already exists
+- [x] **Write `DESIGN.md`** — document the design system that already exists
       in `global.css`: why IBM Plex Sans + Source Code Pro, why the warm gray
       palette (not cold), why 4px spacing, why fluid type scales, the layer
       architecture (reset → base → components → utilities), and the token
       hierarchy (primitive → semantic → component → legacy aliases). This is the
       _rationale_, not the code — the code is the source of truth.
-- [ ] **Write `SECURITY.md`** — document the security posture: CSP headers,
+- [x] **Write `SECURITY.md`** — document the security posture: CSP headers,
       Supabase RLS model, service role key usage, IP hashing strategy, the
       `pg_cron` cleanup, and how to report vulnerabilities. Note what `unsafe-inline`
       in the CSP means and the plan to tighten it.
-- [ ] **Write `CONTRIBUTING.md`** — formalize what the README has: branch
+- [x] **Write `CONTRIBUTING.md`** — formalize what the README has: branch
       naming, conventional commits (commitlint is already enforced), code style
       (ESLint config), how to add a blog post (frontmatter schema, MDX
       components available), and the PR review process.
-- [ ] **Write `AGENTS.md`** — conventions for AI agents working in this repo:
+- [x] **Write `AGENTS.md`** — conventions for AI agents working in this repo:
       file structure, component patterns, token usage, no inline hex colors
       (route through tokens), how to add new pages, the Supabase access pattern.
-- [ ] **Clean up legacy token aliases** in `global.css` — the `/* Legacy
+- [x] **Clean up legacy token aliases** in `global.css` — the `/* Legacy
 Aliases */` section (lines 153–168) exists for backward compatibility. Audit
       usage across all components and migrate to semantic tokens, then remove the
       aliases.
-- [ ] **Verify `.env` is not in git history** — check `git log --all --full-history -- .env` and
+- [x] **Verify `.env` is not in git history** — check `git log --all --full-history -- .env` and
       remove if tracked. Add `.env` to `.gitignore` explicitly if not already.
 
 **Acceptance:** DESIGN.md describes rxdevman, not generic best practices;
