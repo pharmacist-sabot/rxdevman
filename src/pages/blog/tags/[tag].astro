@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 
+import BlogNav from '@/components/blog/BlogNav.astro';
 import BlogPostCard from '@/components/blog/BlogPostCard.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { slugify } from '@/utils/slugify'; // Re-using slugify for consistency
@@ -25,22 +26,31 @@ export async function getStaticPaths() {
 const { posts, displayName } = Astro.props;
 ---
 <BaseLayout title={`Posts tagged with: ${displayName}`}>
-  <div class="page-header">
-    <p class="filter-label">Tag</p>
-    <h1>#{displayName}</h1>
-    <p class="filter-subtitle">
-      Found {posts.length} article{posts.length !== 1 ? 's' : ''} with this tag.
-    </p>
-  </div>
-  <div class="post-grid">
-    {posts.map(post => <BlogPostCard post={post} />)}
+  <div class="container">
+    <div class="page-header">
+      <p class="filter-label">Tag</p>
+      <h1>#{displayName}</h1>
+      <p class="filter-subtitle">
+        Found {posts.length} article{posts.length !== 1 ? 's' : ''} with this tag.
+      </p>
+    </div>
+    <BlogNav items={[
+      { href: '/blog', label: 'All' },
+      { href: '/blog/series', label: 'Series' },
+      { href: '/blog/categories', label: 'Categories' },
+      { href: '/blog/tags', label: 'Tags', active: true },
+    ]}
+    />
+    <div class="post-grid">
+      {posts.map(post => <BlogPostCard post={post} />)}
+    </div>
   </div>
 </BaseLayout>
 
 <style>
   .page-header {
     text-align: center;
-    margin-bottom: var(--space-12);
+    margin-bottom: var(--space-6);
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;

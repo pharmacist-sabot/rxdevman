@@ -25,6 +25,7 @@ const currentYear = new Date().getFullYear();
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#E5E7E0" />
     <title>{`${title} | rxdevman`}</title>
+    <link rel="alternate" type="application/rss+xml" title="rxdevman" href="/rss.xml" />
     <script is:inline>
       (function () {
         const stored = localStorage.getItem('theme');
@@ -71,8 +72,8 @@ const currentYear = new Date().getFullYear();
           <div class="footer-brand">
             <a href="/" class="footer-logo" aria-label="rxdevman home">
               <svg width="24" height="24" viewBox="0 0 200 200" aria-hidden="true">
-                <path d="M40 30 V170 M40 30 H110 C145 30 160 55 160 80 C160 110 140 125 110 125 H40 M110 125 L160 170" fill="none" stroke="#F54E00" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M85 65 L115 95 M115 65 L85 95" fill="none" stroke="#F54E00" stroke-width="15" stroke-linecap="round" />
+                <path d="M40 30 V170 M40 30 H110 C145 30 160 55 160 80 C160 110 140 125 110 125 H40 M110 125 L160 170" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M85 65 L115 95 M115 65 L85 95" fill="none" stroke="currentColor" stroke-width="15" stroke-linecap="round" />
               </svg>
               <span class="footer-logo-text">rxdevman</span>
             </a>

@@ -10,7 +10,8 @@ import Toc from '@/components/blog/Toc.astro';
 import ViewCounter from '@/components/blog/ViewCounter.astro';
 import { getAllBlogPosts } from '@/lib/blog';
 import { getRelatedPosts } from '@/utils/post-utils';
-import { slugify } from '@/utils/slugify';
+import { getSeriesNav, groupPostsBySeries } from '@/utils/series';
+import { getEntrySlug, slugify } from '@/utils/slugify';
 
 import BaseLayout from './BaseLayout.astro';
 
@@ -35,6 +36,16 @@ const postSlug = slug || slugify(title);
 // Fetch all blog posts (cached) and compute related posts
 const allPosts = await getAllBlogPosts();
 const relatedPosts = getRelatedPosts(allPosts, postSlug, tags, category, 3);
+
+// Compute series prev/next navigation
+const currentEntrySlug = getEntrySlug(postSlug);
+const seriesGroups = groupPostsBySeries(allPosts);
+const currentSeries = seriesGroups.find(g =>
+  g.posts.some(p => getEntrySlug(p.id) === currentEntrySlug),
+);
+const seriesNav = currentSeries
+  ? getSeriesNav(currentSeries.posts, currentEntrySlug)
+  : null;
 
 // Pre-generate the hero image URL for <link rel="preload"> to improve LCP
 const preloadHero = heroImage
@@ -108,6 +119,24 @@ const preloadHero = heroImage
         </div>
       </footer>
 
+      {seriesNav && (seriesNav.prev || seriesNav.next) && (
+        <nav class="series-nav" aria-label={`Navigation within series: ${currentSeries?.name}`}>
+          {seriesNav.prev && (
+            <a href={`/blog/${getEntrySlug(seriesNav.prev.id)}`} class="series-nav-link series-nav-prev">
+              <span class="series-nav-label">← Previous in series</span>
+              <span class="series-nav-title">{seriesNav.prev.data.title}</span>
+            </a>
+          )}
+          <div class="series-nav-spacer" />
+          {seriesNav.next && (
+            <a href={`/blog/${getEntrySlug(seriesNav.next.id)}`} class="series-nav-link series-nav-next">
+              <span class="series-nav-label">Next in series →</span>
+              <span class="series-nav-title">{seriesNav.next.data.title}</span>
+            </a>
+          )}
+        </nav>
+      )}
+
       <RelatedPosts relatedPosts={relatedPosts} />
     </article>
   </div>
@@ -115,4 +144,48 @@ const preloadHero = heroImage
 
 <style>
   .post-header-category:hover { color: var(--brand-orange); }
+
+  .series-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--border-default);
+  }
+
+  .series-nav-spacer { flex: 1; }
+
+  .series-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    text-decoration: none;
+    max-width: 45%;
+    transition: color var(--duration-150) var(--ease);
+  }
+
+  .series-nav-next {
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .series-nav-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--brand-red);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .series-nav-title {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .series-nav-link:hover .series-nav-title {
+    color: var(--text-heading);
+  }
 </style>

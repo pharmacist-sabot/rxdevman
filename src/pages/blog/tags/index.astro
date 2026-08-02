@@ -1,0 +1,108 @@
+---
+import { getCollection } from 'astro:content';
+
+import BlogNav from '@/components/blog/BlogNav.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { slugify } from '@/utils/slugify';
+
+const allPosts = await getCollection('blog');
+
+type TagInfo = { name: string; count: number };
+const tagMap = new Map<string, number>();
+
+for (const post of allPosts) {
+  for (const tag of post.data.tags) {
+    tagMap.set(tag, (tagMap.get(tag) ?? 0) + 1);
+  }
+}
+
+const tags: TagInfo[] = Array.from(tagMap.entries())
+  .map(([name, count]) => ({ name, count }))
+  .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+---
+
+<BaseLayout title="Tags">
+  <div class="container">
+
+    <div class="page-header">
+      <p class="filter-label">Browse</p>
+      <h1>Tags</h1>
+      <p class="filter-subtitle">
+        {tags.length} tags across {allPosts.length} articles.
+      </p>
+    </div>
+
+    <BlogNav items={[
+      { href: '/blog', label: 'All' },
+      { href: '/blog/series', label: 'Series' },
+      { href: '/blog/categories', label: 'Categories' },
+      { href: '/blog/tags', label: 'Tags', active: true },
+    ]}
+    />
+
+    <div class="tag-cloud">
+      {tags.map(tag => (
+        <a href={`/blog/tags/${slugify(tag.name)}`} class="tag-item">
+          <span class="tag-name">#{tag.name}</span>
+          <span class="tag-count">{tag.count}</span>
+        </a>
+      ))}
+    </div>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .page-header h1 { margin-bottom: var(--space-2); }
+
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .tag-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: var(--surface-card);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-full);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    transition: border-color var(--duration-150) var(--ease),
+      transform var(--duration-150) var(--ease),
+      box-shadow var(--duration-150) var(--ease);
+  }
+
+  .tag-item:hover {
+    border-color: var(--brand-orange);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .tag-name {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .tag-count {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    background: var(--surface-accent);
+    padding: 0.1em 0.45em;
+    border-radius: var(--radius-full);
+  }
+</style>

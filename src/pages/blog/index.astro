@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 
 import { getCollection } from 'astro:content';
 
+import BlogNav from '@/components/blog/BlogNav.astro';
 import BlogPostCard from '@/components/blog/BlogPostCard.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
@@ -24,6 +25,14 @@ const sortedPosts = allPosts.sort(
         A collection of everything I've written. Browse my notes on web development, best practices, and personal discoveries.
       </p>
     </div>
+
+    <BlogNav items={[
+      { href: '/blog', label: 'All', active: true },
+      { href: '/blog/series', label: 'Series' },
+      { href: '/blog/categories', label: 'Categories' },
+      { href: '/blog/tags', label: 'Tags' },
+    ]}
+    />
 
     <div class="post-grid">
       {sortedPosts.map((post: CollectionEntry<'blog'>) => (

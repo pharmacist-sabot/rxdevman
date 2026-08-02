@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+
+import BlogNav from '@/components/blog/BlogNav.astro';
+import BlogPostCard from '@/components/blog/BlogPostCard.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { groupPostsBySeries } from '@/utils/series';
+import { slugify } from '@/utils/slugify';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  const seriesGroups = groupPostsBySeries(allPosts);
+
+  return seriesGroups.map(group => ({
+    params: { series: slugify(group.name) },
+    props: { name: group.name, posts: group.posts },
+  }));
+}
+
+const { name, posts } = Astro.props;
+---
+
+<BaseLayout title={`Series: ${name}`}>
+  <div class="container">
+
+    <BlogNav items={[
+      { href: '/blog', label: 'All' },
+      { href: '/blog/series', label: 'Series', active: true },
+      { href: '/blog/categories', label: 'Categories' },
+      { href: '/blog/tags', label: 'Tags' },
+    ]}
+    />
+
+    <div class="page-header">
+      <p class="filter-label">Series</p>
+      <h1>{name}</h1>
+      <p class="filter-subtitle">
+        {posts.length} article{posts.length !== 1 ? 's' : ''} in this series, read in order.
+      </p>
+    </div>
+
+    <div class="post-grid">
+      {posts.map(post => <BlogPostCard post={post} />)}
+    </div>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .page-header h1 { margin-bottom: var(--space-2); }
+</style>

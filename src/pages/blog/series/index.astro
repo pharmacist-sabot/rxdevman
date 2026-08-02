@@ -1,0 +1,143 @@
+---
+import { getCollection } from 'astro:content';
+
+import BlogNav from '@/components/blog/BlogNav.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { groupPostsBySeries } from '@/utils/series';
+import { slugify } from '@/utils/slugify';
+
+const allPosts = await getCollection('blog');
+const seriesGroups = groupPostsBySeries(allPosts);
+---
+
+<BaseLayout title="Series">
+  <div class="container">
+
+    <div class="page-header">
+      <p class="filter-label">Content</p>
+      <h1>Series</h1>
+      <p class="filter-subtitle">
+        Multi-part articles grouped into learning paths.
+      </p>
+    </div>
+
+    <BlogNav items={[
+      { href: '/blog', label: 'All' },
+      { href: '/blog/series', label: 'Series', active: true },
+      { href: '/blog/categories', label: 'Categories' },
+      { href: '/blog/tags', label: 'Tags' },
+    ]}
+    />
+
+    <div class="series-list">
+      {seriesGroups.map(group => (
+        <a href={`/blog/series/${slugify(group.name)}`} class="series-card">
+          <h2 class="series-name">{group.name}</h2>
+          <p class="series-count">
+            {group.posts.length} article{group.posts.length !== 1 ? 's' : ''}
+          </p>
+          <ol class="series-posts">
+            {group.posts.map(post => (
+              <li>
+                <span class="series-post-title">{post.data.title}</span>
+                <time class="series-post-date">
+                  {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                </time>
+              </li>
+            ))}
+          </ol>
+        </a>
+      ))}
+    </div>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .page-header h1 { margin-bottom: var(--space-2); }
+
+  .series-list {
+    display: grid;
+    gap: var(--space-6);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .series-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    text-decoration: none;
+    transition: box-shadow var(--duration-200) var(--ease),
+      border-color var(--duration-200) var(--ease),
+      transform var(--duration-200) var(--ease);
+  }
+
+  .series-card:hover {
+    box-shadow: var(--shadow-lg);
+    border-color: var(--brand-btn-border);
+    transform: translateY(-2px);
+  }
+
+  .series-name {
+    font-size: var(--text-lg);
+    color: var(--text-heading);
+    margin-bottom: var(--space-1);
+  }
+
+  .series-count {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .series-posts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: series-counter;
+  }
+
+  .series-posts li {
+    counter-increment: series-counter;
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--border-default);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+  }
+
+  .series-posts li:last-child {
+    border-bottom: none;
+  }
+
+  .series-posts li::before {
+    content: counter(series-counter) ".";
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    min-width: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .series-post-title {
+    flex: 1;
+  }
+
+  .series-post-date {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+</style>
