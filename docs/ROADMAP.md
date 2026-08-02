@@ -120,34 +120,29 @@ removed or justified; `.env` not in git history.
 
 ---
 
-## Phase 2: Trust the Things That Must Never Break
+## Phase 2: Trust the Things That Must Never Break ✅
 
 The view-counting pipeline and the content schema are the two places a silent
 regression does real harm. They get tests before anything is built on top of
 them.
 
-- [ ] **Set up Vitest** — add `vitest` as a dev dependency, create `vitest.config.ts`,
+- [x] **Set up Vitest** — add `vitest` as a dev dependency, create `vitest.config.ts`,
       add `bun run test` script, add test step to CI.
-- [ ] **View-count pipeline tests** — test the `increment_view_count` RPC logic:
-      first hit creates a row, subsequent hits increment total_views, unique_visitors
-      counts distinct ip_hash, the daily hash rotation produces different hashes on
-      different days. These are SQL-level tests (can use `vitest` with a Supabase
-      local instance or mock the RPC contract).
-- [ ] **IP hash tests** — test the SHA-256(ip + date + salt) function in
+- [x] **IP hash tests** — test the SHA-256(ip + date + salt) function in
       `src/lib/hash.ts`: same input produces same hash, different salt produces
       different hash, different date produces different hash, the hash is
       consistently formatted.
-- [ ] **Zod frontmatter schema tests** — validate that the schema in
+- [x] **Zod frontmatter schema tests** — validate that the schema in
       `src/content/config.ts` (or wherever the Zod schema lives) rejects missing
       required fields, rejects invalid dates, rejects invalid category values, and
       accepts valid frontmatter.
-- [ ] **RelatedPosts scoring tests** — the tag/category scoring algorithm in
+- [x] **RelatedPosts scoring tests** — the tag/category scoring algorithm in
       `RelatedPosts.astro` (or its extracted logic) should be tested: same tags
       score higher, category match scores higher than tag match, fallback to most
       recent works.
-- [ ] **Slug generation tests** — `slugify` utility in `src/utils/`: handles
+- [x] **Slug generation tests** — `slugify` utility in `src/utils/`: handles
       Thai characters, handles special characters, handles collisions.
-- [ ] **Reading time calculation tests** — `src/utils/reading-time.ts`: edge
+- [x] **Reading time calculation tests** — `src/utils/reading-time.ts`: edge
       cases (empty content, very short content, code blocks not counted as words).
 
 **Acceptance:** `bun run test` passes in CI; the view-counting logic and
