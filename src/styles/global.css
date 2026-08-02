@@ -150,21 +150,9 @@
   --focus-offset: 2px;
   --focus-offset-lg: 3px;
 
-  /* ══════════════════════════════════════════════════════
-     LEGACY ALIASES — backward compatibility
-     ══════════════════════════════════════════════════════ */
-  --brand-color: var(--brand-red);
-  --accent-color: var(--brand-orange);
-  --font-color: var(--text-heading);
-  --font-color-light: var(--text-secondary);
-  --bg-color: var(--surface-page);
-  --card-bg-color: var(--surface-card);
-  --card-border-color: var(--border-default);
+  /* ── Shadow aliases (raw rgba — no semantic token equivalent) ── */
   --shadow-color: rgba(191, 193, 183, 0.25);
   --shadow-hover-color: rgba(191, 193, 183, 0.45);
-  --success-color: var(--color-success);
-  --warning-color: var(--color-warning);
-  --danger-color: var(--color-danger);
 
   color-scheme: light;
 }
@@ -594,7 +582,7 @@
   }
   .main-screenshot {
     border-radius: var(--radius-lg);
-    border: 1px solid var(--card-border-color);
+    border: 1px solid var(--border-default);
     box-shadow: var(--shadow-xl);
     width: 100%;
     height: auto;
@@ -615,20 +603,20 @@
     justify-content: center;
   }
   .stack-item {
-    background-color: var(--card-bg-color);
-    border: 1px solid var(--card-border-color);
+    background-color: var(--surface-card);
+    border: 1px solid var(--border-default);
     padding: var(--space-2) var(--space-5);
     border-radius: var(--radius-full);
     font-size: var(--text-sm);
     font-weight: 500;
   }
   .repo-link {
-    color: var(--font-color);
+    color: var(--text-heading);
     text-decoration: underline;
     font-weight: 500;
   }
   .repo-link:hover {
-    color: var(--brand-color);
+    color: var(--brand-red);
   }
 
   @media (max-width: 768px) {
@@ -657,9 +645,9 @@
     align-items: center;
     gap: var(--space-3);
     padding: var(--space-6) var(--space-10);
-    border: 2px dashed var(--card-border-color);
+    border: 2px dashed var(--border-default);
     border-radius: var(--radius-lg);
-    background-color: var(--card-bg-color);
+    background-color: var(--surface-card);
   }
   .coming-soon-badge {
     display: inline-block;
@@ -673,7 +661,7 @@
   }
   .coming-soon-text {
     margin: 0;
-    color: var(--font-color-light);
+    color: var(--text-secondary);
     font-size: var(--text-sm);
   }
 
@@ -749,7 +737,7 @@
 
   /* ── Shared: Status Box ── */
   .status-box {
-    border: 2px dashed var(--card-border-color);
+    border: 2px dashed var(--border-default);
     border-radius: var(--radius-lg);
     padding: var(--space-12) var(--space-8);
     margin-bottom: var(--space-8);
@@ -758,7 +746,7 @@
   .status-box p {
     font-family: var(--font-mono);
     font-size: var(--text-sm);
-    color: var(--font-color-light);
+    color: var(--text-secondary);
     margin: 0;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -781,7 +769,7 @@
     font-family: var(--font-mono);
     font-size: 0.75rem;
     font-weight: 600;
-    color: var(--brand-color);
+    color: var(--brand-red);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
@@ -803,13 +791,13 @@
     font-family: var(--font-mono);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--font-color-light);
+    color: var(--text-secondary);
     margin-bottom: var(--space-2);
     font-size: 0.9rem;
   }
   .filter-subtitle {
     font-size: 1.2rem;
-    color: var(--font-color-light);
+    color: var(--text-secondary);
   }
 
   /* ── Shared: Blog Layout Grid ── */

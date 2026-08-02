@@ -25,7 +25,7 @@ const { title, description, href, icon } = Astro.props;
     align-items: center;
     gap: var(--space-6);
     text-decoration: none;
-    color: var(--font-color);
+    color: var(--text-heading);
   }
   .icon-wrapper {
     flex-shrink: 0;
@@ -37,7 +37,7 @@ const { title, description, href, icon } = Astro.props;
   }
   .card-icon {
     font-size: 1.75rem;
-    color: var(--brand-color);
+    color: var(--brand-red);
     width: 32px;
     height: 32px;
   }
@@ -55,15 +55,15 @@ const { title, description, href, icon } = Astro.props;
   .cta-arrow {
     margin-left: auto;
     font-size: var(--text-2xl);
-    color: var(--font-color-light);
+    color: var(--text-secondary);
     transition: transform var(--duration-200) var(--ease), color var(--duration-200) var(--ease);
   }
   .tool-card:hover .cta-arrow {
-    color: var(--brand-color);
+    color: var(--brand-red);
     transform: translateX(5px);
   }
   .tool-card:focus-visible {
-    outline: 3px solid var(--brand-color);
+    outline: 3px solid var(--brand-red);
     outline-offset: 3px;
   }
 

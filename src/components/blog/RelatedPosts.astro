@@ -133,7 +133,7 @@ throw new Error('Invalid date');
   .related-posts {
     margin-top: var(--space-16);
     padding-top: var(--space-12);
-    border-top: 1px solid var(--card-border-color);
+    border-top: 1px solid var(--border-default);
   }
 
   /* ============================================================
@@ -152,14 +152,14 @@ throw new Error('Invalid date');
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: var(--brand-color);
+    color: var(--brand-red);
   }
 
   .related-heading {
     font-family: var(--font-sans);
     font-size: clamp(1.15rem, 3vw, 1.4rem);
     font-weight: 700;
-    color: var(--font-color);
+    color: var(--text-heading);
     margin: 0;
   }
 
@@ -178,7 +178,7 @@ throw new Error('Invalid date');
      Individual item
   ============================================================ */
   .related-item {
-    border-bottom: 1px solid var(--card-border-color);
+    border-bottom: 1px solid var(--border-default);
   }
 
   .related-item:last-child {
@@ -200,14 +200,14 @@ throw new Error('Invalid date');
   }
 
   .related-link:hover {
-    background-color: color-mix(in srgb, var(--brand-color) 5%, transparent);
+    background-color: color-mix(in srgb, var(--brand-red) 5%, transparent);
     padding-left: 0.85rem;
   }
 
   .related-link:focus-visible {
-    outline: 2px solid var(--brand-color);
+    outline: 2px solid var(--brand-red);
     outline-offset: 3px;
-    background-color: color-mix(in srgb, var(--brand-color) 5%, transparent);
+    background-color: color-mix(in srgb, var(--brand-red) 5%, transparent);
   }
 
   /* ============================================================
@@ -217,7 +217,7 @@ throw new Error('Invalid date');
     font-family: var(--font-mono);
     font-size: 0.8rem;
     font-weight: 700;
-    color: var(--card-border-color);
+    color: var(--border-default);
     user-select: none;
     line-height: 1;
     transition: color var(--duration-200) var(--ease);
@@ -226,7 +226,7 @@ throw new Error('Invalid date');
   }
 
   .related-link:hover .item-index {
-    color: var(--brand-color);
+    color: var(--brand-red);
   }
 
   /* ============================================================
@@ -238,14 +238,14 @@ throw new Error('Invalid date');
     height: 3rem;
     border-radius: var(--radius-sm);
     overflow: hidden;
-    border: 1px solid var(--card-border-color);
+    border: 1px solid var(--border-default);
     flex-shrink: 0;
-    background-color: var(--bg-color);
+    background-color: var(--surface-page);
     transition: border-color var(--duration-200) var(--ease);
   }
 
   .related-link:hover .item-thumbnail {
-    border-color: var(--brand-color);
+    border-color: var(--brand-red);
   }
 
   .thumbnail-img {
@@ -268,7 +268,7 @@ throw new Error('Invalid date');
     justify-content: center;
     width: 100%;
     height: 100%;
-    color: var(--card-border-color);
+    color: var(--border-default);
   }
 
   .placeholder-icon {
@@ -297,7 +297,7 @@ throw new Error('Invalid date');
   }
 
   .item-category {
-    color: var(--brand-color);
+    color: var(--brand-red);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -305,13 +305,13 @@ throw new Error('Invalid date');
   }
 
   .item-dot {
-    color: var(--card-border-color);
+    color: var(--border-default);
     font-weight: 700;
   }
 
   .item-reading-time,
   .item-date {
-    color: var(--font-color-light);
+    color: var(--text-secondary);
     opacity: 0.7;
   }
 
@@ -319,7 +319,7 @@ throw new Error('Invalid date');
     font-family: var(--font-sans);
     font-size: clamp(0.95rem, 2.5vw, 1.05rem);
     font-weight: 600;
-    color: var(--font-color);
+    color: var(--text-heading);
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -329,13 +329,13 @@ throw new Error('Invalid date');
   }
 
   .related-link:hover .item-title {
-    color: var(--brand-color);
+    color: var(--brand-red);
   }
 
   .item-excerpt {
     font-family: var(--font-sans);
     font-size: 0.82rem;
-    color: var(--font-color-light);
+    color: var(--text-secondary);
     line-height: 1.55;
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -351,13 +351,13 @@ throw new Error('Invalid date');
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--card-border-color);
+    color: var(--border-default);
     flex-shrink: 0;
     transition: color var(--duration-200) var(--ease), transform var(--duration-200) var(--ease);
   }
 
   .related-link:hover .item-arrow {
-    color: var(--brand-color);
+    color: var(--brand-red);
     transform: translateX(3px);
   }
 

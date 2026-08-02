@@ -110,7 +110,7 @@ const excerpt = description || bodyExcerpt;
 
   /* Focus styles for accessibility */
   .card-link:focus-visible {
-    outline: 3px solid var(--brand-color);
+    outline: 3px solid var(--brand-red);
     outline-offset: 2px;
     border-radius: var(--radius-lg);
   }
@@ -120,8 +120,8 @@ const excerpt = description || bodyExcerpt;
     width: 100%;
     aspect-ratio: 16/9;
     overflow: hidden;
-    border-bottom: 1px solid var(--card-border-color);
-    background-color: var(--card-bg-color, #f5f5f5);
+    border-bottom: 1px solid var(--border-default);
+    background-color: var(--surface-card, #f5f5f5);
   }
 
   .card-image {
@@ -140,8 +140,8 @@ const excerpt = description || bodyExcerpt;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--card-border-color);
-    background-color: color-mix(in srgb, var(--card-bg-color) 80%, var(--bg-color) 20%);
+    color: var(--border-default);
+    background-color: color-mix(in srgb, var(--surface-card) 80%, var(--surface-page) 20%);
   }
 
   .placeholder-icon {
@@ -172,7 +172,7 @@ const excerpt = description || bodyExcerpt;
   .category {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
-    color: var(--brand-color);
+    color: var(--brand-red);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-weight: 600;
@@ -180,7 +180,7 @@ const excerpt = description || bodyExcerpt;
 
   .reading-time {
     font-size: var(--text-xs);
-    color: var(--font-color-light);
+    color: var(--text-secondary);
     opacity: 0.8;
     font-weight: 500;
   }
@@ -190,17 +190,17 @@ const excerpt = description || bodyExcerpt;
     font-size: var(--text-base);
     line-height: 1.4;
     margin: 0 0 var(--space-3);
-    color: var(--font-color);
+    color: var(--text-heading);
     transition: color var(--duration-200) var(--ease);
   }
 
   .card-link:hover .title {
-    color: var(--brand-color);
+    color: var(--brand-red);
   }
 
   .description {
     font-size: var(--text-sm);
-    color: var(--font-color-light);
+    color: var(--text-secondary);
     line-height: 1.6;
     margin: 0;
     display: -webkit-box;
@@ -220,13 +220,13 @@ const excerpt = description || bodyExcerpt;
   }
 
   time {
-    color: var(--font-color-light);
+    color: var(--text-secondary);
     opacity: 0.8;
     font-weight: 500;
   }
 
   .read-more {
-    color: var(--brand-color);
+    color: var(--brand-red);
     font-weight: 600;
     font-size: var(--text-sm);
     transition: transform var(--duration-200) var(--ease);
