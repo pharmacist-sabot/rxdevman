@@ -25,6 +25,13 @@ const sortedPosts = allPosts.sort(
       </p>
     </div>
 
+    <nav class="blog-nav" aria-label="Blog navigation">
+      <a href="/blog" class="blog-nav-link active">All</a>
+      <a href="/blog/series" class="blog-nav-link">Series</a>
+      <a href="/blog/categories" class="blog-nav-link">Categories</a>
+      <a href="/blog/tags" class="blog-nav-link">Tags</a>
+    </nav>
+
     <div class="post-grid">
       {sortedPosts.map((post: CollectionEntry<'blog'>) => (
         <BlogPostCard post={post} />
@@ -38,4 +45,39 @@ const sortedPosts = allPosts.sort(
   .blog-header { text-align: center; margin: 0 auto; padding-bottom: var(--space-2); }
   .blog-header h1 { font-size: clamp(1.35rem, 2.5vw, 1.75rem); margin-bottom: var(--space-2); }
   .blog-header p { font-size: var(--text-base); color: var(--text-secondary); }
+
+  .blog-nav {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-1);
+    margin-bottom: var(--space-8);
+    padding: var(--space-1);
+    background: var(--surface-accent);
+    border-radius: var(--radius-full);
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .blog-nav-link {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    transition: color var(--duration-150) var(--ease),
+      background var(--duration-150) var(--ease);
+  }
+
+  .blog-nav-link:hover {
+    color: var(--text-primary);
+  }
+
+  .blog-nav-link.active {
+    color: var(--text-heading);
+    background: var(--surface-card);
+    box-shadow: var(--shadow-sm);
+  }
 </style>
