@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 
+import BlogNav from '@/components/blog/BlogNav.astro';
 import BlogPostCard from '@/components/blog/BlogPostCard.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { slugify } from '@/utils/slugify';
@@ -31,12 +32,13 @@ const { posts, displayName } = Astro.props;
         Found {posts.length} article{posts.length !== 1 ? 's' : ''} on this topic.
       </p>
     </div>
-    <nav class="blog-nav" aria-label="Blog navigation">
-      <a href="/blog" class="blog-nav-link">All</a>
-      <a href="/blog/series" class="blog-nav-link">Series</a>
-      <a href="/blog/categories" class="blog-nav-link active">Categories</a>
-      <a href="/blog/tags" class="blog-nav-link">Tags</a>
-    </nav>
+    <BlogNav items={[
+      { href: '/blog', label: 'All' },
+      { href: '/blog/series', label: 'Series' },
+      { href: '/blog/categories', label: 'Categories', active: true },
+      { href: '/blog/tags', label: 'Tags' },
+    ]}
+    />
     <div class="post-grid">
       {posts.map(post => <BlogPostCard post={post} />)}
     </div>
@@ -52,37 +54,4 @@ const { posts, displayName } = Astro.props;
     margin-right: auto;
   }
   .page-header h1 { margin-bottom: var(--space-2); }
-
-  .blog-nav {
-    display: flex;
-    justify-content: center;
-    gap: var(--space-1);
-    margin-bottom: var(--space-8);
-    padding: var(--space-1);
-    background: var(--surface-accent);
-    border-radius: var(--radius-full);
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .blog-nav-link {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    color: var(--text-muted);
-    text-decoration: none;
-    padding: var(--space-2) var(--space-4);
-    border-radius: var(--radius-full);
-    transition: color var(--duration-150) var(--ease),
-      background var(--duration-150) var(--ease);
-  }
-
-  .blog-nav-link:hover { color: var(--text-primary); }
-
-  .blog-nav-link.active {
-    color: var(--text-heading);
-    background: var(--surface-card);
-    box-shadow: var(--shadow-sm);
-  }
 </style>

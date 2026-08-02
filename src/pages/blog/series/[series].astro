@@ -1,10 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 
+import BlogNav from '@/components/blog/BlogNav.astro';
 import BlogPostCard from '@/components/blog/BlogPostCard.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getSeriesNav, groupPostsBySeries } from '@/utils/series';
-import { getEntrySlug, slugify } from '@/utils/slugify';
+import { groupPostsBySeries } from '@/utils/series';
+import { slugify } from '@/utils/slugify';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('blog');
@@ -17,12 +18,18 @@ export async function getStaticPaths() {
 }
 
 const { name, posts } = Astro.props;
-const currentSlug = Astro.params.series;
-const { prev, next } = getSeriesNav(posts, currentSlug);
 ---
 
 <BaseLayout title={`Series: ${name}`}>
   <div class="container">
+
+    <BlogNav items={[
+      { href: '/blog', label: 'All' },
+      { href: '/blog/series', label: 'Series', active: true },
+      { href: '/blog/categories', label: 'Categories' },
+      { href: '/blog/tags', label: 'Tags' },
+    ]}
+    />
 
     <div class="page-header">
       <p class="filter-label">Series</p>
@@ -36,24 +43,6 @@ const { prev, next } = getSeriesNav(posts, currentSlug);
       {posts.map(post => <BlogPostCard post={post} />)}
     </div>
 
-    {(prev || next) && (
-      <nav class="series-nav">
-        {prev && (
-          <a href={`/blog/${getEntrySlug(prev.id)}`} class="series-nav-link series-nav-prev">
-            <span class="series-nav-label">← Previous</span>
-            <span class="series-nav-title">{prev.data.title}</span>
-          </a>
-        )}
-        <div class="series-nav-spacer" />
-        {next && (
-          <a href={`/blog/${getEntrySlug(next.id)}`} class="series-nav-link series-nav-next">
-            <span class="series-nav-label">Next →</span>
-            <span class="series-nav-title">{next.data.title}</span>
-          </a>
-        )}
-      </nav>
-    )}
-
   </div>
 </BaseLayout>
 
@@ -66,48 +55,4 @@ const { prev, next } = getSeriesNav(posts, currentSlug);
     margin-right: auto;
   }
   .page-header h1 { margin-bottom: var(--space-2); }
-
-  .series-nav {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-4);
-    margin-top: var(--space-12);
-    padding-top: var(--space-8);
-    border-top: 1px solid var(--border-default);
-  }
-
-  .series-nav-spacer { flex: 1; }
-
-  .series-nav-link {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    text-decoration: none;
-    max-width: 45%;
-    transition: color var(--duration-150) var(--ease);
-  }
-
-  .series-nav-next {
-    text-align: right;
-    margin-left: auto;
-  }
-
-  .series-nav-label {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--brand-red);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 600;
-  }
-
-  .series-nav-title {
-    font-size: var(--text-sm);
-    color: var(--text-secondary);
-    font-weight: 500;
-  }
-
-  .series-nav-link:hover .series-nav-title {
-    color: var(--text-heading);
-  }
 </style>

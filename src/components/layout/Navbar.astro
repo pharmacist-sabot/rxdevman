@@ -51,6 +51,7 @@ function isActive(href: string) {
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
         </svg>
       </button>
+      <span id="theme-live" class="sr-only" aria-live="polite"></span>
       <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mobile-overlay">
         <span class="bar"></span>
         <span class="bar"></span>
@@ -141,6 +142,9 @@ function setTheme(theme: string) {
   localStorage.setItem('theme', theme);
   themeToggle?.setAttribute('aria-label', `Theme: ${theme}. Click to switch.`);
   mobileThemeToggle?.setAttribute('aria-label', `Theme: ${theme}. Click to switch.`);
+  const liveRegion = document.getElementById('theme-live');
+  if (liveRegion)
+    liveRegion.textContent = `Theme changed to ${theme}`;
 }
 
 function cycleTheme() {
@@ -554,7 +558,7 @@ if (navbar instanceof HTMLElement && hamburger instanceof HTMLButtonElement && o
   .mobile-link:hover .mobile-link-icon {
     color: var(--brand-red);
     border-color: var(--brand-red);
-    background: var(--color-white);
+    background: var(--surface-card);
   }
 
   .mobile-link.active .mobile-link-icon {
@@ -587,6 +591,11 @@ if (navbar instanceof HTMLElement && hamburger instanceof HTMLButtonElement && o
     background: color-mix(in srgb, var(--brand-red) 6%, transparent);
     border-color: var(--brand-red);
     color: var(--brand-red);
+  }
+
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--brand-red);
+    outline-offset: 2px;
   }
 
   .theme-icon { display: none; }
