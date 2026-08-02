@@ -591,17 +591,17 @@ if (navbar instanceof HTMLElement && hamburger instanceof HTMLButtonElement && o
 
   .theme-icon { display: none; }
 
-  [data-theme='dark'] .theme-icon--dark,
-  [data-theme='sepia'] .theme-icon--sepia {
+  :global([data-theme='dark']) .theme-icon--dark,
+  :global([data-theme='sepia']) .theme-icon--sepia {
     display: block;
   }
 
-  [data-theme='light'] .theme-icon--light {
+  :global([data-theme='light']) .theme-icon--light {
     display: block;
   }
 
   /* Fallback: show light icon when no data-theme set */
-  :root:not([data-theme]) .theme-icon--light {
+  :global(:root:not([data-theme])) .theme-icon--light {
     display: block;
   }
 
