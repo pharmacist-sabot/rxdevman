@@ -41,6 +41,9 @@ jobs:
       - name: Linting
         run: bun run lint
 
+      - name: Tests
+        run: bun run test
+
       # Astro Type Check
       - name: Type Checking
         run: bunx astro check
