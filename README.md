@@ -1,174 +1,178 @@
 # RxDev Man
 
 > **The Developer's Living Knowledge Base.**
-> A high-performance, interactive knowledge graph built for modern software engineers.
+> A high-performance, offline-capable knowledge base for software engineers.
 
-**[Live Demo: rxdevman.com](https://www.rxdevman.com/)**
+**[Live: rxdevman.com](https://www.rxdevman.com/)**
 
-![Astro](https://img.shields.io/badge/Astro-5.0-FF5D01?style=flat&logo=astro)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat&logo=typescript)
-![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=flat&logo=supabase)
-![Vercel](https://img.shields.io/badge/Deployment-Vercel-000000?style=flat&logo=vercel)
+![Astro](https://img.shields.io/badge/Astro-7.0-FF5D01?style=flat&logo=astro)
+![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=flat&logo=typescript)
+![Vitest](https://img.shields.io/badge/Vitest-4.1-6E9F18?style=flat&logo=vitest)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat)
 
-**RxDev Man** is more than just a blog—it's a modular, interactive documentation system designed to help developers master their craft. Built on **Astro's Island Architecture**, it delivers static content with lightning-fast performance while seamlessly hydrating interactive elements like search and analytics.
+**RxDev Man** is a personal developer knowledge base — a blog with MDX content, tool showcases, visitor tracking, dark mode, offline support, and PWA capabilities. Built on **Astro 7** with zero-JS by default.
 
 ---
 
-## Key Features
+## Features
 
-### Rich Content Experience
-
-- **MDX-Powered**: Author content in Markdown with the power of embedded components.
-- **Interactive Blocks**:
-  - `<CodeExplainer />`: Break down complex logic line-by-line.
-  - `<InfoBox />`: Highlight critical warnings, tips, and notes.
-  - `<ProsCons />`: Visual comparison tables for architectural decisions.
-  - `<GitCommand />`: Copy-paste friendly terminal snippets.
-- **Syntax Highlighting**: Beautiful code blocks powered by Shiki (GitHub Dark theme).
-
-### Performance & Architecture
-
-- **Zero-JS by Default**: HTML-first rendering for optimal SEO and load times.
-- **Hybrid Rendering**: Static Site Generation (SSG) for content, with Server-Side Rendering (SSR) capabilities for dynamic features.
-- **Client-Side Search**: Instant, typo-tolerant search using **Pagefind**.
-
-### Analytics & Data
-
-- **Real-Time View Counts**: Integrated with **Supabase** to track article engagement.
-- **Type-Safe Content**: Validated frontmatter schemas using **Zod**.
+- **Dark Mode & Sepia** — three themes with FOUC prevention and code block switching
+- **Offline Support** — PWA with service worker, works without network
+- **MDX Content** — interactive components: `<CodeExplainer>`, `<InfoBox>`, `<ProsCons>`, `<GitCommand>`
+- **Search** — client-side typo-tolerant search via Pagefind
+- **RSS Feed** — `/rss.xml` for feed readers
+- **Series & Tags** — grouped posts with tag/category index pages
+- **Visitor Tracking** — Supabase-backed view counts (privacy-first, no cookies)
+- **37 Unit Tests** — Vitest coverage for core utilities
+- **Security Hardened** — CSP, CodeQL, dependency audits, SHA-pinned actions
+- **Performance Budgets** — 1.16 KB gzipped JS, 1.8 MB WebP images
 
 ---
 
 ## Tech Stack
 
-| Category     | Technology                                    | Usage                       |
-| ------------ | --------------------------------------------- | --------------------------- |
-| **Core**     | [Astro 5.x](https://astro.build/)             | Framework & Build Tool      |
-| **Language** | [TypeScript](https://www.typescriptlang.org/) | Type Safety                 |
-| **Content**  | [MDX](https://mdxjs.com/)                     | Interactive Markdown        |
-| **Styling**  | CSS Variables                                 | Scoped, theme-aware styling |
-| **Database** | [Supabase](https://supabase.com/)             | View counters & Analytics   |
-| **Search**   | [Pagefind](https://pagefind.app/)             | Static search indexing      |
-| **Icons**    | [Iconify](https://iconify.design/)            | `astro-icon` integration    |
-| **Deploy**   | [Vercel](https://vercel.com/)                 | Edge Network Deployment     |
+| Category     | Technology                          |
+| ------------ | ----------------------------------- |
+| Framework    | [Astro 7](https://astro.build/)    |
+| Language     | [TypeScript 6](https://www.typescriptlang.org/) |
+| Content      | [MDX](https://mdxjs.com/)          |
+| Styling      | CSS custom properties (design tokens) |
+| Database     | [Supabase](https://supabase.com/)  |
+| Search       | [Pagefind](https://pagefind.app/)  |
+| Testing      | [Vitest](https://vitest.dev/)      |
+| Deploy       | [Vercel](https://vercel.com/)      |
+
+---
+
+## Quick Start
+
+```bash
+git clone https://github.com/suradet-ps/rxdevman.git
+cd rxdevman
+bun install
+cp .env.example .env   # add Supabase credentials (optional for local dev)
+bun run dev
+```
+
+Open `http://localhost:4321`.
+
+---
+
+## Adding Content
+
+### New Blog Post
+
+Create a directory under `src/content/blog/<slug>/` with an `index.mdx` file:
+
+```yaml
+---
+title: 'Your Post Title'
+description: 'Short description for SEO.'
+pubDate: 2026-08-03
+heroImage: './hero.png'       # relative to post directory
+category: 'Programming Languages'
+tags: ['Rust', 'Systems Programming']
+featured: false
+series: 'Rust Mastery'        # optional — groups posts in a series
+---
+```
+
+Add a hero image next to the MDX file:
+
+```
+src/content/blog/your-post/
+├── index.mdx
+└── hero.png
+```
+
+**Available components** (auto-imported, no import needed):
+
+```mdx
+<InfoBox title="Note" type="info">Content here.</InfoBox>
+<InfoBox title="Warning" type="warning">Content here.</InfoBox>
+
+<CodeExplainer title="Step by step">
+  ```rust
+  fn main() { println!("Hello"); }
+  ```
+</CodeExplainer>
+
+<GitCommand>git commit -m "feat: add feature"</GitCommand>
+
+<ProsCons pros={["Fast", "Safe"]} cons={["Complex", "Steep learning"]} />
+```
+
+**Categories used in this project:** Programming Languages, DevOps & Infrastructure, Career & Soft Skills, Tools & Utilities, Web Development, AI & Machine Learning, Computer Science, System Design, Book Notes.
+
+### New Tool Page
+
+Create a file under `src/pages/tools/<name>.astro`. Follow the pattern of
+existing pages like `cupsabot.astro` or `herbs-app.astro`.
+
+### Add a Category or Tag
+
+Just use a new string in the `category` or `tags` fields of a blog post's
+frontmatter. The index pages are auto-generated.
+
+---
+
+## Scripts
+
+| Command              | Description                         |
+| -------------------- | ----------------------------------- |
+| `bun run dev`        | Start dev server (port 4321)        |
+| `bun run build`      | Production build + search index     |
+| `bun run preview`    | Preview production build locally    |
+| `bun run lint`       | ESLint check                        |
+| `bun run lint:fix`   | ESLint auto-fix                     |
+| `bun run test`       | Run Vitest unit tests               |
+| `bun run audit`      | Dependency security audit           |
+| `bun run size`       | Check JS bundle size against budget |
 
 ---
 
 ## Project Structure
 
 ```text
-/
-├── public/             # Static assets (images, fonts)
-├── src/
-│   ├── components/     # Reusable UI & MDX components
-│   │   ├── CodeExplainer.astro
-│   │   ├── InfoBox.astro
-│   │   ├── Search.astro
-│   │   └── ...
-│   ├── content/
-│   │   └── blog/       # The Knowledge Base (MDX files)
-│   ├── layouts/        # Page layouts (Base, Post, etc.)
-│   ├── lib/            # External services (Supabase client)
-│   ├── pages/          # File-based routing
-│   │   ├── api/        # Server-side API endpoints
-│   │   └── ...
-│   └── styles/         # Global styles & CSS variables
-├── astro.config.mjs    # Astro configuration
-└── package.json        # Dependencies & Scripts
+src/
+├── components/
+│   ├── blog/           # BlogPostCard, ShareButtons, BlogNav, etc.
+│   ├── content/        # MDX components: InfoBox, CodeExplainer, etc.
+│   ├── layout/         # Navbar, Footer
+│   └── ui/             # FeatureCard, OfflineIndicator, ProgressBar
+├── content/
+│   └── blog/           # MDX blog posts (each in its own directory)
+├── layouts/            # BaseLayout, BlogPostLayout
+├── lib/                # Supabase client
+├── pages/              # File-based routing
+│   ├── api/            # Server-side API endpoints
+│   ├── blog/           # Blog index, tags, categories, series
+│   ├── tools/          # Tool showcase pages
+│   └── hosxp/          # HosXP project pages
+├── styles/             # Global CSS and design tokens
+└── utils/              # Reading time, slugify, post-utils
+public/
+├── images/             # All images (WebP)
+├── sw.js               # Service worker
+└── site.webmanifest    # PWA manifest
 ```
-
----
-
-## Getting Started
-
-Follow these steps to set up the project locally.
-
-### Prerequisites
-
-- **Node.js**: v18.17.1 or higher
-- **Package Manager**: bun
-
-### Installation
-
-1.  **Clone the repository**
-
-    ```bash
-    git clone https://github.com/suradet-ps/rxdevman.git
-    cd rxdevman
-    ```
-
-2.  **Install dependencies**
-
-    ```bash
-    bun install
-    ```
-
-3.  **Configure Environment Variables**
-    Create a `.env` file in the root directory and add your Supabase credentials:
-
-    ```env
-    PUBLIC_SUPABASE_URL=your_supabase_project_url
-    PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-    ```
-
-4.  **Start the development server**
-    ```bash
-    bun run dev
-    ```
-    Visit `http://localhost:4321` to see the site.
-
-### Building for Production
-
-To build the static site and index the search:
-
-```bash
-bun run build
-```
-
-This command will:
-
-1. Build the Astro site.
-2. Run `pagefind` to index the content for search.
-
-### Troubleshooting
-
-**Build fails with Supabase errors:**
-
-- Ensure your `.env` file contains valid Supabase credentials.
-- For local development without Supabase, the site will work but view counters will not function.
-
-**Search not working:**
-
-- Run `bun run build` to generate the search index.
-- The search feature requires the production build to function properly.
-
-**Port already in use:**
-
-- Change the dev server port: `bun run dev -- --port 3000`
 
 ---
 
 ## Roadmap
 
-See [docs/ROADMAP.md](docs/ROADMAP.md) for the full roadmap.
+See [docs/ROADMAP.md](docs/ROADMAP.md).
 
----
+## Changelog
+
+See [docs/CHANGELOG.md](docs/CHANGELOG.md).
 
 ## Contributing
 
-We welcome contributions from the community!
-
-1.  **Fork** the repository.
-2.  Create a **Feature Branch** (`git checkout -b feat/new-topic`).
-3.  Commit your changes with **Conventional Commits** (`feat: add guide on system design`).
-4.  **Push** to your branch.
-5.  Open a **Pull Request**.
-
----
+See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
+[MIT](LICENSE)
 
-> **“The best developers are eternal students.”**
+> **"The best developers are eternal students."**
