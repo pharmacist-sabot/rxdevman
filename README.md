@@ -151,13 +151,7 @@ This command will:
 
 ## Roadmap
 
-- [ ] **Dark Mode Toggle**: User-selectable theme preferences
-- [ ] **Tag System**: Filter articles by technology/topic
-- [ ] **RSS Feed**: Subscribe to new content
-- [ ] **Comment System**: Community engagement
-- [ ] **Series/Collections**: Group related articles
-- [ ] **Reading Progress**: Track reader engagement
-- [ ] **Multi-language Support**: i18n implementation
+See [docs/ROADMAP.md](docs/ROADMAP.md) for the full roadmap.
 
 ---
 
