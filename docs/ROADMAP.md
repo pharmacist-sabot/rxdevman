@@ -1,6 +1,6 @@
 # RxDev Man — Roadmap
 
-This roadmap describes what RxDev Man is, from reading its own code — and where it should end up. It follows the conventions in [CONTRIBUTING.md](CONTRIBUTING.md), the security posture in [SECURITY.md](SECURITY.md), and the design system documented in [DESIGN.md](DESIGN.md) and implemented in `src/styles/global.css`.
+This roadmap describes what RxDev Man is, from reading its own code — and where it should end up. It follows the conventions in [contributing.md](contributing.md), the security posture in [security.md](security.md), and the design system documented in [design.md](design.md) and implemented in `src/styles/global.css`.
 
 > **What RxDev Man is.** A _quiet, personal_ developer knowledge base — one
 > pharmacist-turned-developer's public notebook. You write MDX articles, organize
