@@ -14,6 +14,7 @@ function makePost(
     id,
     slug: id.replace(/\/index\.mdx?$/, ''),
     body: '',
+    collection: 'blog',
     data: {
       title: id,
       description: '',
