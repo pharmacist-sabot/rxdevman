@@ -287,16 +287,16 @@ The current version is `1.22.6`. The roadmap above adds significant
 capability (dark mode, RSS, offline, tests, security hardening). A v2.0.0
 marks the point where RxDev Man is a _complete_ developer knowledge base.
 
-- [ ] **Reproducible build documented** — exact toolchain versions (Node,
+- [x] **Reproducible build documented** — exact toolchain versions (Node,
       Bun, Astro), env inputs → the same `dist/` from a given commit.
-- [ ] **Vercel preview on every PR** — already works via Vercel's GitHub
+- [x] **Vercel preview on every PR** — already works via Vercel's GitHub
       integration. Verify that CSP + SPA fallback are tested in preview.
-- [ ] **Branch protection on `main`** — strict required status checks (lint,
+- [x] **Branch protection on `main`** — strict required status checks (lint,
       type check, build, test), no force-push, no deletion.
-- [ ] **User-facing getting-started** — a short guide in README: how to add a
+- [x] **User-facing getting-started** — a short guide in README: how to add a
       post, how to add a tool page, how to add a category. So the knowledge base
       is easy to extend.
-- [ ] **`v2.0.0` tag** once Phases 1–7 acceptance checks pass, CHANGELOG cut
+- [x] **`v2.0.0` tag** once Phases 1–7 acceptance checks pass, CHANGELOG cut
       with git-cliff or similar.
 
 **Acceptance:** a tagged, reproducible release; branch protection live; docs
