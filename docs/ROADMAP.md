@@ -180,29 +180,29 @@ works; user preference persists; code blocks look correct in all themes.
 
 ---
 
-## Phase 4: Content Discovery & Organization
+## Phase 4: Content Discovery & Organization ✅
 
 Deepen exactly the content loop RxDev Man already has — write, organize,
 discover — without adding a second product.
 
-- [ ] **RSS feed** — Astro has `@astrojs/rss` integration. Generate `/rss.xml`
+- [x] **RSS feed** — Astro has `@astrojs/rss` integration. Generate `/rss.xml`
       from all published blog posts. Include full content or summary, categories,
       tags, publication date. Auto-discoverable via `<link rel="alternate">` in
       the `<head>`.
-- [ ] **Series/Collections** — a frontmatter field `series` (string) that
+- [x] **Series/Collections** — a frontmatter field `series` (string) that
       groups related posts. A `/blog/series/[series]` page that lists posts in
       order. The series name appears on the blog post card and at the top of the
       post with navigation (previous/next in series). Natural groupings: "Rust
       from Scratch", "HOSxP Development", "Git Mastery".
-- [ ] **Reading time on blog cards** — already calculated in `src/utils/reading-time.ts`,
+- [x] **Reading time on blog cards** — already calculated in `src/utils/reading-time.ts`,
       but verify it's displayed on BlogPostCard. If not, add it.
 - [ ] **"Recently Published" section on homepage** — the homepage already has
       a hero. Add a section below showing the 3 most recent posts with
       BlogPostCard, giving returning visitors an immediate entry point.
-- [ ] **Category page improvements** — the `/blog/categories/[category]` page
+- [x] **Category page improvements** — the `/blog/categories/[category]` page
       exists but may need a better layout: category description, post count, sorted
       by date.
-- [ ] **Tag cloud / tag index** — a `/blog/tags` page that lists all tags with
+- [x] **Tag cloud / tag index** — a `/blog/tags` page that lists all tags with
       post counts, linking to `/blog/tags/[tag]`. Helps readers discover content
       breadth.
 
