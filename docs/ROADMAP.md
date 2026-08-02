@@ -237,22 +237,22 @@ indicator appears and disappears cleanly.
 
 ## Phase 6: Security & Supply-Chain Hardening
 
-- [ ] **Audit CSP in `vercel.json`** — the current CSP has `unsafe-inline` for
+- [x] **Audit CSP in `vercel.json`** — the current CSP has `unsafe-inline` for
       styles and `unsafe-inline` + `unsafe-eval` for scripts. Audit whether
       `unsafe-eval` is actually needed (Astro 7 may not require it). Remove if
       possible; document why if not. Add `upgrade-insecure-requests` if the site
       should be HTTPS-only.
-- [ ] **Add `SECURITY.md`** (if not done in Phase 1) — document the security
+- [x] **Add `SECURITY.md`** (if not done in Phase 1) — document the security
       model: CSP, Supabase RLS, IP hashing, service role key usage, how to report
       vulnerabilities.
-- [ ] **CodeQL + dependency audit** — CodeQL is already in CI. Add
+- [x] **CodeQL + dependency audit** — CodeQL is already in CI. Add
       `bun audit` (or equivalent) to CI to catch known vulnerabilities in
       dependencies. Renovate is already handling automated updates.
-- [ ] **Verify `.env` not in git history** (if not done in Phase 1).
-- [ ] **Add `permissions` to CI workflow** — the `ci.yml` already has
+- [x] **Verify `.env` not in git history** (if not done in Phase 1).
+- [x] **Add `permissions` to CI workflow** — the `ci.yml` already has
       `permissions: contents: read`. Verify `codeql.yml` has minimal permissions
       too.
-- [ ] **Pin GitHub Actions to commit SHAs** — already done (checkout pinned
+- [x] **Pin GitHub Actions to commit SHAs** — already done (checkout pinned
       to `3d3c42e...`, setup-node to `8207627...`, setup-bun to `c05077e...`).
       Verify CodeQL action is also pinned.
 
