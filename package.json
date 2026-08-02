@@ -12,7 +12,8 @@
     "prepare": "husky",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "vitest run"
+    "test": "vitest run",
+    "audit": "bun audit"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",

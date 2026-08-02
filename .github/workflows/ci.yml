@@ -38,6 +38,10 @@ jobs:
       - name: Install Dependencies
         run: bun install
 
+      - name: Dependency Audit
+        run: bun audit --audit-level=high
+        continue-on-error: true
+
       - name: Linting
         run: bun run lint
 
