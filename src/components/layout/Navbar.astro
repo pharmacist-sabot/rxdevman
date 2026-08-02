@@ -136,7 +136,7 @@ function getCurrentTheme() {
   return document.documentElement.getAttribute('data-theme') || 'light';
 }
 
-function setTheme(theme) {
+function setTheme(theme: string) {
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('theme', theme);
   themeToggle?.setAttribute('aria-label', `Theme: ${theme}. Click to switch.`);
