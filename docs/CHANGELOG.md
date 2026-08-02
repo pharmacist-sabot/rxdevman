@@ -6,6 +6,27 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [Unreleased]
+
+### Added
+- `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1).
+- GitHub PR template and issue templates (bug report, feature request).
+
+### Fixed
+- `bun audit --audit-level=high` now fails CI on high/critical advisories
+  (previously `continue-on-error: true` made it informational). Dependency
+  overrides added to clear all 17 known advisories.
+- `README.md` link to `docs/contributing.md` (was uppercase, breaks on
+  case-sensitive filesystems).
+- `docs/ROADMAP.md` now names doc files in their actual lowercase form.
+
+### Tests
+- Zod frontmatter schema extracted to `src/lib/content-schema.ts` (testable
+  outside Astro's virtual modules) with 21 unit tests covering required
+  fields, invalid dates, invalid values, and unknown-field stripping.
+
+---
+
 ## [2.0.0] - 2026-08-03
 
 A complete developer knowledge base with dark mode, offline support, tests,
