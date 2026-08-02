@@ -78,7 +78,7 @@ initToc();
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: var(--space-4);
-    color: var(--font-color-light);
+    color: var(--text-secondary);
   }
   .toc-list {
     list-style: none;
@@ -88,18 +88,18 @@ initToc();
     display: block;
     padding: var(--space-2) 0;
     font-size: 0.9rem;
-    color: var(--font-color-light);
-    border-left: 2px solid var(--card-border-color);
+    color: var(--text-secondary);
+    border-left: 2px solid var(--border-default);
     padding-left: var(--space-4);
     transition: color var(--duration-200) var(--ease), border-color var(--duration-200) var(--ease), transform var(--duration-200) var(--ease);
   }
   .toc-item a:hover {
-    color: var(--font-color);
-    border-left-color: var(--font-color);
+    color: var(--text-heading);
+    border-left-color: var(--text-heading);
   }
   .toc-item a.active {
-    color: var(--brand-color);
-    border-left-color: var(--brand-color);
+    color: var(--brand-red);
+    border-left-color: var(--brand-red);
     font-weight: 500;
     transform: translateX(4px);
   }

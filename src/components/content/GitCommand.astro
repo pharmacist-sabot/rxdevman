@@ -20,8 +20,8 @@ const { command, icon } = Astro.props;
 
 <style>
     .command-card {
-        background-color: var(--card-bg-color);
-        border: 1px solid var(--card-border-color);
+        background-color: var(--surface-card);
+        border: 1px solid var(--border-default);
         border-radius: var(--radius-lg);
         margin: var(--space-12) 0;
         box-shadow: 0 4px 12px var(--shadow-color);
@@ -34,21 +34,21 @@ const { command, icon } = Astro.props;
         padding: var(--space-4) var(--space-6);
         background-color: color-mix(
             in srgb,
-            var(--card-bg-color) 80%,
-            var(--card-border-color)
+            var(--surface-card) 80%,
+            var(--border-default)
         );
-        border-bottom: 1px solid var(--card-border-color);
+        border-bottom: 1px solid var(--border-default);
     }
     .command-icon {
         font-size: var(--text-2xl);
-        color: var(--brand-color);
+        color: var(--brand-red);
         flex-shrink: 0;
     }
     .command-header h2 {
         margin: 0;
         font-size: 1.3rem;
         font-family: var(--font-mono);
-        color: var(--font-color);
+        color: var(--text-heading);
         scroll-margin-top: 100px;
     }
     .command-content {

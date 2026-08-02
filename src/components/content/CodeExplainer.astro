@@ -18,8 +18,8 @@ const { title } = Astro.props;
 
 <style>
   .explainer-box {
-    background-color: var(--card-bg-color);
-    border: 1px solid var(--card-border-color);
+    background-color: var(--surface-card);
+    border: 1px solid var(--border-default);
     border-radius: var(--radius-md);
     margin: var(--space-10) 0;
     overflow: hidden;
@@ -31,18 +31,18 @@ const { title } = Astro.props;
     align-items: center;
     gap: var(--space-3);
     padding: var(--space-3) var(--space-5);
-    background-color: color-mix(in srgb, var(--card-bg-color) 80%, var(--card-border-color));
-    border-bottom: 1px solid var(--card-border-color);
+    background-color: color-mix(in srgb, var(--surface-card) 80%, var(--border-default));
+    border-bottom: 1px solid var(--border-default);
   }
 
   .header-icon {
     font-size: var(--text-xl);
-    color: var(--font-color-light);
+    color: var(--text-secondary);
   }
 
   .title {
     font-weight: 500;
-    color: var(--font-color);
+    color: var(--text-heading);
     font-family: var(--font-mono);
   }
 
@@ -50,7 +50,7 @@ const { title } = Astro.props;
     padding: var(--space-4) var(--space-5);
   }
   .content :global(details) {
-    border-bottom: 1px solid var(--card-border-color);
+    border-bottom: 1px solid var(--border-default);
     padding: var(--space-4) 0;
   }
   .content :global(details:first-child) { padding-top: 0; }
@@ -63,11 +63,11 @@ const { title } = Astro.props;
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    color: var(--font-color);
+    color: var(--text-heading);
     transition: color var(--duration-200) var(--ease);
   }
   .content :global(summary:hover) {
-    color: var(--brand-color);
+    color: var(--brand-red);
   }
 
   .content :global(summary::-webkit-details-marker) { display: none; }
@@ -75,7 +75,7 @@ const { title } = Astro.props;
   .content :global(summary::before) {
     content: '▶';
     font-size: 0.6em;
-    color: var(--brand-color);
+    color: var(--brand-red);
     transition: transform var(--duration-200) var(--ease);
     margin-right: var(--space-1);
   }
@@ -87,8 +87,8 @@ const { title } = Astro.props;
     margin-top: var(--space-3);
     margin-bottom: 0;
     padding-left: var(--space-6);
-    color: var(--font-color-light);
+    color: var(--text-secondary);
     line-height: 1.7;
-    border-left: 2px solid var(--card-border-color);
+    border-left: 2px solid var(--border-default);
   }
 </style>

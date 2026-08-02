@@ -38,21 +38,21 @@ import { Icon } from 'astro-icon/components';
     align-items: center;
     gap: var(--space-3);
     padding: var(--space-4) var(--space-5);
-    border-bottom: 1px solid var(--card-border-color);
+    border-bottom: 1px solid var(--border-default);
   }
   .header h4 {
     margin: 0;
     font-size: 1.1rem;
     font-family: var(--font-sans);
-    color: var(--font-color);
+    color: var(--text-heading);
     font-weight: 600;
   }
   .icon {
     font-size: 1.75rem;
     flex-shrink: 0;
   }
-  .pros-icon { color: var(--success-color); }
-  .cons-icon { color: var(--danger-color); }
+  .pros-icon { color: var(--color-success); }
+  .cons-icon { color: var(--color-danger); }
 
   .content {
     padding: var(--space-5);
@@ -61,7 +61,7 @@ import { Icon } from 'astro-icon/components';
     padding-left: var(--space-5);
     margin: 0;
     line-height: 1.7;
-    color: var(--font-color-light);
+    color: var(--text-secondary);
   }
 
   @media (max-width: 700px) {
