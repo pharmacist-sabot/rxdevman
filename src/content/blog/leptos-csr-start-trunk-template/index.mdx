@@ -1,0 +1,1088 @@
+---
+title: 'Leptos CSR Starter Template'
+description: 'เจาะลึกเทมเพลต start-trunk ของ Leptos แบบ Client-Side Rendering ทีละไฟล์'
+pubDate: '2026-08-26'
+heroImage: './leptos-csr-start-trunk.png'
+category: 'Programming Languages'
+tags: ['Rust', 'Leptos', 'WebAssembly', 'Web Development', 'Frontend', 'Tutorial']
+featured: true
+---
+
+ถ้าคุณเป็นนักพัฒนา Rust ที่เริ่มเบื่อการเขียนโปรแกรมแค่ฝั่ง backend และอยากลองจับอะไรที่มองเห็นได้ด้วยตาบ้าง การเขียนเว็บแอปด้วย Rust คือหนึ่งในเส้นทางที่น่าตื่นเต้นที่สุดในตอนนี้ และถ้าเลือกได้ว่าจะเริ่มจากตรงไหน **Leptos** คือคำตอบที่ถูกพูดถึงมากที่สุดตัวหนึ่งในโลกของ Rust Web Framework และผมก็ใช้แทบทุกโปรเจคต์ 555
+
+Leptos เป็นเว็บเฟรมเวิร์กที่แตกต่างจากที่คุณคุ้นเคยอย่างสิ้นเชิง แทนที่จะ render HTML ฝั่ง server แล้วค่อยๆ ใส่ JavaScript ลงไปทีละนิดเหมือน framework ทั่วไป Leptos เขียน UI ทั้งหมดด้วยภาษา Rust ผ่าน **macro ชื่อ `view!`** จากนั้นคอมไพล์ทั้งแอปไปเป็น **WebAssembly (WASM)** ที่ทำงานในเบราว์เซอร์ได้โดยตรง
+
+<SideNote type="tip">
+คำว่า Client-Side Rendering (CSR) หมายความว่าทุกอย่าง ทั้งโครงสร้าง HTML การจัดการ state การตอบสนองต่อ events หรือแม้แต่การเปลี่ยนหน้า ต่างก็ถูกคำนวณและ render อยู่ในเบราว์เซอร์ของ user เองทั้งหมด เซิร์ฟเวอร์มีหน้าที่แค่ส่งไฟล์ static (HTML เปล่า ๆ + WASM + CSS) ให้เท่านั้น
+</SideNote>
+
+และจุดเริ่มต้นที่ดีที่สุดสำหรับการสำรวจ Leptos คือการไล่ทำความเข้าใจ **เทมเพลต start-trunk** อย่างละเอียด ซึ่งเป็นเทมเพลตอย่างเป็นทางการของทีม Leptos สำหรับสร้างโปรเจกต์ CSR มันเป็นเหมือนโครงกระดูกที่มีครบทั้งส่วนที่จำเป็นจริงๆ ของแอป Leptos โดยไม่มีอะไรฟุ่มเฟือยเลย
+
+บทความนี้ผมจะพาคุณ**ถอดรหัสเทมเพลตนี้ทีละไฟล์ ทีละบรรทัด ให้ได้มากที่สุด** ตั้งแต่ตอนที่คุณรัน `cargo generate` ไปจนถึงตอนที่แอปถูก deploy ขึ้นบนอินเทอร์เน็ต โดยไม่ข้ามรายละเอียดใดๆ ตั้งใจอ่านกันดีๆล่ะ เพราะมันยาวมาก
+
+## เกริ่นนำ Leptos คืออะไร และ CSR คืออะไร
+
+ก่อนจะดำดิ่งเข้าสู่โค้ด ขอวางพื้นฐานสักเล็กน้อย เพราะเทมเพลตนี้ถูกออกแบบมาบนแนวคิดเหล่านี้ทั้งหมด
+
+### Leptos กับแนวคิด "Fine-Grained Reactivity"
+
+Leptos คือ full-stack web framework ที่เขียนด้วย Rust โดยมีแกนหลักเป็นแนวคิด Fine-Grained Reactivity หรือ “การตอบสนองแบบละเอียดระดับจุด”
+
+แนวคิดนี้หมายความว่า เมื่อ state ใด state หนึ่งเปลี่ยนแปลง เฉพาะส่วนของ UI ที่พึ่งพา state นั้นเท่านั้นที่จะถูกอัปเดต โดยไม่จำเป็นต้อง re-render หรือทำ Virtual DOM diff ในส่วนที่ไม่เกี่ยวข้อง ทำให้การอัปเดต UI มีขอบเขตเล็กและตรงกับจุดที่ข้อมูลเปลี่ยนแปลงมากกว่าแนวทางที่ใช้ Virtual DOM เป็นตัวกลาง
+
+<ProsCons>
+  <div slot="pros">
+    <ul>
+      <li><strong>เร็วมาก:</strong> ไม่มี virtual DOM ไม่มี diffing อัปเดตเฉพาะ node ที่ผูกกับ signal โดยตรง</li>
+      <li><strong>เล็กมาก:</strong> WASM bundle ที่คอมไพล์ด้วย profile ที่ปรับขนาดแล้วอาจเล็กกว่ากรอบอื่นๆ</li>
+      <li><strong>โค้ดเดียวทั้ง stack:</strong> เขียน frontend และ backend ด้วยภาษา Rust เหมือนกัน</li>
+      <li><strong>ไม่มี runtime ใหญ่:</strong> ไม่มี GC ตามฝั่ง JavaScript ตัว WASM เองจัดการได้หมด</li>
+    </ul>
+  </div>
+  <div slot="cons">
+    <ul>
+      <li><strong>เรียนรู้ macro:</strong> ต้องคุ้นเคยกับ <code>view!</code>, <code>#[component]</code> และการจัดการ lifetime ของ Rust</li>
+      <li><strong>เวลาคอมไพล์:</strong> โปรเจกต์ Rust + WASM คอมไพล์ครั้งแรกใช้เวลานาน</li>
+      <li><strong>ระบบนิเวศยังใหม่:</strong> มี library ให้น้อยกว่า JavaScript ecosystem มาก</li>
+      <li><strong>ต้องมี toolchain:</strong> ต้องติดตั้ง target <code>wasm32-unknown-unknown</code> เพิ่มเติม</li>
+    </ul>
+  </div>
+</ProsCons>
+
+### Mode การใช้งานของ Leptos SSR, CSR และ Hydration
+
+Leptos รองรับสถาปัตยกรรมได้หลายแบบ เช่น
+
+- **SSR (Server-Side Rendering):** render HTML บนเซิร์ฟเวอร์ ตอบกลับเป็น HTML สำเร็จรูป
+- **CSR (Client-Side Rendering):** ส่ง HTML เปล่า ๆ + WASM ให้เบราว์เซอร์ render เองทั้งหมด
+- **Hydration:** render ฝั่ง server แล้ว "ชุบชีวิต" ฝั่ง client
+
+เทมเพลตที่เรากำลังจะถอดรหัสคือโหมด **CSR** โหมดที่เรียบง่ายที่สุดและ deploy ง่ายที่สุด เพราะได้ผลลัพธ์เป็นไฟล์ static ล้วนๆ
+
+### Trunk คืออะไร ทำไมต้องชื่อ start-trunk
+
+Leptos ไม่ได้ "ตัวเปล่า" บนเบราว์เซอร์ มันถูกคอมไพล์เป็น WASM ซึ่งต้องมีเครื่องมือช่วย build pipeline ระหว่างทาง รวบรวม WASM, สร้าง JavaScript glue จาก wasm-bindgen, จัดการ asset อย่าง CSS/SCSS/favicon, เปิด dev server พร้อม hot reload
+
+เครื่องมือนั้นคือ **[Trunk](https://github.com/trunk-rs/trunk)** build tool สำหรับ Rust/WASM web apps ที่ทำงานแบบ "declarative" ผ่านไฟล์ `Trunk.toml` และ `index.html` ที่มี attribute พิเศษ `data-trunk` ดังนั้นเทมเพลตนี้จึงชื่อ `start-trunk` ถือจุดเริ่มต้นของการใช้ Leptos ร่วมกับ Trunk
+
+## ภาพรวมโปรเจกต์ เห็น "แผนที่" ก่อนลงรายละเอียด
+
+นี่คือโครงสร้างไฟล์ทั้งหมดของเทมเพลต start-trunk (เวอร์ชันที่ผมวิเคราะห์ commit ล่าสุดที่อัปเดตเป็น edition 2024 และ Leptos 0.8)
+
+```text
+start-trunk/
+├── .gitignore                     # กัน target/ และ dist/
+├── .vscode/
+│   └── settings.json              # ตั้งค่า rust-analyzer + leptosfmt
+├── Cargo.lock                     # (ถูก ignore โดย cargo-generate จะถูกสร้างใหม่)
+├── Cargo.nightly.toml             # manifest สำหรับ Rust nightly
+├── Cargo.stable.toml              # manifest สำหรับ Rust stable
+├── Trunk.toml                     # ตั้งค่า build / watch / serve ของ Trunk
+├── cargo-generate.toml            # ตั้งค่าการ generate โปรเจกต์ใหม่
+├── index.html                     # หน้า HTML เปล่า ๆ + data-trunk directives
+├── public/
+│   ├── favicon.ico
+│   └── styles.scss                # สไตล์หลัก (Open Props)
+├── rust-toolchain.toml            # ระบุ toolchain (stable/nightly)
+├── switch_nightly_stable.rhai     # Rhai hook เลือก Cargo.toml + component ที่ถูกต้อง
+└── src/
+    ├── main.rs                    # จุดเริ่มต้น setup logging + mount แอป
+    ├── lib.rs                     # Component หลัก App (Router + Meta)
+    ├── components/
+    │   ├── mod.rs
+    │   ├── counter_btn.nightly.rs # ปุ่มนับเลขเวอร์ชัน nightly (callable signals)
+    │   └── counter_btn.stable.rs  # ปุ่มนับเลขเวอร์ชัน stable (.get()/.set())
+    └── pages/
+        ├── mod.rs
+        ├── home.rs                # หน้าแรก
+        └── not_found.rs           # หน้า 404
+```
+
+<InfoBox title="ความพิเศษของเทมเพลตนี้ ไม่มี Cargo.toml ตัวจริง" type="warning">
+สังเกตว่าเทมเพลตนี้ไม่ได้มีไฟล์ `Cargo.toml` อยู่ใน repo แต่มี `Cargo.stable.toml` และ `Cargo.nightly.toml` แทน เพราะ Leptos มี API สองแบบ (stable กับ nightly) ที่ต้องใช้ syntax ต่างกันเล็กน้อย เทมเพลตจึงให้คุณ**เลือกตอน generate** แล้วสคริปต์จะเปลี่ยนชื่อไฟล์ที่ถูกต้องให้เป็น `Cargo.toml` ซึ่งเราจะเห็นกลไกเต็มรูปแบบในหัวข้อ Rhai Hook
+</InfoBox>
+
+### เส้นทางชีวิตของแอป จากคำสั่งหนึ่งบรรทัด สู่แอปที่ทำงานในเบราว์เซอร์
+
+ก่อนไล่โค้ด ขอสรุปโฟลว์ทั้งหมดก่อน เพื่อให้เห็นว่าแต่ละชิ้นส่วนทำงานประสานกันยังไง
+
+```text
+cargo generate --git https://github.com/leptos-rs/start-trunk
+        │
+        ▼
+cargo-generate อ่าน cargo-generate.toml
+        │  └─ ถาม "Use stable or nightly channel?" และ "Generate VS Code settings?"
+        │
+        ▼
+รัน pre-hook switch_nightly_stable.rhai (Rhai)
+        │  └─ สลับไฟล์ให้เหลือแค่ชุดที่เลือก
+        ▼
+โปรเจกต์ใหม่ มี Cargo.toml + counter_btn.rs + rust-toolchain.toml ("stable"/"nightly")
+        │
+        ▼
+trunk serve / trunk build
+        │
+        ▼
+Trunk อ่าน index.html → เจอ data-trunk rel="rust" → สั่ง cargo build --target wasm32-unknown-unknown
+        │  └─ รับ SCSS มาคอมไพล์, คัดลอก favicon, รัน wasm-opt -Oz, สร้าง hash filenames
+        ▼
+ได้ dist/ index.html + .wasm + .js glue + .css
+        │
+        ▼
+เบราว์เซอร์โหลด → รัน WASM → main.rs ทำงาน → mount_to_body → <App /> → Router render หน้าแรก
+```
+
+ตอนนี้เรามีภาพรวมแล้ว ลงลึกทีละส่วนได้เลย เริ่มจากขั้นตอนที่ทุกคนเจอเป็นอันดับแรก
+
+## ขั้นตอนที่ 1 สร้างโปรเจกต์ด้วย cargo-generate
+
+### เครื่องมือที่ต้องติดตั้งก่อน
+
+```sh
+cargo install cargo-generate trunk leptosfmt
+```
+
+แต่ละตัวทำหน้าที่:
+
+<Table>
+  <thead slot="head">
+    <tr>
+      <th>เครื่องมือ</th>
+      <th>หน้าที่</th>
+      <th>จำเป็นไหม</th>
+    </tr>
+  </thead>
+  <tbody slot="body">
+    <tr>
+      <td><code>cargo-generate</code></td>
+      <td>คัดลอกเทมเพลต + แทนที่ placeholders + รัน hooks</td>
+      <td>จำเป็น (ใช้สร้างโปรเจกต์)</td>
+    </tr>
+    <tr>
+      <td><code>trunk</code></td>
+      <td>Build pipeline WASM, asset, dev server, deploy</td>
+      <td>จำเป็น (ใช้ build & run ทุกวัน)</td>
+    </tr>
+    <tr>
+      <td><code>leptosfmt</code></td>
+      <td>Formatter เฉพาะของ Leptos (จัด format ภายใน <code>view!</code>)</td>
+      <td>แนะนำ (แต่ถ้าไม่มีโปรเจกต์ยังรันได้)</td>
+    </tr>
+  </tbody>
+</Table>
+
+### เตรียม Rust toolchain และ WASM target
+
+เทมเพลตรองรับทั้ง stable และ nightly ถ้าคุณยังไม่มี nightly
+
+```sh
+rustup toolchain install nightly --allow-downgrade
+```
+
+<SideNote type="tip">
+`--allow-downgrade` สำคัญเพราะ leptos ชุด nightly อาจต้องการ nightly เวอร์ชันเฉพาะ ไม่ใช่ตัวล่าสุดเสมอ
+</SideNote>
+
+แล้วเพิ่ม compilation target สำหรับ WASM นี่คือสิ่งที่ทำให้ Rust คอมไพล์โค้ดไปเป็นไฟล์ที่เบราว์เซอร์รันได้
+
+```sh
+rustup target add wasm32-unknown-unknown
+```
+
+<InfoBox title="wasm32-unknown-unknown คืออะไร" type="info">
+มันคือ target triple ที่บอกคอมไพเลอร์ว่า "คอมไพล์ให้แพลตฟอร์มนี้ สถาปัตยกรรม wasm32, ไม่มี OS เจาะจง, ไม่มี vendor" กล่าวคือ สภาพแวดล้อมที่ไม่มี system library อะไรเลย (ตรงข้ามกับ wasm32-wasi ที่มี POSIX-ish API) ซึ่งเป็นสิ่งที่ถูกต้องสำหรับรันในเบราว์เซอร์
+</InfoBox>
+
+ต้องเพิ่ม target นี้ให้ทั้ง stable และ nightly toolchain ถ้าจะใช้ทั้งสองตัว
+
+### รันคำสั่งสร้างโปรเจกต์
+
+```sh
+cargo generate --git https://github.com/leptos-rs/start-trunk
+```
+
+จากนั้น cargo-generate จะถามคำถามคุณ 2 ข้อ (มาจาก `cargo-generate.toml` ที่เราจะวิเคราะห์เดี๋ยวนี้)
+
+```text
+🤷  Project Name: leptos-csr-app
+🔧   Use stable or nightly channel? [stable/nightly] (stable)
+🔧   Generate default VS Code settings? [y/N] (N)
+```
+
+- **Project Name:** cargo-generate จะเอาไปแทนที่ placeholder <code>{'{{project-name}}'}</code> และสร้างตัวแปร <code>{'{{crate_name}}'}</code> (เวอร์ชัน snake_case) อัตโนมัติ ใช้ใน `Cargo.toml` และ `src/main.rs`
+- **Channel:** ตัดสินใจว่าจะใช้ Rust stable หรือ nightly ส่งผลโดยตรงต่อไฟล์ที่โปรเจกต์ใหม่จะได้
+- **VS Code settings:** ถ้าเลือก N โฟลเดอร์ `.vscode` จะไม่ถูกสร้าง (เป็น conditional ignore ใน cargo-generate.toml)
+
+<InfoBox title="ทำไมต้องแบ่ง stable กับ nightly?" type="info">
+Leptos มี feature ที่เรียกว่า "callable signals" ความสามารถในการเรียก signal ราวกับมันเป็นฟังก์ชัน เช่น `set_count(...)` แทนที่จะเป็น `set_count.set(...)` ซึ่งต้องใช้ Rust nightly ที่ยังมี unstable feature อยู่ เทมเพลตนี้เลยออกแบบมาให้คุณเลือก mode ได้ตั้งแต่ตอนเริ่ม
+</InfoBox>
+
+## ขั้นตอนที่ 2 ถอดรหัส cargo-generate.toml (ตัวควบคุมการสร้างโปรเจกต์)
+ไฟล์แรกที่เราจะแกะคือ `cargo-generate.toml` เพราะมันคือ "ใบสั่งผลิต" ที่กำหนดว่าโปรเจกต์ใหม่จะได้ไฟล์อะไรบ้าง
+
+```toml
+[template]
+ignore = ["Cargo.lock", "switch_nightly_stable.rhai"]
+exclude = ["public/favicon.ico"]
+
+[placeholders]
+default_channel = { prompt = "Use stable or nightly channel?", choices = [
+    "stable",
+    "nightly",
+], default = "stable", type = "string" }
+vscode_settings = { prompt = "Generate default VS Code settings?", default = false, type = "bool" }
+
+[conditional.'vscode_settings == false']
+ignore = [".vscode"]
+
+[hooks]
+pre = ["switch_nightly_stable.rhai"]
+```
+
+### `[template]` กฎการคัดลอกไฟล์
+
+- **`ignore = ["Cargo.lock", "switch_nightly_stable.rhai"]`**
+
+  ไฟล์สองตัวนี้จะ**ไม่ถูกคัดลอก**ไปยังโปรเจกต์ใหม่
+
+  - `Cargo.lock`: เพราะ lockfile เป็นของเฉพาะโปรเจกต์ แต่ละโปรเจกต์ควรสร้าง lockfile ใหม่ของตัวเองตอน build ครั้งแรก (ไม่งั้นคุณจะได้ lockfile เก่าเทียบกับเวอร์ชัน dependency ใหม่ๆ) นี่คือสาเหตุที่ Cargo.lock ในเทมเพลตยังระบุ leptos 0.5.4 อยู่ เพราะไม่มีใครอัปเดตมัน และมันก็ไม่มีบทบาทอะไรเลย
+  - `switch_nightly_stable.rhai`: สคริปต์นี้เป็น "เครื่องมือสร้าง" ไม่ใช่ส่วนหนึ่งของโปรเจกต์ที่ได้มา
+
+- **`exclude = ["public/favicon.ico"]`**
+
+  `exclude` ต่างจาก `ignore` ตรงที่มันเอาไฟล์ออกจาก "template archive" เลย favicon ตัวนี้เป็นของเทมเพลต ไม่อยากให้โปรเจกต์ใหม่ๆ มี favicon ซ้ำกัน ผู้ใช้ควรสร้างของตัวเอง
+
+<CodeExplainer title="ความต่างของ ignore vs exclude ใน cargo-generate">
+  <details>
+    <summary><code>ignore</code> ไม่คัดลอก แต่ยังอยู่ใน template</summary>
+    <p>ไฟล์ยังมีอยู่ใน template repo แต่จะไม่ถูกคัดลอกไปโปรเจกต์ใหม่</p>
+  </details>
+  <details>
+    <summary><code>exclude</code> ตัดออกจาก template archive</summary>
+    <p>ไฟล์จะไม่ถูกพิจารณาเลยเมื่อสร้างโปรเจกต์ เหมาะกับไฟล์ขนาดใหญ่หรือไม่จำเป็น เช่น favicon</p>
+  </details>
+</CodeExplainer>
+
+### `[placeholders]` คำถามที่ cargo-generate ถามคุณ
+
+cargo-generate ใช้ค่าที่ผู้ใช้ตอบไปแทนที่ในไฟล์ทั้งหมดที่มีรูปแบบ <code>{'{{ชื่อ_placeholder}}'}</code>
+
+- **`default_channel`** ตัวเลือก "stable" หรือ "nightly" (ค่า default: stable) ค่านี้จะถูกแทนที่ลงใน `rust-toolchain.toml`:
+
+  ```toml
+  # rust-toolchain.toml หลัง generate
+  [toolchain]
+  channel = "stable"   # หรือ "nightly" ตามที่เลือก
+  ```
+
+  และยังถูกอ่านโดย Rhai hook เพื่อตัดสินใจว่าจะเก็บ manifest ตัวไหน
+
+- **`vscode_settings`** boolean (ค่า default: false) ใช้เงื่อนไขใน `[conditional]` ด้านล่าง
+
+### `[conditional.'vscode_settings == false']` การสร้างแบบมีเงื่อนไข
+
+ถ้าคุณตอบ "ไม่" (default) โฟลเดอร์ `.vscode` จะไม่ถูกคัดลอก ซึ่งดี เพราะผู้ที่ไม่ใช้ VS Code ไม่ต้องได้ไฟล์รกๆ
+
+### `[hooks] pre` จุดที่ Rhai เข้ามา
+
+cargo-generate รองรับ hook ที่เขียนด้วยภาษา **Rhai** (ภาษา scripting แบบฝังของ Rust) ซึ่งจะรันก่อน (pre) หรือหลัง (post) การสร้างโปรเจกต์ นี่คือจุดที่เทมเพลตนี้สลับไฟล์ stable/nightly
+
+## ขั้นตอนที่ 3 ถอดรหัส switch_nightly_stable.rhai (สคริปต์สลับโหมด)
+มาดูหัวใจของกลไก dual-channel กัน
+
+```rust
+let default_channel = variable::get("default_channel").to_upper();
+
+switch default_channel {
+    "STABLE" => {
+        file::delete("Cargo.nightly.toml");
+        file::rename("Cargo.stable.toml", "Cargo.toml");
+        file::delete("src/components/counter_btn.nightly.rs");
+        file::rename("src/components/counter_btn.stable.rs", "src/components/counter_btn.rs");
+    }
+    "NIGHTLY" => {
+        file::delete("Cargo.stable.toml");
+        file::rename("Cargo.nightly.toml", "Cargo.toml");
+        file::delete("src/components/counter_btn.stable.rs");
+        file::rename("src/components/counter_btn.nightly.rs", "src/components/counter_btn.rs");
+    }
+}
+```
+
+### วิเคราะห์ทีละบรรทัด
+
+1. **`variable::get("default_channel")`** Rhai hook ของ cargo-generate มี namespace `variable` ไว้อ่านค่าที่ผู้ใช้ตอบใน placeholders โดยตรง ค่าที่ได้คือ "stable" หรือ "nightly" (ตัวเล็ก) จึง `.to_upper()` ให้เป็น "STABLE"/"NIGHTLY" เพื่อ match กับ case ใน `switch`
+
+2. **สาขา STABLE**
+   - ลบ `Cargo.nightly.toml` ทิ้ง (ไม่ใช้แล้ว)
+   - เปลี่ยนชื่อ `Cargo.stable.toml` → `Cargo.toml`: นี่คือเหตุผลที่เทมเพลตไม่เก็บ Cargo.toml ไว้ใน repo
+   - ลบ component เวอร์ชัน nightly ทิ้ง
+   - เปลี่ยนชื่อ `counter_btn.stable.rs` → `counter_btn.rs`
+
+3. **สาขา NIGHTLY** ทำตรงกันข้ามทุกประการ
+
+<InfoBox title="ผลลัพธ์ที่ได้" type="success">
+หลังจบ hook โปรเจกต์ใหม่จะมี <code>Cargo.toml</code>, <code>src/components/counter_btn.rs</code>, และ <code>rust-toolchain.toml</code> ที่ตรงกับ channel ที่เลือกพอดี โดยที่ตัวโค้ดที่เหลือทั้งหมด (lib.rs, pages, main.rs) เหมือนกันทุกประการ เพราะ API ที่ต่างกันถูกซ่อนไว้ใน component ตัวเดียวนี้
+</InfoBox>
+
+สวยงามตรงที่**โค้ดแอปไม่ต้องมี conditional compile ใดๆ** การตัดสินใจเกิดขึ้นครั้งเดียวตอนสร้างโปรเจกต์ ไม่ใช่ตอน compile ทุกครั้ง
+
+## ขั้นตอนที่ 4 Cargo manifest (สองเวอร์ชันสำหรับสอง toolchain)
+### เปรียบเทียบ `Cargo.stable.toml` กับ `Cargo.nightly.toml`
+
+ไฟล์ทั้งสองเกือบเหมือนกันทุกบรรทัด ต่างกันแค่ 2 จุดตรง dependencies
+
+```toml
+# Cargo.stable.toml (ถูกรีเนมเป็น Cargo.toml เมื่อเลือก stable)
+[dependencies]
+leptos = { version = "0.8", features = ["csr"] }
+leptos_meta = { version = "0.8" }
+leptos_router = { version = "0.8" }
+```
+
+```toml
+# Cargo.nightly.toml
+[dependencies]
+leptos = { version = "0.8", features = ["csr", "nightly"] }
+leptos_meta = { version = "0.8" }
+leptos_router = { version = "0.8", features = ["nightly"] }
+```
+
+<Table>
+  <thead slot="head">
+    <tr>
+      <th>Dependency</th>
+      <th>บทบาท</th>
+    </tr>
+  </thead>
+  <tbody slot="body">
+    <tr>
+      <td><code>leptos</code> (feature: <code>csr</code>)</td>
+      <td>เฟรมเวิร์กหลัก: feature <code>csr</code> ปิดทุกอย่างที่เกี่ยวกับ server และเปิดโหมด Client-Side Rendering</td>
+    </tr>
+    <tr>
+      <td><code>leptos_meta</code></td>
+      <td>จัดการ <code>&lt;head&gt;</code> ของเอกสาร: title, meta tags, stylesheets ผ่าน context</td>
+    </tr>
+    <tr>
+      <td><code>leptos_router</code></td>
+      <td>ระบบ routing ฝั่ง client: ใช้ History API ของเบราว์เซอร์ ไม่ต้อง reload หน้า</td>
+    </tr>
+    <tr>
+      <td><code>console_log</code></td>
+      <td>ดึง log ของ crate <code>log</code> ไปแสดงใน console ของเบราว์เซอร์</td>
+    </tr>
+    <tr>
+      <td><code>log</code></td>
+      <td>facade crate สำหรับ logging (API มาตรฐาน)</td>
+    </tr>
+    <tr>
+      <td><code>console_error_panic_hook</code></td>
+      <td>ทำให้ Rust panic แสดง stack trace ที่อ่านง่ายใน console ของเบราว์เซอร์</td>
+    </tr>
+  </tbody>
+</Table>
+
+### feature `nightly` ต่างกันยังไง
+
+- เวอร์ชัน stable `leptos` มี feature `csr` อย่างเดียว
+- เวอร์ชัน nightly เพิ่ม feature `nightly` ให้ทั้ง `leptos` และ `leptos_router`
+
+feature `nightly` ใน Leptos เปิดใช้โค้ดที่พึ่งพา unstable Rust features เช่น การ implement trait ให้ closure/function ชนิดพิเศษ (Fn traits) ที่ทำให้ signal เรียกใช้ได้เหมือนฟังก์ชัน ซึ่งจะเห็นผลชัดเจนใน component counter เร็วๆ นี้
+
+### dev-dependencies สำหรับทดสอบบน WASM
+
+```toml
+[dev-dependencies]
+wasm-bindgen = "0.2"
+wasm-bindgen-test = "0.3"
+web-sys = { version = "0.3", features = ["Document", "Window"] }
+```
+
+ชุดนี้มีไว้เขียน **unit test ที่รันบน WASM** ด้วย `wasm-bindgen-test` (รันผ่าน `wasm-bindgen-test-runner` ซึ่ง Trunk/`cargo test` ต่างก็สนับสนุน) ส่วน `web-sys` พร้อม feature `Document`/`Window` ให้เข้าถึง DOM API จากฝั่ง Rust เวลาทดสอบ
+
+### release profile สูตรลดขนาด WASM
+
+```toml
+[profile.release]
+opt-level = 'z'
+lto = true
+codegen-units = 1
+panic = "abort"
+```
+
+นี่คือส่วนที่ "กำหนดชะตากรรม" ของ bundle size แบบ CSR
+
+<Table>
+  <thead slot="head">
+    <tr>
+      <th>ค่าที่ตั้ง</th>
+      <th>ความหมาย</th>
+      <th>ทำไมต้องเป็นแบบนี้</th>
+    </tr>
+  </thead>
+  <tbody slot="body">
+    <tr>
+      <td><code>opt-level = 'z'</code></td>
+      <td>เพิ่มประสิทธิภาพโดยเน้นขนาดไฟล์เล็กที่สุด</td>
+      <td>WASM ต้องดาวน์โหลดผ่านเน็ต ทุก KB มีค่า 'z' ย่อจาก "size z"</td>
+    </tr>
+    <tr>
+      <td><code>lto = true</code></td>
+      <td>Link-Time Optimization ข้าม crate</td>
+      <td>ช่วย inline และตัด dead code ทั่วทั้งโปรแกรม ลดขนาดได้มาก แต่ช้าลง</td>
+    </tr>
+    <tr>
+      <td><code>codegen-units = 1</code></td>
+      <td>คอมไพล์ทั้ง crate เป็นหน่วยเดียว</td>
+      <td>เปิดทางให้ LTO และ optimizer ทำงานเต็มที่ (แลกกับเวลาคอมไพล์)</td>
+    </tr>
+    <tr>
+      <td><code>panic = "abort"</code></td>
+      <td>panic แล้วหยุดโปรแกรม ไม่ unwind</td>
+      <td>ไม่ต้องฝัง unwind machinery เข้า WASM ประหยัดขนาดได้มาก</td>
+    </tr>
+  </tbody>
+</Table>
+
+<SideNote type="tip">
+เมื่อรวมกับ <code>data-wasm-opt="z"</code> ใน index.html (wasm-opt pass รอบสอง) และ <code>wasm-bindgen --weak-refs</code> เทมเพลตนี้ถูกปรับมาเพื่อให้ได้ WASM ที่เล็กที่สุดเท่าที่จะทำได้ เหมาะกับ CSR ที่ต้องดาวน์โหลดทุกอย่างก่อนใช้งาน
+</SideNote>
+
+### edition 2024 เทมเพลตทันสมัยแค่ไหน
+
+manifest ทั้งสองประกาศ `edition = "2024"` ซึ่งเป็น edition ล่าสุดของ Rust (stable ตั้งแต่ต้นปี 2025) หมายความว่าเทมเพลตนี้ต้องการ Rust ที่ใหม่พอ (stable ≥ 1.85 หรือ nightly ล่าสุด) ถึงจะ compile ได้ และไม่มี key `authors` ที่ deprecated แล้ว
+
+### rust-toolchain.toml ให้ rustup จัดการ toolchain ให้อัตโนมัติ
+
+```toml
+[toolchain]
+channel = "{{default_channel}}"
+```
+
+หลัง cargo-generate แทนที่ placeholder แล้ว ไฟล์นี้จะกลายเป็น
+
+```toml
+[toolchain]
+channel = "stable"   # หรือ "nightly"
+```
+
+ความมหัศจรรย์ของไฟล์นี้ ทุกครั้งที่คุณรัน `cargo` หรือ `rustup` ภายในโฟลเดอร์โปรเจกต์ **rustup จะอ่านไฟล์นี้แล้วสลับ toolchain ให้อัตโนมัติ** (และดาวน์โหลดให้เองถ้ายังไม่มี) คุณไม่ต้องจำว่าโปรเจกต์นี้ใช้ตัวไหน
+
+## ขั้นตอนที่ 5 Trunk.toml (ควบคุม build, watch และ serve)
+```toml
+[build]
+target = "index.html"
+release = false
+dist = "dist"
+public_url = "/"
+filehash = true
+inject_scripts = true
+```
+
+- **`target = "index.html"`** Trunk ใช้ไฟล์ HTML นี้เป็นตัวตั้งต้นในการรวมทุกอย่าง (เราจะเห็นว่า `data-trunk` directives อยู่ในนั้น)
+- **`dist = "dist"`** ไฟล์ที่ build เสร็จทั้งหมดไปอยู่ที่โฟลเดอร์ `dist/`
+- **`public_url = "/"`** path พื้นฐานที่ใช้ใน URL ของ asset (ต้องแก้ถ้า deploy ใต้ subpath เช่น GitHub Pages ที่เป็น `/repo-name/`)
+- **`filehash = true`** ใส่ hash ลงในชื่อไฟล์ asset (`index-abc12345.js`) เพื่อ cache busting แก้โค้ดแล้ว hash เปลี่ยน เบราว์เซอร์รู้ทันทีว่าต้องโหลดใหม่
+- **`inject_scripts = true`** Trunk จะแทรก `<script>` (และ module preloads) ลงใน HTML เอง หลังรู้ชื่อไฟล์สุดท้ายแล้ว
+
+<InfoBox title="section อื่นๆ ที่ถูก comment ไว้" type="info">
+ในไฟล์ยังมี options อีกเพียบที่ถูก comment ทิ้งไว้เป็น "เมนู" ให้ศึกษา <code>offline</code>, <code>frozen</code>, <code>locked</code> (ความเข้มงวดกับ Cargo.lock), <code>minify</code>, <code>no_sri</code> (Sub-Resource Integrity ใส่ hash ใน script tag เพื่อความปลอดภัย), และ <code>cargo_profile</code> เทมเพลตนี้ตั้งใจให้เป็นตัวอย่างที่ดีในการปรับแต่ง
+</InfoBox>
+
+### `[watch]` และ `[serve]`
+
+```toml
+[watch]
+watch = []
+ignore = []
+
+[serve]
+addresses = ["127.0.0.1"]
+port = 3000
+open = false
+```
+
+- **watch:** ระบุ path เพิ่มเติมที่อยากให้ Trunk คอยดู (นอกเหนือจากโฟลเดอร์ของ `target`) ตอนนี้ว่าง เพราะ build.target ครอบคลุมพอแล้ว
+- **serve:** dev server ผูกกับ `127.0.0.1:3000` ตั้ง `open = false` (ถ้าอยากให้เบราว์เซอร์เปิดอัตโนมัติก็ใส่ `trunk serve --open` แทน)
+
+<SideNote type="warning">
+option ที่น่าสนใจคือ <code>no_spa</code> ถ้าไม่ปิด (default) Trunk จะตอบกลับทุก path ที่ไม่เจอด้วย <code>index.html</code> (SPA fallback) ทำให้การกด F5 ที่ URL ลึกๆ เช่น <code>/about</code> ยังโหลดแอปได้อยู่ ซึ่งสำคัญมากสำหรับ SPA ตอนพัฒนา ส่วนตอน deploy จริง ต้องตั้งค่า fallback แบบเดียวกันบนเซิร์ฟเวอร์ static ด้วย
+</SideNote>
+
+## ขั้นตอนที่ 6 index.html (จุดรวมทุกอย่างของ Trunk)
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link data-trunk rel="scss" href="public/styles.scss" />
+  <link data-trunk rel="icon" href="public/favicon.ico" />
+  <link data-trunk rel="rust" data-wasm-opt="z" data-weak-refs />
+</head>
+
+<body></body>
+
+</html>
+```
+
+ไฟล์นี้สั้นมากแต่สำคัญที่สุด สังเกตว่า `<body>` ว่างเปล่า เพราะในโหมด CSR HTML ทั้งหมดจะถูกสร้างโดย WASM ตอนรัน
+
+attribute `data-trunk` คือภาษาสั่งงานของ Trunk
+
+<Table>
+  <thead slot="head">
+    <tr>
+      <th>Directive</th>
+      <th>ผลลัพธ์หลัง build</th>
+    </tr>
+  </thead>
+  <tbody slot="body">
+    <tr>
+      <td><code>rel="scss"</code></td>
+      <td>คอมไพล์ SCSS → CSS แล้วแทรก <code>&lt;link rel="stylesheet"&gt;</code> เข้า head (เวอร์ชัน production จะถูก minify)</td>
+    </tr>
+    <tr>
+      <td><code>rel="icon"</code></td>
+      <td>คัดลอก favicon ไป dist และแทรก <code>&lt;link rel="icon"&gt;</code></td>
+    </tr>
+    <tr>
+      <td><code>rel="rust"</code></td>
+      <td>สั่ง Trunk คอมไพล์โปรเจกต์ Rust ปัจจุบันเป็น WASM (<code>wasm32-unknown-unknown</code>) และจัดการไฟล์ผลลัพธ์ทั้งหมด</td>
+    </tr>
+  </tbody>
+</Table>
+
+### `data-wasm-opt="z"` ลดขนาด WASM รอบสอง
+
+Trunk จะรันเครื่องมือ **[wasm-opt](https://github.com/WebAssembly/binaryen)** (จาก Binaryen) บนไฟล์ WASM ที่ได้อีกครั้ง flag `z` คือระดับการเพิ่มประสิทธิภาพสูงสุดโดยเน้นขนาด เหมือนกับ `opt-level = 'z'` ใน Cargo แต่คนละเลเยอร์ (Binaryen ทำงานกับ binary โดยตรง ไม่ใช่ source)
+
+### `data-weak-refs` ให้ GC ของเบราว์เซอร์ช่วยเก็บขยะ
+
+`data-weak-refs` แปลเป็น `wasm-bindgen --weak-refs` ทำให้ JavaScript object ที่ถูกสร้างจากฝั่ง WASM ถูกเก็บเป็น **WeakRef** แทน strong reference
+
+<InfoBox title="ทำไมต้อง weak-refs?" type="info">
+ตามปกติ JavaScript glue code ที่ wasm-bindgen สร้างจะ "ยึด" JS objects ที่เกี่ยวข้องไว้ตลอดอายุของ WASM instance ทำให้ object พวกนี้ไม่มีวันถูกเก็บขยะ memory leak ที่มองไม่เห็นในแอปที่รันนานๆ การเปิด weak-refs ทำให้ object พวกนี้ถูก GC ได้เมื่อไม่มีใครใช้ ทำให้ footprint เล็กลงมากในระยะยาว
+</InfoBox>
+
+## ขั้นตอนที่ 7 public/ (SCSS กับ Open Props)
+```scss
+/* public/styles.scss */
+@import "https://unpkg.com/open-props";
+@import "https://unpkg.com/open-props/normalize.min.css";
+@import "https://unpkg.com/open-props/buttons.min.css";
+
+body {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
+```
+
+เทมเพลตนี้ใช้ **[Open Props](https://open-props.style)** design tokens แบบ CSS custom properties (ตัวแปร `--size-*`, `--font-*` ฯลฯ) ที่ import ผ่าน URL เข้ามาใน SCSS โดยตรง ทำให้ได้ normalize + button styles พื้นฐานมาฟรี
+
+<SideNote type="tip">
+Trunk รองรับการคอมไพล์ SCSS/Sass และ Tailwind ได้ทั้งคู่ (ดูคู่มือ [Trunk assets](https://trunk-rs.github.io/trunk/guide/assets/)) ถ้าอยากได้ Tailwind แทน ก็แค่เปลี่ยน directive ใน index.html และติดตั้งผ่าน <code>trunk</code> ได้เลย
+</SideNote>
+
+## ขั้นตอนที่ 8 src/main.rs (จุดเริ่มต้นของแอป)
+```rust
+use leptos::prelude::*;
+use leptos_csr_app::App;
+
+fn main() {
+    // set up logging
+    _ = console_log::init_with_level(log::Level::Debug);
+    console_error_panic_hook::set_once();
+
+    mount_to_body(|| {
+        view! {
+            <App />
+        }
+    })
+}
+```
+
+### วิเคราะห์ทีละบรรทัด
+
+- **`use leptos::prelude::*;`** Leptos 0.8 เปลี่ยนมาใช้ `prelude` แบบใหม่ (ก่อนหน้านี้คือ `use leptos::*;`) ซึ่งรวมสิ่งที่ใช้บ่อย `signal`, `view!`, `mount_to_body`, `#[component]`, `IntoView` ฯลฯ
+
+- **`_ = console_log::init_with_level(log::Level::Debug);`**
+
+  ตั้ง logger ระดับ Debug ที่เขียนลง console เบราว์เซอร์ ผลลัพธ์ (Result) ถูกทิ้งด้วย `_ =`: ถ้า init ซ้ำ (เช่น ใน test) จะได้ error แต่ไม่แคร์
+
+- **`console_error_panic_hook::set_once();`**
+
+  เมื่อ Rust code panic ฝั่ง WASM ปกติจะเห็นแค่ "RuntimeError: unreachable" ที่งงๆ hook นี้ทำให้ panic message + stack trace ไปปรากฏใน console แบบอ่านรู้เรื่อง
+
+- **<code>{'mount_to_body(|| view! { <App /> })'}</code>**
+
+  ฟังก์ชันหลักของการ mount ในโหมด CSR สร้าง root ของแอป **แล้วผูกเข้ากับ `<body>`** ของ document จากนั้น reactive system ของ Leptos ก็เริ่มทำงาน ค่าเริ่มต้นของฟังก์ชันนี้คือ `mount_to_body` ที่ผูกกับ document body โดยตรง (มีเวอร์ชันที่ผูกกับ element อื่นเช่น `<div id="app">` ให้เลือกใช้ด้วย)
+
+<InfoBox title="ทำไมชื่อ crate ในโค้ดเป็น leptos_csr_app?" type="info">
+บรรทัด <code>use leptos_csr_app::App;</code> คือ placeholder <code>{'{{crate_name}}'}</code> ในเทมเพลต ซึ่ง cargo-generate จะแทนที่ด้วยชื่อโปรเจกต์ที่คุณตั้งตอน generate (แปลงเป็น snake_case) ถ้าตั้งชื่อโปรเจกต์ว่า <code>my-app</code> บรรทัดนี้จะกลายเป็น <code>use my_app::App;</code> โดยอัตโนมัติ
+</InfoBox>
+
+## ขั้นตอนที่ 9 src/lib.rs (Component หลักของแอป)
+นี่คือ "ตัว App" ตัวจริง ประกาศเป็น `lib` (ไม่ใช่แค่ binary) เพราะเทมเพลตนี้ถูกออกแบบให้ test ผ่าน wasm-bindgen-test ได้ (library crate เข้าถึง component ได้จาก test module)
+
+```rust
+use leptos::prelude::*;
+use leptos_meta::*;
+use leptos_router::{components::*, path};
+
+// Modules
+mod components;
+mod pages;
+
+// Top-Level pages
+use crate::pages::home::Home;
+
+/// An app router which renders the homepage and handles 404's
+#[component]
+pub fn App() -> impl IntoView {
+    // Provides context that manages stylesheets, titles, meta tags, etc.
+    provide_meta_context();
+
+    view! {
+        <Html attr:lang="en" attr:dir="ltr" attr:data-theme="light" />
+
+        // sets the document title
+        <Title text="Welcome to Leptos CSR" />
+
+        // injects metadata in the <head> of the page
+        <Meta charset="UTF-8" />
+        <Meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <Router>
+            <Routes fallback=|| view! { NotFound }>
+                <Route path=path!("/") view=Home />
+            </Routes>
+        </Router>
+    }
+}
+```
+
+### `#[component]` macro: เปลี่ยนฟังก์ชันให้เป็น React-like component
+
+```rust
+#[component]
+pub fn App() -> impl IntoView
+```
+
+macro นี้เปลี่ยนฟังก์ชัน Rust ธรรมดาให้กลายเป็น component ที่มี **props struct** (ซ่อนอยู่) และสามารถใช้ใน `view!` ได้แบบ `<App />` โดยโปร่งใส ฟังก์ชันต้องคืนค่า `impl IntoView` ซึ่งเป็น "อะไรก็ได้ที่ render เป็น view ได้" (องค์ประกอบ, component, ฟังก์ชัน reactive ฯลฯ)
+
+### `provide_meta_context()` ปลั๊กอินให้ leptos_meta
+
+component ของ `leptos_meta` (เช่น `<Title>`, `<Meta>`, `<Html>`) ทำงานผ่าน **context** ของ Leptos มันต้องมี context provider อยู่เหนือมันใน tree เสมอ `provide_meta_context()` คือการติดตั้ง provider นั้น หากลืมเรียก จะ panic ตอน render
+
+### `<Html>` ยึดครอง element `<html>`
+
+```rust
+<Html attr:lang="en" attr:dir="ltr" attr:data-theme="light" />
+```
+
+component จาก leptos_meta ที่ใช้จัดการ attribute ของ element `<html>` ของเอกสารจริง attribute ที่ขึ้นต้นด้วย `attr:` จะถูก map ไปยัง property จริง (ที่นี่คือ lang, dir, data-theme)
+
+### `<Title>` และ `<Meta>` จัดการ head แบบ reactive
+
+- `<Title text="...">` ตั้ง document title (`document.title`)
+- `<Meta>` แทรก meta tag เข้า `<head>`: ที่นี่คือ charset และ viewport
+
+ทั้งหมดนี้เป็น **reactive** ถ้าคุณตั้ง `<Title>` ใหม่ในหน้าอื่น title ก็เปลี่ยนตามทันที (และ restore กลับเมื่อออกจากหน้า)
+
+### Router เส้นทางของ SPA
+
+```rust
+<Router>
+    <Routes fallback=|| view! { NotFound }>
+        <Route path=path!("/") view=Home />
+    </Routes>
+</Router>
+```
+
+- **`<Router>`** ฟัง History API และให้ context ของ routing กับลูกๆ
+- **`<Routes>`** ตรวจ path ปัจจุบันกับ route ทั้งหมด แล้ว render อันที่ match โดยถ้าไม่มีอันไหน match จะใช้ `fallback` ซึ่งคือ closure ที่คืน `<NotFound />` (หน้า 404 ของเรา)
+- **`<Route path=path!("/") view=Home />`** route เดียว path `/` แสดง `Home`
+
+<SideNote type="tip">
+<code>path!("/")</code> คือ macro ใหม่ของ leptos_router 0.8 ที่ตรวจสอบรูปแบบ path ตอน compile time เขียน <code>path!("/post/:id")</code> แล้วคอมไพเลอร์จะตรวจให้ว่าถูกต้อง (เช่น ไม่มี <code>:</code> ลอยเดี่ยว) ทำให้ typo ไม่รอดไปถึง runtime
+</SideNote>
+
+แม้เทมเพลตนี้จะมี route แค่หน้าเดียว แต่โครงสร้างนี้คือพิมพ์เขียวสำหรับเพิ่มหน้าใหม่ได้ทันที แค่เพิ่มไฟล์ใน `pages/`, ประกาศใน `mod.rs`, และเพิ่ม `<Route>` อีกหนึ่งบรรทัด
+
+## ขั้นตอนที่ 10 หน้า Home (ErrorBoundary และการประกอบ component)
+```rust
+use crate::components::counter_btn::Button;
+use leptos::prelude::*;
+
+/// Default Home Page
+#[component]
+pub fn Home() -> impl IntoView {
+    view! {
+        <ErrorBoundary fallback=|errors| {
+            view! {
+                <h1>"Uh oh! Something went wrong!"</h1>
+
+                <p>"Errors: "</p>
+                // Render a list of errors as strings - good for development purposes
+                <ul>
+                    {move || {
+                        errors
+                            .get()
+                            .into_iter()
+                            .map(|(_, e)| view! { <li>{e.to_string()}</li> })
+                            .collect_view()
+                    }}
+
+                </ul>
+            }
+        }>
+
+            <div class="container">
+
+                <picture>
+                    <source
+                        srcset="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_pref_dark_RGB.svg"
+                        media="(prefers-color-scheme: dark)"
+                    />
+                    <img
+                        src="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_RGB.svg"
+                        alt="Leptos Logo"
+                        height="200"
+                        width="400"
+                    />
+                </picture>
+
+                <h1>"Welcome to Leptos"</h1>
+
+                <div class="buttons">
+                    <Button />
+                    <Button increment=5 />
+                </div>
+
+            </div>
+        </ErrorBoundary>
+    }
+}
+```
+
+### ErrorBoundary: กันแอปไม่ให้พังทั้งหน้า
+
+ใน Leptos 0.8 `<ErrorBoundary>` รับ `fallback` ที่เป็น closure ซึ่งได้รับ `errors` อันนี้เป็น **signal ที่อ่านได้** (ไม่ใช่แค่ค่าเดียว) เพราะ error เกิดใหม่ได้เรื่อยๆ
+
+```rust
+fallback=|errors| {
+    view! {
+        // ...
+        {move || {
+            errors
+                .get()
+                .into_iter()
+                .map(|(_, e)| view! { <li>{e.to_string()}</li> })
+                .collect_view()
+        }}
+    }
+}
+```
+
+- `errors.get()` อ่าน Errors map (key → error) ในปัจจุบัน
+- <code>{'.map(|(_, e)| view! { <li>... })'}</code> เปลี่ยนแต่ละ error เป็น `<li>`
+- `.collect_view()` แปลง iterator ของ views ให้เป็น view เดียว (มาจาก `itertools`-style trait ของ Leptos)
+- ห่อด้วย `move ||` closure เพื่อให้**เป็น reactive** ถ้า error ใหม่เข้ามา list ก็อัปเดตเอง
+
+<InfoBox title="ทำไมต้องมี ErrorBoundary ในเทมเพลต CSR" type="warning">
+ในโหมด SSR ถ้ามี error ระหว่าง render เซิร์ฟเวอร์ตอบ error response ได้ แต่ใน CSR เมื่อ WASM ทำงานแล้ว ถ้าทำให้ panic ทั้งหน้า user จะเห็นหน้าว่างเปล่า ErrorBoundary นี้คือ "ตาข่ายนิรภัย" แสดงข้อความแทนการพังทั้งแอป
+</InfoBox>
+
+### โครงสร้าง UI
+
+- `<picture>` + `<source media="(prefers-color-scheme: dark)">` เลือกรูป logo ตามธีมมืด/สว่างของเครื่อง user (รูปโหลดจาก GitHub โดยตรง แต่จริงๆ ควรจะเก็บในเครื่อง)
+- `<Button />` และ `<Button increment=5 />` component ตัวเดียวกัน เรียกด้วย props ต่างกัน กำลังจะแกะในหัวข้อถัดไป
+
+## ขั้นตอนที่ 11 Component counter_btn (หัวใจของ stable vs nightly)
+นี่คือไฟล์ที่ "ต่างกัน" ระหว่างสองโหมด และเป็นบทเรียนสำคัญของ Leptos 0.8
+
+### เวอร์ชัน nightly (`counter_btn.nightly.rs`)
+
+```rust
+use leptos::prelude::*;
+
+/// A parameterized incrementing button
+#[component]
+pub fn Button(#[prop(default = 1)] increment: i32) -> impl IntoView {
+    let (count, set_count) = signal(0);
+    view! {
+        <button on:click=move |_| {
+            set_count(count() + increment)
+        }>
+
+            "Click me: " {count}
+        </button>
+    }
+}
+```
+
+### เวอร์ชัน stable (`counter_btn.stable.rs`)
+
+```rust
+use leptos::prelude::*;
+
+/// A parameterized incrementing button
+#[component]
+pub fn Button(#[prop(default = 1)] increment: i32) -> impl IntoView {
+    let (count, set_count) = signal(0);
+    view! {
+        <button on:click=move |_| {
+            set_count.set(count.get() + increment)
+        }>
+
+            "Click me: " {count}
+        </button>
+    }
+}
+```
+
+### สร้าง state ด้วย `signal()`
+
+```rust
+let (count, set_count) = signal(0);
+```
+
+`signal(0)` คืน tuple สองตัว
+
+- **`count`** `ReadSignal<i32>` อ่านค่าได้ reactively และแสดงผลใน UI ได้ รวมถึง "track" การอ่านของมัน
+- **`set_count`** `WriteSignal<i32>` เป็นตัวเขียน เมื่อ `set` ค่าใหม่ node ที่อ่าน `count` อยู่จะอัปเดตทันที (fine-grained reactivity)
+
+ทั้งสองเป็น `Copy` เลย move เข้า closure ได้โดยไม่ติด borrow checker
+
+### จุดต่างที่แท้จริง syntax ของ signal
+
+<CodeExplainer title="stable vs nightly เปรียบเทียบ syntax">
+  <details>
+    <summary><code>stable</code> count.get() / set_count.set(ค)</summary>
+    <p>เรียก method <code>.get()</code> และ <code>.set()</code> อย่างชัดเจน ใช้ได้กับทุก toolchain</p>
+  </details>
+  <details>
+    <summary><code>nightly</code> count() / set_count(ค)</summary>
+    <p>เรียก signal ราวกับเป็นฟังก์ชัน อาศัย unstable feature ที่ทำให้ signal implement <code>Fn</code> trait ได้</p>
+  </details>
+</CodeExplainer>
+
+ในเวอร์ชัน nightly `set_count(count() + increment)` อ่านค่า count (เรียกเหมือนฟังก์ชัน) แล้วบวก increment แล้วเขียนกลับ (เรียกเหมือนฟังก์ชัน) ส่วน stable ต้องเขียน `set_count.set(count.get() + increment)`
+
+<InfoBox title="ทำไม feature nightly ถึงต้องการ Rust nightly" type="info">
+การทำให้ <code>ReadSignal</code> เรียกใช้ได้แบบฟังก์ชันต้อง implement <code>Fn</code>/<code>FnMut</code> trait ซึ่งต้องใช้ unstable language features (โดยเฉพาะตอนทำงานกับ closure ที่ move signal ไปมา) ตอนนี้ยังทำไม่ได้บน stable channel เลยต้องเปิด feature <code>nightly</code> ใน Leptos + ใช้ nightly toolchain พร้อมกัน
+</InfoBox>
+
+### `#[prop(default = 1)]` props ที่มีค่าเริ่มต้น
+
+```rust
+pub fn Button(#[prop(default = 1)] increment: i32) -> impl IntoView
+```
+
+macro `#[prop(...)]` เป็นของ Leptos ไม่ใช่ Rust มาตรฐาน ใช้ประกาศคุณสมบัติของ props
+
+- `#[prop(default = 1)]` ถ้าไม่ส่ง prop นี้มา จะใช้ค่า 1
+
+นี่คือเหตุผลที่ home.rs ใช้ได้ทั้ง
+
+```rust
+<Button />            // increment = 1 (default)
+<Button increment=5 /> // increment = 5
+```
+
+แล้วเมื่อคลิกปุ่ม
+
+```rust
+on:click=move |_| { set_count(count() + increment) }
+```
+
+- `move` ย้าย `count`, `set_count`, `increment` เข้า closure
+- ข้อความ "Click me {'{count}'}" ที่มี <code>{'{count}'}</code> อยู่ใน view จะถูก track ทุกครั้งที่ count เปลี่ยน ตัวเลขในปุ่มนั้นๆ อัปเดตทันที เฉพาะ node นั้น ไม่ใช่ทั้งหน้า
+
+<SideNote type="tip">
+ลองสังเกตความสวยงามของ fine-grained reactivity คุณมี <code>&lt;Button /&gt;</code> กับ <code>&lt;Button increment=5 /&gt;</code> อยู่ข้างกัน การคลิกปุ่มหนึ่งไม่มีผลกับอีกปุ่มหนึ่งเลย เพราะแต่ละปุ่มมี signal เป็นของตัวเอง
+</SideNote>
+
+### เลย์เอาต์ของโฟลเดอร์ components
+
+```rust
+// src/components/mod.rs
+pub mod counter_btn;
+```
+
+เทมเพลตใช้โครงสร้าง `components/` แยกจาก `pages/` คอนเวนชันที่แยก "ชิ้นส่วน UI ที่ใช้ซ้ำ" กับ "หน้าที่ผูกกับ route" ออกจากกัน และเพราะ `crate::components::counter_btn::Button` ถูก import เข้า home.rs ทำให้เห็นแนวทางแนะนำ pages ประกอบจาก components
+
+## ขั้นตอนที่ 12 หน้า 404 (fallback ของ Router)
+```rust
+use leptos::prelude::*;
+
+/// 404 Not Found Page
+#[component]
+pub fn NotFound() -> impl IntoView {
+    view! { <h1>"Uh oh!" <br /> "We couldn't find that page!"</h1> }
+}
+```
+
+- สั้นที่สุดในโปรเจกต์ แต่มีบทบาทสำคัญ มันคือ `fallback` ของ `<Routes>` เมื่อ user ไป URL ที่ไม่มี route ตรง หน้านี้จะ render แทน
+- สังเกต string ใน `view!` ต้องอยู่ในเครื่องหมายคำพูด `"Uh oh!"` นี่คือกฎของ macro `view!` (ข้อความที่ไม่ได้ quote จะถูกตีความเป็น identifier/component)
+- `<br />` ทำงานเหมือน HTML ปกติ
+
+ในแอปจริงคุณอาจเพิ่ม `<Link>` ให้กลับหน้าแรก เทมเพลตนี้ตั้งใจให้สั้นที่สุดเพื่อแสดงหลักการล้วนๆ
+
+## ขั้นตอนที่ 13 .vscode/settings.json (จูน IDE ให้เข้ากับ Leptos)
+```json
+{
+    "rust-analyzer.rustfmt.overrideCommand": [
+        "leptosfmt",
+        "--stdin",
+        "--rustfmt"
+    ],
+    "editor.formatOnSave": true,
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    },
+    "files.associations": {
+        "*.rs": "rust"
+    }
+}
+```
+
+- **`rust-analyzer.rustfmt.overrideCommand`** แทนที่ rustfmt ด้วยคำสั่ง `leptosfmt --stdin --rustfmt` leptosfmt รู้จัก format `view!` macro โดยเฉพาะ (จัด indent, จัด attribute ให้สวย) จากนั้นส่งต่อโค้ดที่เหลือให้ `--rustfmt` ทำงานต่อ ทำให้ได้ format ที่ถูกต้องทั้ง macro และโค้ดปกติ
+- **`formatOnSave`** + **`defaultFormatter rust-analyzer`**: บันทึกเมื่อไหร่ format ให้อัตโนมัติ
+- **`files.associations`** เผื่อกรณี VS Code ไม่รู้จัก `.rs`
+
+<InfoBox title="ถ้าไม่มี leptosfmt จะเกิดอะไร?" type="warning">
+คำสั่ง override ชี้ไปที่ binary ชื่อ <code>leptosfmt</code> ถ้าคุณไม่ติดตั้ง มันจะ error ตอน format ทางเลือกคือลบบรรทัดนี้ออกแล้วใช้ rustfmt ธรรมดา (format จะไม่สวยเท่าใน macro) หรือติดตั้ง leptosfmt ตามคำแนะนำของ README
+</InfoBox>
+
+## ขั้นตอนที่ 14 พัฒนาแอป (trunk serve)
+ถึงเวลารันจริง:
+
+```sh
+trunk serve --port 3000 --open
+```
+
+สิ่งที่จะเกิดขึ้น:
+
+1. Trunk อ่าน `Trunk.toml` + `index.html`
+2. Build WASM ผ่าน cargo (`wasm32-unknown-unknown`, debug mode) ครั้งแรกใช้เวลานานเพราะต้องคอมไพล์ dependency ทั้งหมด
+3. คอมไพล์ SCSS, คัดลอก favicon, แทรก script ลง HTML
+4. เปิด dev server ที่ `http://localhost:3000` (และเปิดเบราว์เซอร์ให้เพราะ `--open`)
+5. เปิด WebSocket สำหรับ auto-reload แก้โค้ด Rust หรือ SCSS แล้ว**เบราว์เซอร์ reload ให้อัตโนมัติ**
+
+<SideNote type="tip">
+ถ้าอยากเห็น build เร็วขึ้นมาก ลองใช้ <code>trunk serve --release</code> ระหว่างพัฒนา release build ช้าตอนครั้งแรก แต่ hot reload ครั้งถัดๆ ไปจะเร็วกว่า เพราะ optimizer ไม่ทำงานซ้ำทุกครั้งเท่ากับตอน debug
+</SideNote>
+
+## ขั้นตอนที่ 15 Build และ Deploy
+### Build สำหรับ production
+
+```sh
+trunk build --release
+```
+
+ผลลัพธ์ในโฟลเดอร์ `dist/`:
+
+```text
+dist/
+├── index.html                  # HTML เปล่า + script tags ที่ถูก inject
+├── index-<hash>.js             # JS glue code จาก wasm-bindgen
+├── index-<hash>_bg.wasm        # ตัว WASM จริง (ถูก wasm-opt -Oz แล้ว)
+└── index-<hash>.css            # SCSS ที่ compile แล้ว + hash
+```
+
+### ทำไม deploy ง่ายขนาดนี้ ข้อดีของสถาปัตยกรรม CSR
+
+เพราะแอปทั้งหมดคือไฟล์ static การ deploy คือการอัปโหลด `dist/` ขึ้น static host ใดก็ได้ Vercel, Netlify, GitHub Pages, Cloudflare Pages, S3 + CloudFront ฯลฯ ไม่ต้องมีเซิร์ฟเวอร์ ไม่ต้องตั้งค่า runtime ใดๆ
+
+<InfoBox title="ข้อควรระวังสำหรับ SPA hosting" type="warning">
+ต้องตั้งค่า "fallback ทุก path → index.html" บน host ของคุณ (เช่น <code>vercel.json</code> หรือ Netlify redirects) เพราะถ้า user เข้า <code>/about</code> ตรงๆ เซิร์ฟเวอร์ static จะหาไฟล์ <code>about</code> ไม่เจอต้องส่ง index.html ให้แทน แล้วให้ Router ของ Leptos จัดการต่อ เหมือนกับที่ Trunk ทำตอน dev ด้วย <code>no_spa</code> default
+</InfoBox>
+
+### เปรียบเทียบสถาปัตยกรรมที่เทมเพลตนี้เปิดประตูให้
+
+<Table>
+  <thead slot="head">
+    <tr>
+      <th>ประเด็น</th>
+      <th>CSR (เทมเพลตนี้)</th>
+      <th>SSR / Hydration</th>
+    </tr>
+  </thead>
+  <tbody slot="body">
+    <tr>
+      <td>เซิร์ฟเวอร์</td>
+      <td>ไม่ต้องมี static files ล้วน</td>
+      <td>ต้องมีเซิร์ฟเวอร์ (cargo-leptos, actix ฯลฯ)</td>
+    </tr>
+    <tr>
+      <td>SEO / First paint</td>
+      <td>ช้ากว่า ต้องโหลด WASM ก่อน</td>
+      <td>HTML มาไว, SEO ดีกว่า</td>
+    </tr>
+    <tr>
+      <td>เวลาพัฒนา</td>
+      <td>เรียบง่าย, debug ง่าย, ตรงไปตรงมา</td>
+      <td>ซับซ้อนขึ้น (hydration, server/client ต่างกัน)</td>
+    </tr>
+    <tr>
+      <td>เหมาะกับ</td>
+      <td>แอปหลัง login, dashboard, internal tools</td>
+      <td>เว็บสาธารณะที่ต้อง SEO และ load เร็ว</td>
+    </tr>
+  </tbody>
+</Table>
+
+## สุดท้ายแล้ว สิ่งที่เทมเพลตนี้สอนเรา
+
+เทมเพลต start-trunk ที่ดูเหมือน "ของเล่นเล็กๆ" นี้ อัดแน่นไปด้วยแนวคิดสำคัญของระบบนิเวศ Leptos ทีละชั้น
+
+<NarrativeSection>
+
+**เรื่องแรก "โครงสร้าง" ต้องคิดล่วงหน้า** กลไกการมี Cargo manifest สองชุด + Rhai hook ที่สลับให้ตอน generate คือตัวอย่างการออกแบบที่ดี ตัวเลือกที่ควรตัดสินใจ**ครั้งเดียวตอนสร้างโปรเจกต์** ไม่ควรฝังเป็น conditional กระจายอยู่ทั่วโค้ด
+
+**เรื่องที่สอง "WASM ตัวเล็ก" ไม่ใช่เรื่องบังเอิญ** ทุกอย่างในเทมเพลตถูกตั้งใจเพื่อขนาดไฟล์ `opt-level = 'z'`, `lto`, `codegen-units = 1`, `panic = "abort"`, `data-wasm-opt="z"`, `data-weak-refs` เพราะในสถาปัตยกรรม CSR ทุก KB คือเวลารอของผู้ใช้
+
+**เรื่องที่สาม "Reactivity" คือหัวใจ** ไม่มี virtual DOM, ไม่มี state management library มีแค่ `signal()`, ฟังก์ชันที่อ่านได้และเขียนได้ และ macro `view!` ที่ render เฉพาะสิ่งที่เปลี่ยนจริงๆ
+
+**เรื่องสุดท้าย "เรียบง่าย" เป็นจุดแข็ง** แอป CSR ทั้งแอปอยู่ใน `lib.rs` 34 บรรทัด, `main.rs` 14 บรรทัด และ component เดียว แต่ละชิ้นทำหน้าที่เดียวชัดเจน นี่คือโครงกระดูกที่พร้อมให้คุณเติมเนื้อลงไป
+
+</NarrativeSection>
+
+### ขั้นตอนถัดไปที่ควรลอง
+
+<ProsCons>
+  <div slot="pros">
+    <ul>
+      <li><strong>เพิ่ม route</strong> สร้าง <code>src/pages/about.rs</code> แล้วเพิ่ม <code>&lt;Route path=path!("/about") view=About /&gt;</code></li>
+      <li><strong>เล่นกับ reactividad</strong> ลอง <code>create_effect</code>, <code>derive_signal</code>, หรือ <code>memo</code></li>
+      <li><strong>ดึงข้อมูลจาก API</strong> ใช้ <code>Resource</code> กับ <code>fetch</code> ผ่าน <code>web_sys</code> หรือ <code>reqwest</code></li>
+      <li><strong>ย้ายไป SSR</strong> อ่าน <a href="https://book.leptos.dev/">Leptos Book</a> ตอน deployment ของ CSR <a href="https://book.leptos.dev/deployment/csr.html">book.leptos.dev/deployment/csr.html</a></li>
+    </ul>
+  </div>
+  <div slot="cons">
+    <ul>
+      <li><strong>ระวัง</strong> อย่าเพิ่งใช้ nightly mode ถ้าไม่จำเป็น stable ใช้ได้จริงทุกที่</li>
+      <li><strong>ระวัง</strong> <code>console.log</code> ผ่าน <code>console_log</code> ระดับ Debug จะรก console ลดเป็น Info/Error ตอน release</li>
+    </ul>
+  </div>
+</ProsCons>
+
+Leptos ไม่ได้พยายามเป็น "React บน Rust" มันคือวิสัยทัศน์ที่ว่า UI ที่ reactive สุดขีด ควรถูกคอมไพล์เป็นโค้ด native ขนาดเล็ก และเทมเพลต start-trunk คือประตูเข้าสู่โลกนั้นที่เล็กที่สุดและเข้าใจง่ายที่สุด
+
+---
+
+**อ้างอิง** [leptos-rs/start-trunk](https://github.com/leptos-rs/start-trunk) (commit `9bbd060`: edition 2024, Leptos 0.8), [Leptos](https://leptos.dev), [Leptos Book](https://book.leptos.dev), [Trunk](https://github.com/trunk-rs/trunk)
