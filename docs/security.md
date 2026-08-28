@@ -1,6 +1,6 @@
-# RxDev Man — Security
+# RxDev Man - Security
 
-This document describes how RxDev Man handles security — what's protected, how, and what to do if something goes wrong.
+This document describes how RxDev Man handles security - what's protected, how, and what to do if something goes wrong.
 
 ---
 
@@ -8,9 +8,9 @@ This document describes how RxDev Man handles security — what's protected, how
 
 RxDev Man is a static site (Astro SSG/SSR hybrid) deployed to Vercel. There is no custom server. The browser talks to:
 
-1. **Supabase PostgREST** — for reading public view counts (anon key, RLS-protected).
-2. **Supabase GoTrue** — not currently used (no auth).
-3. **`/api/track`** — a Vercel serverless function that writes page view data using the service role key.
+1. **Supabase PostgREST** - for reading public view counts (anon key, RLS-protected).
+2. **Supabase GoTrue** - not currently used (no auth).
+3. **`/api/track`** - a Vercel serverless function that writes page view data using the service role key.
 
 The service role key **never** reaches the browser. It is only used server-side in the API route.
 
@@ -22,7 +22,7 @@ The service role key **never** reaches the browser. It is only used server-side 
 | --------------------------- | --------- | ------- | ------------------------------------- |
 | `PUBLIC_SUPABASE_URL`       | `PUBLIC_` | Yes     | Supabase project URL                  |
 | `PUBLIC_SUPABASE_ANON_KEY`  | `PUBLIC_` | Yes     | Supabase anon key (read-only via RLS) |
-| `SUPABASE_SERVICE_ROLE_KEY` | (none)    | **No**  | Server-side only — bypasses RLS       |
+| `SUPABASE_SERVICE_ROLE_KEY` | (none)    | **No**  | Server-side only - bypasses RLS       |
 | `HASH_SALT`                 | (none)    | **No**  | Salt for IP hashing                   |
 
 **Rule:** Variables prefixed with `PUBLIC_` are bundled into client-side JavaScript. Never put secrets in `PUBLIC_` variables.
@@ -47,9 +47,9 @@ form-action 'self'
 
 **Known weaknesses:**
 
-- `'unsafe-inline'` in `script-src` — required by Astro's Vercel adapter for hydration scripts. Removing it would break client-side JS. This is a trade-off documented here for transparency.
-- `'unsafe-inline'` in `style-src` — required by Astro's scoped CSS injection. Same trade-off.
-- `https:` wildcard in script/style/font/connect — allows any HTTPS origin. A tighter policy would enumerate specific CDN domains, but this adds maintenance burden for minimal practical risk on a public blog.
+- `'unsafe-inline'` in `script-src` - required by Astro's Vercel adapter for hydration scripts. Removing it would break client-side JS. This is a trade-off documented here for transparency.
+- `'unsafe-inline'` in `style-src` - required by Astro's scoped CSS injection. Same trade-off.
+- `https:` wildcard in script/style/font/connect - allows any HTTPS origin. A tighter policy would enumerate specific CDN domains, but this adds maintenance burden for minimal practical risk on a public blog.
 
 **Other headers:**
 
@@ -89,7 +89,7 @@ Anonymous users can read aggregate counts (this powers the public view counter U
 
 ### RPC Functions
 
-`increment_view_count(p_slug TEXT)` — runs as `SECURITY DEFINER` (executes as table owner, bypasses RLS). Called server-side after every page view insert.
+`increment_view_count(p_slug TEXT)` - runs as `SECURITY DEFINER` (executes as table owner, bypasses RLS). Called server-side after every page view insert.
 
 ---
 

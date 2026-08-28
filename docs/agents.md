@@ -1,4 +1,4 @@
-# agents.md — AI Agent Conventions for RxDev Man
+# agents.md - AI Agent Conventions for RxDev Man
 
 This document defines conventions for AI agents (and humans) working in this codebase. Follow these rules to maintain consistency.
 
@@ -6,7 +6,7 @@ This document defines conventions for AI agents (and humans) working in this cod
 
 ## Project Identity
 
-RxDev Man is a personal developer knowledge base — a blog with MDX content, tool showcases, and visitor tracking. Single author, no auth, no social features. The site is deployed to Vercel as static assets with selective SSR.
+RxDev Man is a personal developer knowledge base - a blog with MDX content, tool showcases, and visitor tracking. Single author, no auth, no social features. The site is deployed to Vercel as static assets with selective SSR.
 
 **Stack:** Astro 7.x, TypeScript 6.x, MDX, Supabase, Vercel, Bun
 
@@ -97,8 +97,8 @@ border: 1px solid #bfc1b7;
 
 **Exceptions:**
 
-- Social brand colors in `ShareButtons.astro` (Facebook blue, LINE green, etc.) — these are third-party brand requirements, not design choices.
-- Terminal UI colors in `index.astro` — these are decorative and part of the terminal aesthetic.
+- Social brand colors in `ShareButtons.astro` (Facebook blue, LINE green, etc.) - these are third-party brand requirements, not design choices.
+- Terminal UI colors in `index.astro` - these are decorative and part of the terminal aesthetic.
 
 **Token hierarchy:**
 
@@ -117,10 +117,10 @@ Components should only reference semantic tokens. Primitives are only referenced
 @layer reset, base, components, utilities;
 ```
 
-- `reset` — box model normalization
-- `base` — element styles (body, headings, links)
-- `components` — component styles
-- `utilities` — helper classes
+- `reset` - box model normalization
+- `base` - element styles (body, headings, links)
+- `components` - component styles
+- `utilities` - helper classes
 
 Never add unlayered styles except for specific overrides (document why).
 
@@ -143,7 +143,7 @@ Never add unlayered styles except for specific overrides (document why).
 | --------------------------- | --------- | -------------------------------------- |
 | `PUBLIC_SUPABASE_URL`       | `PUBLIC_` | Supabase project URL (client-visible)  |
 | `PUBLIC_SUPABASE_ANON_KEY`  | `PUBLIC_` | Supabase anon key (client-visible)     |
-| `SUPABASE_SERVICE_ROLE_KEY` | (none)    | Server-side only — bypasses RLS        |
+| `SUPABASE_SERVICE_ROLE_KEY` | (none)    | Server-side only - bypasses RLS        |
 | `HASH_SALT`                 | (none)    | Salt for IP hashing (server-side only) |
 
 **Never prefix secrets with `PUBLIC_`.** The `PUBLIC_` prefix causes Astro to bundle the value into client-side JavaScript.
@@ -154,8 +154,8 @@ Never add unlayered styles except for specific overrides (document why).
 
 Two clients exist in `src/lib/supabase.ts`:
 
-- `getSupabaseServer()` — uses service role key, bypasses RLS. **Server-side only** (API routes, SSR frontmatter).
-- `getSupabasePublic()` — uses anon key, subject to RLS. Client-side safe.
+- `getSupabaseServer()` - uses service role key, bypasses RLS. **Server-side only** (API routes, SSR frontmatter).
+- `getSupabasePublic()` - uses anon key, subject to RLS. Client-side safe.
 
 Both use lazy singleton initialization. Never create a new client per request.
 

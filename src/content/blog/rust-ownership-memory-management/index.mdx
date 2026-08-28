@@ -30,7 +30,7 @@ Heap ต้องทำ allocation ซึ่งหมายถึงการข
 
 ในทางตรงกันข้าม Heap ถูกออกแบบมาเพื่อรองรับความยืดหยุ่น เมื่อคุณสร้าง `String` ที่ความยาวอาจเปลี่ยนแปลงได้ตลอดเวลา หรือ `Vec` ที่ไม่รู้ว่าจะมีกี่ element Heap คือคำตอบ แต่ความยืดหยุ่นนี้มาพร้อมกับราคา การจองพื้นที่บน Heap ช้ากว่า Stack และการเข้าถึงข้อมูลต้องผ่าน pointer ทุกครั้ง
 
-นี่คือเหตุผลว่าทำไม Ownership จึงถูกสร้างมา — เพื่อจัดการข้อมูลบน Heap อย่างเป็นระบบโดยที่คุณไม่ต้องเรียก `malloc` และ `free` เองแม้แต่บรรทัดเดียว
+นี่คือเหตุผลว่าทำไม Ownership จึงถูกสร้างมา - เพื่อจัดการข้อมูลบน Heap อย่างเป็นระบบโดยที่คุณไม่ต้องเรียก `malloc` และ `free` เองแม้แต่บรรทัดเดียว
 
 ## กฎเหล็กสามข้อ
 
@@ -75,7 +75,7 @@ Double Free คือหายนะ เพราะการคืนหน่�
 
 ## Move Semantics: วิธีแก้ปัญหาอย่างสง่างาม
 
-Rust แก้ปัญหานี้ด้วยวิธีที่เรียบง่ายแต่ทรงพลัง — มันใช้ **Move Semantics** แทนที่จะ copy pointer ทั้งสองตัว Rust จะ "ย้าย" ownership จาก `s1` ไป `s2` และทำให้ `s1` ใช้งานไม่ได้อีกต่อไป
+Rust แก้ปัญหานี้ด้วยวิธีที่เรียบง่ายแต่ทรงพลัง - มันใช้ **Move Semantics** แทนที่จะ copy pointer ทั้งสองตัว Rust จะ "ย้าย" ownership จาก `s1` ไป `s2` และทำให้ `s1` ใช้งานไม่ได้อีกต่อไป
 
 ```rust
 fn main() {
@@ -133,7 +133,7 @@ fn main() {
 ```
 
 <InfoBox title="Stack vs Heap: Copy vs Move" type="info">
-  Stack-only types ใช้ Copy, Heap types ใช้ Move + Drop — ทั้งสองไม่มีทาง overlap กันได้
+  Stack-only types ใช้ Copy, Heap types ใช้ Move + Drop - ทั้งสองไม่มีทาง overlap กันได้
 </InfoBox>
 
 ที่น่าสนใจคือ Rust **ไม่อนุญาตให้ type ใดๆ ที่มี Drop** มา implement Copy Trait ได้ เพราะนั่นจะสร้างความขัดแย้งในตรรกะการจัดการ Heap นี่คือการใช้ Type System เข้ามาบังคับใช้กฎของ Ownership อย่างเข้มงวด
@@ -206,7 +206,7 @@ fn change(some_string: &mut String) {
 Ownership ไม่ใช่แค่เรื่องของการจัดการหน่วยความจำ แต่มันคือการสร้าง **"สัญญา"** ระหว่าง code แต่ละส่วน ว่าใครมีสิทธิ์ทำลายหรือใครมีสิทธิ์ใช้ข้อมูล
 
 <InfoBox title="Ownership คือ Contract" type="info">
-  Ownership คือ contract ระหว่าง Code — ใครมีสิทธิ์ทำลาย ใครมีสิทธิ์ใช้ ทุกอย่างถูกกำหนดไว้ชัดเจน ณ compile time
+  Ownership คือ contract ระหว่าง Code - ใครมีสิทธิ์ทำลาย ใครมีสิทธิ์ใช้ ทุกอย่างถูกกำหนดไว้ชัดเจน ณ compile time
 </InfoBox>
 
 สิ่งที่ควรจดจำคือ memory safety ถูกตรวจสอบ ณ compile-time ไม่มี runtime overhead เหมือน GC การ assign หรือส่งค่าใน function คือการโอนย้าย ownership ซึ่งป้องกัน double free ได้โดยธรรมชาติ Stack-only types ใช้ Copy ส่วน Heap types ใช้ Move + Drop โดยไม่มีทาง overlap กัน และ References ช่วยให้เข้าถึงข้อมูลโดยไม่ต้องโอน ownership ลด overhead ของการ clone

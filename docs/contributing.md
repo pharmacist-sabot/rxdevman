@@ -32,7 +32,7 @@ Visit `http://localhost:4321`.
 
 ## Commit Messages
 
-We use [Conventional Commits](https://www.conventionalcommits.org/). Commitlint enforces this — your commit will be rejected if the format is wrong.
+We use [Conventional Commits](https://www.conventionalcommits.org/). Commitlint enforces this - your commit will be rejected if the format is wrong.
 
 **Format:** `type(scope): subject`
 
@@ -103,16 +103,16 @@ featured: true
 
 **Available MDX components** (auto-imported, no import needed):
 
-- `<InfoBox title="..." type="info|success|warning|danger">` — callout boxes
-- `<CodeExplainer>` — line-by-line code breakdown
-- `<GitCommand>` — copy-paste terminal snippets
-- `<ProsCons>` — comparison tables
-- `<PullQuote>` — styled quotes
-- `<SideNote>` — marginal notes
-- `<NarrativeSection>` — narrative formatting
-- `<YouTube>` — YouTube embeds
-- `<Table>` — styled tables
-- `<FeatureGrid>` / `<FeatureCard>` — feature showcases
+- `<InfoBox title="..." type="info|success|warning|danger">` - callout boxes
+- `<CodeExplainer>` - line-by-line code breakdown
+- `<GitCommand>` - copy-paste terminal snippets
+- `<ProsCons>` - comparison tables
+- `<PullQuote>` - styled quotes
+- `<SideNote>` - marginal notes
+- `<NarrativeSection>` - narrative formatting
+- `<YouTube>` - YouTube embeds
+- `<Table>` - styled tables
+- `<FeatureGrid>` / `<FeatureCard>` - feature showcases
 
 ---
 

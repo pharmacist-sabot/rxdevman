@@ -35,11 +35,11 @@ security hardening, and performance budgets.
 ### Added
 
 #### Foundation (Phase 1)
-- `docs/DESIGN.md` — visual language, color system, spacing, typography.
-- `docs/SECURITY.md` — threat model, CSP, RLS, IP anonymization, data retention.
-- `docs/CONTRIBUTING.md` — commit conventions, PR workflow, code style.
-- `docs/AGENTS.md` — AI agent conventions for consistent code generation.
-- `.env.example` — documented environment variables.
+- `docs/DESIGN.md` - visual language, color system, spacing, typography.
+- `docs/SECURITY.md` - threat model, CSP, RLS, IP anonymization, data retention.
+- `docs/CONTRIBUTING.md` - commit conventions, PR workflow, code style.
+- `docs/AGENTS.md` - AI agent conventions for consistent code generation.
+- `.env.example` - documented environment variables.
 - Legacy CSS token alias migration to semantic design tokens.
 
 #### Tests (Phase 2)
@@ -77,8 +77,8 @@ security hardening, and performance budgets.
 - Build output baseline documented in `docs/perf-baseline.md`.
 
 #### Release (Phase 8)
-- `docs/reproducible-build.md` — exact toolchain versions for reproducible builds.
-- `CHANGELOG.md` — this file.
+- `docs/reproducible-build.md` - exact toolchain versions for reproducible builds.
+- `CHANGELOG.md` - this file.
 - Version bumped to 2.0.0.
 
 ### Changed

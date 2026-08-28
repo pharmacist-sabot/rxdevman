@@ -10,22 +10,22 @@
 ![Vitest](https://img.shields.io/badge/Vitest-4.1-6E9F18?style=flat&logo=vitest)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat)
 
-**RxDev Man** is a personal developer knowledge base — a blog with MDX content, tool showcases, visitor tracking, dark mode, offline support, and PWA capabilities. Built on **Astro 7** with zero-JS by default.
+**RxDev Man** is a personal developer knowledge base - a blog with MDX content, tool showcases, visitor tracking, dark mode, offline support, and PWA capabilities. Built on **Astro 7** with zero-JS by default.
 
 ---
 
 ## Features
 
-- **Dark Mode & Sepia** — three themes with FOUC prevention and code block switching
-- **Offline Support** — PWA with service worker, works without network
-- **MDX Content** — interactive components: `<CodeExplainer>`, `<InfoBox>`, `<ProsCons>`, `<GitCommand>`
-- **Search** — client-side typo-tolerant search via Pagefind
-- **RSS Feed** — `/rss.xml` for feed readers
-- **Series & Tags** — grouped posts with tag/category index pages
-- **Visitor Tracking** — Supabase-backed view counts (privacy-first, no cookies)
-- **37 Unit Tests** — Vitest coverage for core utilities
-- **Security Hardened** — CSP, CodeQL, dependency audits, SHA-pinned actions
-- **Performance Budgets** — 1.16 KB gzipped JS, 1.8 MB WebP images
+- **Dark Mode & Sepia** - three themes with FOUC prevention and code block switching
+- **Offline Support** - PWA with service worker, works without network
+- **MDX Content** - interactive components: `<CodeExplainer>`, `<InfoBox>`, `<ProsCons>`, `<GitCommand>`
+- **Search** - client-side typo-tolerant search via Pagefind
+- **RSS Feed** - `/rss.xml` for feed readers
+- **Series & Tags** - grouped posts with tag/category index pages
+- **Visitor Tracking** - Supabase-backed view counts (privacy-first, no cookies)
+- **37 Unit Tests** - Vitest coverage for core utilities
+- **Security Hardened** - CSP, CodeQL, dependency audits, SHA-pinned actions
+- **Performance Budgets** - 1.16 KB gzipped JS, 1.8 MB WebP images
 
 ---
 
@@ -73,7 +73,7 @@ heroImage: './hero.png'       # relative to post directory
 category: 'Programming Languages'
 tags: ['Rust', 'Systems Programming']
 featured: false
-series: 'Rust Mastery'        # optional — groups posts in a series
+series: 'Rust Mastery'        # optional - groups posts in a series
 ---
 ```
 

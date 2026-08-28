@@ -82,10 +82,10 @@ same artifact.
 
 ## What Changes Between Builds
 
-- **Content changes** (MDX edits, new posts) — rebuild produces different pages.
-- **Dependency updates** (`bun.lock` changes) — may change JS bundle output.
-- **Astro/framework upgrades** — may change HTML structure or bundle splitting.
-- **Image changes** — new/modified images in `public/images/`.
+- **Content changes** (MDX edits, new posts) - rebuild produces different pages.
+- **Dependency updates** (`bun.lock` changes) - may change JS bundle output.
+- **Astro/framework upgrades** - may change HTML structure or bundle splitting.
+- **Image changes** - new/modified images in `public/images/`.
 
 ---
 

@@ -53,7 +53,7 @@ tags: ["SQL Server", "Docker", "FastAPI", "Python", "macOS", "Database", "INVS"]
     </tr>
     <tr>
       <td>ไฟล์ <code>.bak</code></td>
-      <td>—</td>
+      <td>-</td>
       <td>ฐานข้อมูล INVS ที่ export มาจากโรงพยาบาล</td>
     </tr>
   </Fragment>
@@ -61,7 +61,7 @@ tags: ["SQL Server", "Docker", "FastAPI", "Python", "macOS", "Database", "INVS"]
 
 ---
 
-## ส่วนที่ 1 — เตรียมเครื่อง macOS ให้พร้อม
+## ส่วนที่ 1 - เตรียมเครื่อง macOS ให้พร้อม
 
 ### 1.1 ตรวจสอบ Docker
 
@@ -107,7 +107,7 @@ brew --version
 
 ---
 
-## ส่วนที่ 2 — รัน SQL Server บน macOS ด้วย Docker
+## ส่วนที่ 2 - รัน SQL Server บน macOS ด้วย Docker
 
 ### 2.1 ทำความเข้าใจ Docker Image ของ SQL Server
 
@@ -185,7 +185,7 @@ docker rm sqlserver
 
 ### 2.4 รอให้ SQL Server พร้อม
 
-SQL Server ใช้เวลาประมาณ 10–30 วินาทีหลัง container start ก่อนที่จะรับ connection ได้ วิธีตรวจสอบ:
+SQL Server ใช้เวลาประมาณ 10-30 วินาทีหลัง container start ก่อนที่จะรับ connection ได้ วิธีตรวจสอบ:
 
 ```bash
 docker exec -it sqlserver /opt/mssql-tools/bin/sqlcmd \
@@ -196,7 +196,7 @@ docker exec -it sqlserver /opt/mssql-tools/bin/sqlcmd \
 
 ---
 
-## ส่วนที่ 3 — เตรียมไฟล์ Backup
+## ส่วนที่ 3 - เตรียมไฟล์ Backup
 
 ### 3.1 โครงสร้างโฟลเดอร์
 
@@ -240,7 +240,7 @@ docker exec sqlserver ls -lh /var/opt/mssql/backup/
 
 ---
 
-## ส่วนที่ 4 — Restore Database
+## ส่วนที่ 4 - Restore Database
 
 ### 4.1 เครื่องมือที่ใช้เชื่อมต่อ
 
@@ -305,7 +305,7 @@ invs           C:\MSSQL\DATA\INVS.mdf                    D
 invs_log       C:\MSSQL\DATA\INVS_log.ldf                L
 ```
 
-`D` คือ data file (`.mdf`) และ `L` คือ log file (`.ldf`) — จด `LogicalName` ทั้งสองตัวไว้ จะใช้ใน `MOVE` clause ในขั้นตอนถัดไป
+`D` คือ data file (`.mdf`) และ `L` คือ log file (`.ldf`) - จด `LogicalName` ทั้งสองตัวไว้ จะใช้ใน `MOVE` clause ในขั้นตอนถัดไป
 
 <SideNote type="note">
   <p><strong>ทำไมต้องดู LogicalName?</strong> Backup ถูกสร้างบน Windows Server ซึ่ง physical path เป็น <code>C:\MSSQL\...</code> แต่ container ของเราเป็น Linux ดังนั้น SQL Server จะไม่สามารถ restore ไปยัง path เดิมได้ ต้องใช้ <code>MOVE</code> เพื่อบอก path ใหม่</p>
@@ -341,7 +341,7 @@ WITH
 RESTORE DATABASE successfully processed 153842 pages in 47.823 seconds (25.143 MB/sec).
 ```
 
-### 4.4 Troubleshooting — ปัญหาที่พบบ่อยตอน Restore
+### 4.4 Troubleshooting - ปัญหาที่พบบ่อยตอน Restore
 
 <InfoBox title="Cannot open backup device... Operating system error 5" type="danger">
   <p><strong>สาเหตุ:</strong> ไฟล์ยังไม่ได้ copy เข้า container หรือ copy ไปผิด path</p>
@@ -375,7 +375,7 @@ docker run -d \
 
 ---
 
-## ส่วนที่ 5 — ตรวจสอบฐานข้อมูล
+## ส่วนที่ 5 - ตรวจสอบฐานข้อมูล
 
 ### 5.1 ดูรายชื่อ Database ทั้งหมด
 
@@ -425,7 +425,7 @@ FROM warehouse
 
 ---
 
-## ส่วนที่ 6 — ติดตั้ง ODBC Driver บน macOS
+## ส่วนที่ 6 - ติดตั้ง ODBC Driver บน macOS
 
 ### 6.1 ทำไมต้องใช้ ODBC Driver
 
@@ -469,7 +469,7 @@ brew install msodbcsql18
 
 ---
 
-## ส่วนที่ 7 — ติดตั้ง Python Dependencies
+## ส่วนที่ 7 - ติดตั้ง Python Dependencies
 
 ### 7.1 สร้าง Virtual Environment
 
@@ -519,7 +519,7 @@ pip install pyodbc fastapi uvicorn pydantic-settings python-dotenv
 
 ---
 
-## ส่วนที่ 8 — สร้าง Config
+## ส่วนที่ 8 - สร้าง Config
 
 ### 8.1 สร้างไฟล์ .env
 
@@ -577,7 +577,7 @@ settings = Settings()
 
 ---
 
-## ส่วนที่ 9 — สร้าง Database Connection
+## ส่วนที่ 9 - สร้าง Database Connection
 
 ### 9.1 สร้างไฟล์ database.py
 
@@ -639,7 +639,7 @@ def get_db():
 
 ---
 
-## ส่วนที่ 10 — ปัญหา Encoding ภาษาไทยและวิธีแก้
+## ส่วนที่ 10 - ปัญหา Encoding ภาษาไทยและวิธีแก้
 
 ### 10.1 ที่มาของปัญหา
 
@@ -684,7 +684,7 @@ conn.setencoding("utf-8")
   <p>ข้อดีของวิธีนี้คือใช้ UTF-8 ซึ่งรองรับทุก OS ทั้ง macOS ✅, Windows ✅ และ Linux ✅</p>
 </InfoBox>
 
-### 10.3 Troubleshooting — ยังเจอปัญหา Encoding
+### 10.3 Troubleshooting - ยังเจอปัญหา Encoding
 
 ถ้ายังเจอ encoding ผิดหลังจากใช้ UTF-8 แล้ว ให้ตรวจสอบ collation ของฐานข้อมูล:
 
@@ -702,7 +702,7 @@ WHERE name = 'INVS'
 
 ---
 
-## ส่วนที่ 11 — สร้าง FastAPI Application
+## ส่วนที่ 11 - สร้าง FastAPI Application
 
 ### 11.1 สร้างไฟล์ main.py
 
@@ -799,7 +799,7 @@ curl http://localhost:8000/api/warehouses
 
 เปิด Swagger UI สำหรับทดสอบ API แบบ interactive ที่ `http://localhost:8000/docs`
 
-### 11.4 Troubleshooting — ปัญหาที่พบบ่อยตอน Connect
+### 11.4 Troubleshooting - ปัญหาที่พบบ่อยตอน Connect
 
 <InfoBox title="Can't open lib 'ODBC Driver 17 for SQL Server'" type="danger">
   <p><strong>สาเหตุ:</strong> ติดตั้ง ODBC driver ไม่สำเร็จ หรือชื่อ driver ไม่ตรง</p>
@@ -830,7 +830,7 @@ docker start sqlserver  # ถ้า container หยุดอยู่
 
 ---
 
-## ส่วนที่ 12 — โครงสร้าง Project
+## ส่วนที่ 12 - โครงสร้าง Project
 
 ก่อนรัน frontend ให้ตรวจสอบโครงสร้าง project:
 
@@ -859,7 +859,7 @@ pip freeze > requirements.txt
 
 ---
 
-## ส่วนที่ 13 — รัน Frontend
+## ส่วนที่ 13 - รัน Frontend
 
 ### 13.1 เข้าโฟลเดอร์ Frontend และติดตั้ง Package
 
@@ -922,7 +922,7 @@ npm run dev
 
 ---
 
-## ส่วนที่ 14 — ทำให้ Docker Container รอดหลัง Restart
+## ส่วนที่ 14 - ทำให้ Docker Container รอดหลัง Restart
 
 ### 14.1 ปัญหาที่จะเจอ
 
@@ -948,7 +948,7 @@ docker update --restart unless-stopped sqlserver
 
 ---
 
-## ส่วนที่ 15 — สรุปภาพรวมระบบ
+## ส่วนที่ 15 - สรุปภาพรวมระบบ
 
 เมื่อทุกอย่างเสร็จสมบูรณ์ระบบมีโครงสร้างดังนี้:
 
@@ -989,7 +989,7 @@ npm run dev
 
 ---
 
-## Appendix — คำสั่งที่ใช้บ่อย
+## Appendix - คำสั่งที่ใช้บ่อย
 
 ### Docker
 

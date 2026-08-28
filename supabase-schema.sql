@@ -1,12 +1,12 @@
 -- ============================================================
--- rxdevman — Visitor Tracking Schema
+-- rxdevman - Visitor Tracking Schema
 -- Run this entire script in the Supabase SQL Editor.
 -- All tables use the `rxdevman_` prefix.
 -- ============================================================
 
 -- ─────────────────────────────────────────────
 -- 1. rxdevman_page_views
--- Stores every individual hit. IP is never stored raw — always hashed.
+-- Stores every individual hit. IP is never stored raw - always hashed.
 -- ─────────────────────────────────────────────
 CREATE TABLE rxdevman_page_views (
   id          BIGSERIAL PRIMARY KEY,
@@ -33,7 +33,7 @@ CREATE TABLE rxdevman_view_counts (
 );
 
 -- ─────────────────────────────────────────────
--- 3. RPC Function — increment_view_count
+-- 3. RPC Function - increment_view_count
 -- Called server-side after every INSERT into rxdevman_page_views.
 -- ─────────────────────────────────────────────
 CREATE OR REPLACE FUNCTION increment_view_count(p_slug TEXT)
@@ -59,15 +59,15 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- rxdevman_page_views
 ALTER TABLE rxdevman_page_views ENABLE ROW LEVEL SECURITY;
 
--- No SELECT policy for anon — ip_hash must never be publicly readable
--- No INSERT policy for anon — all writes go through the service role key (API route)
+-- No SELECT policy for anon - ip_hash must never be publicly readable
+-- No INSERT policy for anon - all writes go through the service role key (API route)
 -- The increment_view_count RPC is defined with SECURITY DEFINER so it runs as
 -- the table owner and bypasses RLS on behalf of the service role.
 
 -- rxdevman_view_counts
 ALTER TABLE rxdevman_view_counts ENABLE ROW LEVEL SECURITY;
 
--- Anyone (anon) can read aggregate counts — this powers the public view counter UI
+-- Anyone (anon) can read aggregate counts - this powers the public view counter UI
 CREATE POLICY "rxdevman_view_counts: public select"
   ON rxdevman_view_counts
   FOR SELECT
@@ -97,7 +97,7 @@ CREATE POLICY "rxdevman_view_counts: service role update"
 -- rxdevman_view_counts     | ✅ allowed  | ❌ blocked  | ❌ blocked  | ✅ full access
 
 -- ─────────────────────────────────────────────
--- 5. Auto-cleanup — ลบข้อมูลเก่า > 90 วัน
+-- 5. Auto-cleanup - ลบข้อมูลเก่า > 90 วัน
 -- ─────────────────────────────────────────────
 
 -- เปิดใช้งาน pg_cron (รันครั้งเดียว ถ้ายังไม่ได้เปิด)

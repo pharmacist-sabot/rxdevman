@@ -95,7 +95,7 @@
   --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-panel: cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* ── Breakpoints (reference only — CSS vars don't work in @media) ── */
+  /* ── Breakpoints (reference only - CSS vars don't work in @media) ── */
   /* bp-sm: 480px, bp-md: 640px, bp-lg: 768px, bp-xl: 900px, bp-2xl: 1024px, bp-3xl: 1100px */
 
   /* ══════════════════════════════════════════════════════
@@ -150,7 +150,7 @@
   --focus-offset: 2px;
   --focus-offset-lg: 3px;
 
-  /* ── Shadow aliases (raw rgba — no semantic token equivalent) ── */
+  /* ── Shadow aliases (raw rgba - no semantic token equivalent) ── */
   --shadow-color: rgba(191, 193, 183, 0.25);
   --shadow-hover-color: rgba(191, 193, 183, 0.45);
 
@@ -159,7 +159,7 @@
 
 /* ══════════════════════════════════════════════════════════
    DARK THEME
-   Warm dark — not AMOLED black, a reading-app dark.
+   Warm dark - not AMOLED black, a reading-app dark.
    ══════════════════════════════════════════════════════════ */
 [data-theme='dark'] {
   /* ── Surfaces ── */
@@ -1409,7 +1409,7 @@
 }
 
 /* ══════════════════════════════════════════════════════════
-   UNLAYERED — higher priority than any @layer
+   UNLAYERED - higher priority than any @layer
    Fix expressive-code overflow on mobile (EC CSS is unlayered)
    ══════════════════════════════════════════════════════════ */
 .prose .expressive-code {

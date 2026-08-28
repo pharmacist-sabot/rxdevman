@@ -1,6 +1,6 @@
-# RxDev Man — Design System
+# RxDev Man - Design System
 
-This document explains _why_ the design system looks the way it does — not what the code already shows. The source of truth for values and implementation is `src/styles/global.css`.
+This document explains _why_ the design system looks the way it does - not what the code already shows. The source of truth for values and implementation is `src/styles/global.css`.
 
 ---
 
@@ -11,7 +11,7 @@ RxDev Man is a developer's personal knowledge base. It should feel like a well-o
 **Design principles:**
 
 1. **Content first.** Typography and spacing serve readability. Nothing competes with the article.
-2. **Warm, not cold.** The gray palette leans warm (yellow-green undertone) — closer to paper than to steel. A developer reading at midnight shouldn't feel like they're staring at a terminal.
+2. **Warm, not cold.** The gray palette leans warm (yellow-green undertone) - closer to paper than to steel. A developer reading at midnight shouldn't feel like they're staring at a terminal.
 3. **Fast by default.** Zero-JS by default. Interactive elements hydrate only when needed (Astro islands). The design must work without JavaScript.
 4. **Honest.** No animations that waste time, no decorative elements that add weight, no metrics that exist to make numbers go up.
 
@@ -23,12 +23,12 @@ RxDev Man is a developer's personal knowledge base. It should feel like a well-o
 
 | Token         | Value                                      | Rationale                                                                                                                                                                                            |
 | ------------- | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--font-sans` | IBM Plex Sans, Noto Sans Thai, system-ui   | IBM Plex Sans is a humanist sans-serif designed for developers — technical but not sterile. Noto Sans Thai covers Thai script without visual jarring. System-ui as fallback for zero-cost rendering. |
+| `--font-sans` | IBM Plex Sans, Noto Sans Thai, system-ui   | IBM Plex Sans is a humanist sans-serif designed for developers - technical but not sterile. Noto Sans Thai covers Thai script without visual jarring. System-ui as fallback for zero-cost rendering. |
 | `--font-mono` | Source Code Pro, JetBrains Mono, monospace | Source Code Pro is purpose-built for code. JetBrains Mono as fallback for ligatures. Both are free and widely available.                                                                             |
 
 ### Type Scale
 
-Fluid type using `clamp()` — no breakpoints needed for font size. The scale is compact (7 steps from xs to 3xl) because a knowledge base doesn't need display headlines.
+Fluid type using `clamp()` - no breakpoints needed for font size. The scale is compact (7 steps from xs to 3xl) because a knowledge base doesn't need display headlines.
 
 | Token         | Min      | Max      | Use                    |
 | ------------- | -------- | -------- | ---------------------- |
@@ -48,11 +48,11 @@ Line height: 1.7 for body (generous for Thai text which has tall ascenders), 1.2
 
 ### Why warm grays
 
-Cold grays (blue undertone) feel corporate and digital. Warm grays (yellow-green undertone) feel like paper and ink — appropriate for a reading-focused tool. The palette is inspired by aged paper and natural materials.
+Cold grays (blue undertone) feel corporate and digital. Warm grays (yellow-green undertone) feel like paper and ink - appropriate for a reading-focused tool. The palette is inspired by aged paper and natural materials.
 
 ### Primitive tokens
 
-The gray scale runs from `#fdfdf8` (warm white) to `#1e1f23` (near-black). There is no pure gray — every step has a slight warm cast.
+The gray scale runs from `#fdfdf8` (warm white) to `#1e1f23` (near-black). There is no pure gray - every step has a slight warm cast.
 
 | Token              | Hex       | Role                             |
 | ------------------ | --------- | -------------------------------- |
@@ -68,9 +68,9 @@ The gray scale runs from `#fdfdf8` (warm white) to `#1e1f23` (near-black). There
 
 ### Brand colors
 
-Two accent colors — red and orange — carry the brand identity:
+Two accent colors - red and orange - carry the brand identity:
 
-- **Red (`#f54e00`)**: Primary brand color. Used for links, active states, key CTAs. A burnt red, not a fire-engine red — warm, readable, not alarming.
+- **Red (`#f54e00`)**: Primary brand color. Used for links, active states, key CTAs. A burnt red, not a fire-engine red - warm, readable, not alarming.
 - **Orange (`#eb9d2a`)**: Secondary accent. Used for hover states, highlights, the 3D depth effect on buttons. Complements the red without competing.
 
 ### Semantic states
@@ -108,12 +108,12 @@ Three levels of depth using box-shadow + border-bottom for a tactile, physical f
 
 | Level    | Token         | Effect                             |
 | -------- | ------------- | ---------------------------------- |
-| Resting  | `--shadow-sm` | 1px shadow — subtle lift           |
-| Default  | `--shadow-md` | 4px shadow — card-level depth      |
-| Hover    | `--shadow-lg` | 8px shadow — raised on interaction |
-| Dramatic | `--shadow-xl` | 15px shadow — modal/overlay        |
+| Resting  | `--shadow-sm` | 1px shadow - subtle lift           |
+| Default  | `--shadow-md` | 4px shadow - card-level depth      |
+| Hover    | `--shadow-lg` | 8px shadow - raised on interaction |
+| Dramatic | `--shadow-xl` | 15px shadow - modal/overlay        |
 
-The 3D depth effect (`--depth-shadow`) uses a solid-color `border-bottom` offset to simulate a physical button — giving the UI a tangible, paper-craft quality.
+The 3D depth effect (`--depth-shadow`) uses a solid-color `border-bottom` offset to simulate a physical button - giving the UI a tangible, paper-craft quality.
 
 ---
 
@@ -127,7 +127,7 @@ The 3D depth effect (`--depth-shadow`) uses a solid-color `border-bottom` offset
 | `--radius-xl`   | 20px   | Hero sections               |
 | `--radius-full` | 9999px | Pills, avatars, badges      |
 
-Radii are generous but not bubbly — the UI should feel friendly, not toylike.
+Radii are generous but not bubbly - the UI should feel friendly, not toylike.
 
 ---
 
@@ -141,7 +141,7 @@ Three named animations, all subtle:
 | `float`   | Translate Y ±8px | Gentle levitation             |
 | `shimmer` | Background slide | Loading states                |
 
-All animations respect `prefers-reduced-motion: reduce` — disabled entirely when the user has requested reduced motion. Transition durations are short (100–300ms) to feel responsive, not sluggish.
+All animations respect `prefers-reduced-motion: reduce` - disabled entirely when the user has requested reduced motion. Transition durations are short (100-300ms) to feel responsive, not sluggish.
 
 ---
 
@@ -155,10 +155,10 @@ All animations respect `prefers-reduced-motion: reduce` — disabled entirely wh
 
 Explicit layer ordering ensures predictable cascade:
 
-1. **reset** — box model normalization (minimal, not a full normalize)
-2. **base** — element-level styles (body, headings, links, images)
-3. **components** — all component styles (cards, buttons, grids, prose)
-4. **utilities** — helper classes (animation, text color, surface background)
+1. **reset** - box model normalization (minimal, not a full normalize)
+2. **base** - element-level styles (body, headings, links, images)
+3. **components** - all component styles (cards, buttons, grids, prose)
+4. **utilities** - helper classes (animation, text color, surface background)
 
 ### Token hierarchy
 
@@ -194,14 +194,14 @@ Breakpoints are reference-only (CSS custom properties don't work in `@media`), s
 
 ## Dark Mode (Phase 3)
 
-The token architecture is designed for dark mode — semantic tokens can be remapped under `[data-theme="dark"]` without touching any component code. The warm gray palette shifts to a warm dark (not AMOLED black):
+The token architecture is designed for dark mode - semantic tokens can be remapped under `[data-theme="dark"]` without touching any component code. The warm gray palette shifts to a warm dark (not AMOLED black):
 
 - Page background: warm dark gray, not `#000`
 - Text: slightly warmed whites, not pure white
 - Brand colors: slightly desaturated to maintain contrast ratios
 - Shadows: lighter shadows on dark backgrounds (inverted depth)
 
-A sepia mode (`[data-theme="sepia"]`) is also planned — warm background, reduced contrast, for late-night reading.
+A sepia mode (`[data-theme="sepia"]`) is also planned - warm background, reduced contrast, for late-night reading.
 
 ---
 

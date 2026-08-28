@@ -13,7 +13,7 @@ series: 'Frontend Developer Roadmap'
 
 ยินดีต้อนรับสู่ซีรีส์บทความ **"Frontend Developer Roadmap"** ที่จะพาคุณก้าวสู่การเป็น Frontend Developer มืออาชีพอย่างมั่นใจ
 
-ใน **ตอนที่ 1 นี้ เราจะเจาะลึกเฉพาะ React.js** — ไลบรารีที่เปลี่ยนโฉมหน้าการพัฒนาเว็บในยุคสมัยใหม่ และยังคงเป็น **เครื่องมือหลักอันดับ 1** ของนักพัฒนาทั่วโลก
+ใน **ตอนที่ 1 นี้ เราจะเจาะลึกเฉพาะ React.js** - ไลบรารีที่เปลี่ยนโฉมหน้าการพัฒนาเว็บในยุคสมัยใหม่ และยังคงเป็น **เครื่องมือหลักอันดับ 1** ของนักพัฒนาทั่วโลก
 
 บทความนี้ออกแบบมาเพื่อให้คุณ:
 - เข้าใจ React อย่างลึกซึ้ง ไม่ใช่แค่ "ใช้ได้"
@@ -27,7 +27,7 @@ series: 'Frontend Developer Roadmap'
 
 **React.js** (หรือเรียกสั้น ๆ ว่า **React**) คือ JavaScript **ไลบรารี** สำหรับสร้าง **User Interface (UI)** ที่พัฒนาโดยทีม **Meta (Facebook)** และเปิดให้ใช้งานแบบโอเพ่นซอร์ส
 
-React ไม่ใช่เฟรมเวิร์กเต็มรูปแบบ แต่เป็นเครื่องมือที่เน้นการสร้าง UI แบบ **Component-Based** — กล่าวคือ แบ่งหน้าเว็บออกเป็นชิ้นส่วนเล็ก ๆ ที่สามารถนำกลับมาใช้ใหม่ได้ (Reusable Components)
+React ไม่ใช่เฟรมเวิร์กเต็มรูปแบบ แต่เป็นเครื่องมือที่เน้นการสร้าง UI แบบ **Component-Based** - กล่าวคือ แบ่งหน้าเว็บออกเป็นชิ้นส่วนเล็ก ๆ ที่สามารถนำกลับมาใช้ใหม่ได้ (Reusable Components)
 
 ### 🔥 ทำไม React ยังครองตลาด?
 
@@ -35,7 +35,7 @@ React ไม่ใช่เฟรมเวิร์กเต็มรูปแ�
 2. **บริษัทใหญ่ใช้ทั่วโลก** Facebook, Instagram, Netflix, Airbnb, Uber, Discord, และอีกมากมาย
 3. **การสนับสนุนอย่างต่อเนื่อง** ทีม React Core ประกาศแผนงานล่วงหน้าหลายปี รวมถึงการสนับสนุน **React Server Components** และ **Concurrent Rendering**
 4. **เข้ากับเครื่องมือสมัยใหม่ได้ดี** รองรับ TypeScript, Vite, ESLint, Prettier, และ Jest ได้แบบไม่ต้องตั้งค่าเยอะ
-5. **เหมาะกับ Meta-Frameworks** เป็นรากฐานของ Next.js, Remix, Gatsby — เฟรมเวิร์กที่กำลังมาแรง
+5. **เหมาะกับ Meta-Frameworks** เป็นรากฐานของ Next.js, Remix, Gatsby - เฟรมเวิร์กที่กำลังมาแรง
 
 ---
 
@@ -45,7 +45,7 @@ React เปลี่ยนวิธีคิดการเขียนเว�
 
 ### 1. Component-Based Architecture
 
-ทุกอย่างใน React คือ **Component** — หน่วยย่อยของ UI ที่สามารถนำกลับมาใช้ใหม่ได้
+ทุกอย่างใน React คือ **Component** - หน่วยย่อยของ UI ที่สามารถนำกลับมาใช้ใหม่ได้
 
 ```jsx
 // ตัวอย่าง: Component ชื่อ Button
@@ -117,7 +117,7 @@ JSX (JavaScript XML) คือ syntax extension ที่ให้คุณเ�
 const element = <h1 className="title">สวัสดี, {name}!</h1>;
 ```
 
-> ⚠️ JSX ไม่ใช่ HTML และไม่ใช่ string — มันจะถูกแปลงเป็น `React.createElement()` โดยเครื่องมือเช่น Babel หรือ SWC
+> ⚠️ JSX ไม่ใช่ HTML และไม่ใช่ string - มันจะถูกแปลงเป็น `React.createElement()` โดยเครื่องมือเช่น Babel หรือ SWC
 
 ### กฎสำคัญของ JSX
 
@@ -159,7 +159,7 @@ function UserProfile({ user }) {
 
 ### Hooks พื้นฐานที่ต้องรู้
 
-#### 1. `useState` – จัดการ State
+#### 1. `useState` - จัดการ State
 
 ใช้สำหรับเก็บและอัปเดตข้อมูลภายใน Component
 
@@ -183,7 +183,7 @@ function Counter() {
 
 ---
 
-#### 2. `useEffect` – จัดการ Side Effects
+#### 2. `useEffect` - จัดการ Side Effects
 
 ใช้สำหรับงานที่ไม่ใช่การเรนเดอร์ UI เช่น:
 - ดึงข้อมูลจาก API
@@ -210,7 +210,7 @@ function UserProfile({ userId }) {
 
 ---
 
-#### 3. `useContext` – ส่งข้อมูลข้าม Component
+#### 3. `useContext` - ส่งข้อมูลข้าม Component
 
 ช่วยหลีกเลี่ยง **prop drilling** (ส่ง props ผ่านหลายชั้น)
 
@@ -235,7 +235,7 @@ function Header() {
 
 ---
 
-#### 4. `useRef` – เข้าถึง DOM หรือเก็บค่าที่ไม่ re-render
+#### 4. `useRef` - เข้าถึง DOM หรือเก็บค่าที่ไม่ re-render
 
 ```jsx
 import { useRef } from 'react';
@@ -260,7 +260,7 @@ function TextInput() {
 
 ---
 
-#### 5. `useMemo` และ `useCallback` – Optimization
+#### 5. `useMemo` และ `useCallback` - Optimization
 
 - `useMemo`: คำนวณค่าใหม่เฉพาะเมื่อ dependency เปลี่ยน
 - `useCallback`: สร้างฟังก์ชันใหม่เฉพาะเมื่อ dependency เปลี่ยน
@@ -273,7 +273,7 @@ const handleClick = useCallback(() => {
 }, [a, b]);
 ```
 
-> ✅ ใช้เมื่อจำเป็นเท่านั้น — อย่า optimize ล่วงหน้า
+> ✅ ใช้เมื่อจำเป็นเท่านั้น - อย่า optimize ล่วงหน้า
 
 ---
 
@@ -391,7 +391,7 @@ function App() {
 ---
 
 3. **ใช้ `useState`, `useEffect`, `useContext`**  
-   เรียนรู้การจัดการ state และ side effects — หัวใจของ React  
+   เรียนรู้การจัดการ state และ side effects - หัวใจของ React  
 
    🔗 [React Official Docs: State Hook](https://react.dev/reference/react/useState)  
    🎥 [ช่อง YouTube: Web Dev Simplified - React Hooks Explained](https://www.youtube.com/watch?v=O6P86uwfdR0)  
@@ -445,13 +445,13 @@ function App() {
 
 React.js ไม่ใช่แค่ “เทรนด์” แต่เป็น **พื้นฐานสำคัญของ Frontend Development** ในยุคปัจจุบัน
 
-การเข้าใจ React อย่างลึกซึ้ง — ตั้งแต่ JSX, Hooks, Virtual DOM, ไปจนถึง Ecosystem — จะช่วยให้คุณ:
+การเข้าใจ React อย่างลึกซึ้ง - ตั้งแต่ JSX, Hooks, Virtual DOM, ไปจนถึง Ecosystem - จะช่วยให้คุณ:
 - เขียนโค้ดที่มีคุณภาพสูง
 - แก้ปัญหาได้เร็วขึ้น
 - เตรียมพร้อมสำหรับ Next.js และเครื่องมือระดับ Production
 
 <InfoBox title="Pro Tip!">
-  อย่าพยายามจำทุกอย่างในครั้งเดียว ให้ <strong>ฝึกด้วยโปรเจกต์จริง</strong> — คุณจะเข้าใจลึกกว่าการอ่านบทความ 10 บทความ
+  อย่าพยายามจำทุกอย่างในครั้งเดียว ให้ <strong>ฝึกด้วยโปรเจกต์จริง</strong> - คุณจะเข้าใจลึกกว่าการอ่านบทความ 10 บทความ
 </InfoBox>
 
 ---

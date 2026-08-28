@@ -17,7 +17,7 @@ const processed = relatedPosts.map((post) => {
   const slug = getEntrySlug(post.id);
   const { title, pubDate, category, heroImage, description } = post.data;
 
-  // Guard date parsing — fall back gracefully on invalid dates
+  // Guard date parsing - fall back gracefully on invalid dates
   let formattedDate = 'Date unavailable';
   let isoDate = '';
   try {
@@ -277,7 +277,7 @@ throw new Error('Invalid date');
   }
 
   /* ============================================================
-     Body — meta + title + excerpt
+     Body - meta + title + excerpt
   ============================================================ */
   .item-body {
     display: flex;

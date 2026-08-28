@@ -48,9 +48,9 @@ Measured on 2026-08-03 after Phase 7 changes.
 - Served as WebP/AVIF by Vercel's edge image optimization
 
 ## Fonts
-- IBM Plex Sans (Google Fonts) — `font-display: swap`
-- Source Code Pro (Google Fonts) — `font-display: swap`
-- Noto Sans Thai (Google Fonts) — `font-display: swap`
+- IBM Plex Sans (Google Fonts) - `font-display: swap`
+- Source Code Pro (Google Fonts) - `font-display: swap`
+- Noto Sans Thai (Google Fonts) - `font-display: swap`
 - Non-render-blocking via `media="print" onload` pattern
 
 ## CLS Risk Assessment

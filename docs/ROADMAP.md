@@ -1,8 +1,8 @@
-# RxDev Man — Roadmap
+# RxDev Man - Roadmap
 
-This roadmap describes what RxDev Man is, from reading its own code — and where it should end up. It follows the conventions in [contributing.md](contributing.md), the security posture in [security.md](security.md), and the design system documented in [design.md](design.md) and implemented in `src/styles/global.css`.
+This roadmap describes what RxDev Man is, from reading its own code - and where it should end up. It follows the conventions in [contributing.md](contributing.md), the security posture in [security.md](security.md), and the design system documented in [design.md](design.md) and implemented in `src/styles/global.css`.
 
-> **What RxDev Man is.** A _quiet, personal_ developer knowledge base — one
+> **What RxDev Man is.** A _quiet, personal_ developer knowledge base - one
 > pharmacist-turned-developer's public notebook. You write MDX articles, organize
 > them by category and tag, showcase tools you've built, and let readers find
 > what matters through instant search. Every article is yours: the content lives
@@ -26,11 +26,11 @@ acceptance is checked against it.
 
 - **Stack**: Astro 7.x (CSR + SSG hybrid), TypeScript 6.x, MDX, Supabase
   (PostgreSQL + GoTrue), Vercel Edge Network. Version `2.0.0`. No server of
-  our own — the browser talks to Supabase's PostgREST for read-only counts,
+  our own - the browser talks to Supabase's PostgREST for read-only counts,
   and the API route uses the service role key server-side for writes.
 - **Security model**: CSP headers in `vercel.json`, RLS on all Supabase tables
   (page_views blocked from anon, view_counts read-only for anon), service role
-  key server-side only. `unsafe-inline` and `unsafe-eval` present in CSP —
+  key server-side only. `unsafe-inline` and `unsafe-eval` present in CSP -
   needs tightening.
 - **Schema** (`supabase-schema.sql`, idempotent): `rxdevman_page_views` (raw
   hits with hashed IP), `rxdevman_view_counts` (pre-aggregated), `increment_view_count`
@@ -44,7 +44,7 @@ acceptance is checked against it.
 - **Design system** (`global.css`, 1334 lines): CSS Layers (reset → base →
   components → utilities), primitive/semantic/component token hierarchy, fluid
   type scale, 4px spacing scale, elevation tokens, keyframe animations.
-- **CI**: GitHub Actions — ESLint, Astro type check, production build.
+- **CI**: GitHub Actions - ESLint, Astro type check, production build.
   CodeQL security analysis. Husky + commitlint for commit hygiene.
 - **Search**: Pagefind (static, client-side, typo-tolerant).
 
@@ -55,9 +55,9 @@ acceptance is checked against it.
    design document, future contributors make aesthetic decisions by feel, not
    by system. (Phase 1.)
 2. **Zero tests.** No test framework, no test files, no test command in CI. The
-   two things that must never silently break — the **view-counting pipeline**
+   two things that must never silently break - the **view-counting pipeline**
    (hash correctness, RPC atomicity) and the **content schema validation**
-   (Zod frontmatter) — have zero coverage. (Phase 2.)
+   (Zod frontmatter) - have zero coverage. (Phase 2.)
 3. **No `contributing.md`, no `agents.md`, no `security.md`.** The README has a
    short contributing section, but no formal guidelines for code style, commit
    conventions (beyond commitlint), review process, or security disclosure.
@@ -67,7 +67,7 @@ acceptance is checked against it.
    but no `[data-theme]` or `prefers-color-scheme` media query remaps colors.
    (Phase 3.)
 5. **No RSS feed.** A developer blog without RSS is invisible to readers who
-   use feed readers — the exact audience that values open, non-algorithmic
+   use feed readers - the exact audience that values open, non-algorithmic
    content delivery. (Phase 4.)
 6. **No series/collections.** 23 posts with natural groupings (Rust series,
    Git series, HOSxP tools) but no way to link them as a learning path.
@@ -76,7 +76,7 @@ acceptance is checked against it.
    likely needs `unsafe-inline` for styles, but this should be audited and
    tightened. (Phase 6.)
 8. **No offline story.** A developer blog should be readable on trains, planes,
-   and bad cafe wifi. Astro's SSG output is already static — a service worker
+   and bad cafe wifi. Astro's SSG output is already static - a service worker
    is a natural fit. (Phase 5.)
 9. **No performance budgets.** The CI builds but doesn't measure. No bundle
    size ceiling, no Lighthouse budget, no regression guard. (Phase 7.)
@@ -86,32 +86,32 @@ acceptance is checked against it.
 
 ---
 
-## Phase 1: Foundation — Documentation & Design System ✅
+## Phase 1: Foundation - Documentation & Design System ✅
 
 The project needs its identity on paper before it builds on top of it.
 
-- [x] **Write `docs/design.md`** — document the design system that already exists
+- [x] **Write `docs/design.md`** - document the design system that already exists
       in `global.css`: why IBM Plex Sans + Source Code Pro, why the warm gray
       palette (not cold), why 4px spacing, why fluid type scales, the layer
       architecture (reset → base → components → utilities), and the token
       hierarchy (primitive → semantic → component → legacy aliases). This is the
-      _rationale_, not the code — the code is the source of truth.
-- [x] **Write `docs/security.md`** — document the security posture: CSP headers,
+      _rationale_, not the code - the code is the source of truth.
+- [x] **Write `docs/security.md`** - document the security posture: CSP headers,
       Supabase RLS model, service role key usage, IP hashing strategy, the
       `pg_cron` cleanup, and how to report vulnerabilities. Note what `unsafe-inline`
       in the CSP means and the plan to tighten it.
-- [x] **Write `docs/contributing.md`** — formalize what the README has: branch
+- [x] **Write `docs/contributing.md`** - formalize what the README has: branch
       naming, conventional commits (commitlint is already enforced), code style
       (ESLint config), how to add a blog post (frontmatter schema, MDX
       components available), and the PR review process.
-- [x] **Write `docs/agents.md`** — conventions for AI agents working in this repo:
+- [x] **Write `docs/agents.md`** - conventions for AI agents working in this repo:
       file structure, component patterns, token usage, no inline hex colors
       (route through tokens), how to add new pages, the Supabase access pattern.
-- [x] **Clean up legacy token aliases** in `global.css` — the `/* Legacy
-Aliases */` section (lines 153–168) exists for backward compatibility. Audit
+- [x] **Clean up legacy token aliases** in `global.css` - the `/* Legacy
+Aliases */` section (lines 153-168) exists for backward compatibility. Audit
       usage across all components and migrate to semantic tokens, then remove the
       aliases.
-- [x] **Verify `.env` is not in git history** — check `git log --all --full-history -- .env` and
+- [x] **Verify `.env` is not in git history** - check `git log --all --full-history -- .env` and
       remove if tracked. Add `.env` to `.gitignore` explicitly if not already.
 
 **Acceptance:** design.md describes rxdevman, not generic best practices;
@@ -126,24 +126,24 @@ The view-counting pipeline and the content schema are the two places a silent
 regression does real harm. They get tests before anything is built on top of
 them.
 
-- [x] **Set up Vitest** — add `vitest` as a dev dependency, create `vitest.config.ts`,
+- [x] **Set up Vitest** - add `vitest` as a dev dependency, create `vitest.config.ts`,
       add `bun run test` script, add test step to CI.
-- [x] **IP hash tests** — test the SHA-256(ip + date + salt) function in
+- [x] **IP hash tests** - test the SHA-256(ip + date + salt) function in
       `src/lib/hash.ts`: same input produces same hash, different salt produces
       different hash, different date produces different hash, the hash is
       consistently formatted.
-- [x] **Zod frontmatter schema tests** — validate that the schema in
+- [x] **Zod frontmatter schema tests** - validate that the schema in
       `src/lib/content-schema.ts` (extracted from `src/content.config.ts` so it's
       testable without Astro's virtual modules) rejects missing
       required fields, rejects invalid dates, rejects invalid category values, and
       accepts valid frontmatter.
-- [x] **RelatedPosts scoring tests** — the tag/category scoring algorithm in
+- [x] **RelatedPosts scoring tests** - the tag/category scoring algorithm in
       `RelatedPosts.astro` (or its extracted logic) should be tested: same tags
       score higher, category match scores higher than tag match, fallback to most
       recent works.
-- [x] **Slug generation tests** — `slugify` utility in `src/utils/`: handles
+- [x] **Slug generation tests** - `slugify` utility in `src/utils/`: handles
       Thai characters, handles special characters, handles collisions.
-- [x] **Reading time calculation tests** — `src/utils/reading-time.ts`: edge
+- [x] **Reading time calculation tests** - `src/utils/reading-time.ts`: edge
       cases (empty content, very short content, code blocks not counted as words).
 
 **Acceptance:** `bun run test` passes in CI; the view-counting logic and
@@ -153,25 +153,25 @@ Zod schema are covered; no silent regression can slip through.
 
 ## Phase 3: Dark Mode & Theme System ✅
 
-The design tokens are already structured for this — it's a matter of wiring
+The design tokens are already structured for this - it's a matter of wiring
 them up.
 
-- [x] **Add `[data-theme="dark"]` remap** in `global.css` — override semantic
+- [x] **Add `[data-theme="dark"]` remap** in `global.css` - override semantic
       tokens (surfaces, text, borders, brand) under a dark palette. Keep the same
       token _names_ so no component changes. The gray scale shifts from warm light
-      to warm dark (not AMOLED black — a reading-app dark, not a terminal dark).
-- [x] **Add `[data-theme="sepia"]` remap** — a warm, low-contrast reading mode
+      to warm dark (not AMOLED black - a reading-app dark, not a terminal dark).
+- [x] **Add `[data-theme="sepia"]` remap** - a warm, low-contrast reading mode
       for long articles. Sepia background, slightly muted text, reduced blue light.
       This serves the "developer reading book notes at 11pm" use case.
-- [x] **Respect `prefers-color-scheme`** — default to the OS preference when
+- [x] **Respect `prefers-color-scheme`** - default to the OS preference when
       no explicit theme is set. Store user preference in `localStorage`.
-- [x] **Theme toggle component** — a small, accessible toggle in the navbar
+- [x] **Theme toggle component** - a small, accessible toggle in the navbar
       (or footer) that cycles light → dark → sepia. Keyboard-accessible, announces
       current theme to screen readers via `aria-label`.
-- [x] **Verify all components render correctly in all three themes** — check
+- [x] **Verify all components render correctly in all three themes** - check
       blog post cards, code blocks (Andromeeda theme needs its own dark variant),
       InfoBox, GitCommand, ToolCard, navbar, mobile overlay.
-- [x] **Code block theme switching** — the `astro-expressive-code` integration
+- [x] **Code block theme switching** - the `astro-expressive-code` integration
       uses `andromeeda` theme. Add a dark-appropriate theme (e.g., `github-dark`)
       and switch based on the active theme. This may require configuring
       `expressiveCode` to accept multiple themes.
@@ -183,27 +183,27 @@ works; user preference persists; code blocks look correct in all themes.
 
 ## Phase 4: Content Discovery & Organization ✅
 
-Deepen exactly the content loop RxDev Man already has — write, organize,
-discover — without adding a second product.
+Deepen exactly the content loop RxDev Man already has - write, organize,
+discover - without adding a second product.
 
-- [x] **RSS feed** — Astro has `@astrojs/rss` integration. Generate `/rss.xml`
+- [x] **RSS feed** - Astro has `@astrojs/rss` integration. Generate `/rss.xml`
       from all published blog posts. Include full content or summary, categories,
       tags, publication date. Auto-discoverable via `<link rel="alternate">` in
       the `<head>`.
-- [x] **Series/Collections** — a frontmatter field `series` (string) that
+- [x] **Series/Collections** - a frontmatter field `series` (string) that
       groups related posts. A `/blog/series/[series]` page that lists posts in
       order. The series name appears on the blog post card and at the top of the
       post with navigation (previous/next in series). Natural groupings: "Rust
       from Scratch", "HOSxP Development", "Git Mastery".
-- [x] **Reading time on blog cards** — already calculated in `src/utils/reading-time.ts`,
+- [x] **Reading time on blog cards** - already calculated in `src/utils/reading-time.ts`,
       but verify it's displayed on BlogPostCard. If not, add it.
-- [ ] **"Recently Published" section on homepage** — the homepage already has
+- [ ] **"Recently Published" section on homepage** - the homepage already has
       a hero. Add a section below showing the 3 most recent posts with
       BlogPostCard, giving returning visitors an immediate entry point.
-- [x] **Category page improvements** — the `/blog/categories/[category]` page
+- [x] **Category page improvements** - the `/blog/categories/[category]` page
       exists but may need a better layout: category description, post count, sorted
       by date.
-- [x] **Tag cloud / tag index** — a `/blog/tags` page that lists all tags with
+- [x] **Tag cloud / tag index** - a `/blog/tags` page that lists all tags with
       post counts, linking to `/blog/tags/[tag]`. Helps readers discover content
       breadth.
 
@@ -215,18 +215,18 @@ homepage shows recent posts; no new sharing, social, or multi-user features.
 ## Phase 5: Offline-First (the natural end-state for a static blog)
 
 Astro outputs static HTML + CSS + JS. A service worker can cache the shell
-and let readers access content offline — the same content they'd get online.
+and let readers access content offline - the same content they'd get online.
 
-- [x] **PWA manifest** — the `site.webmanifest` already exists. Verify it has
+- [x] **PWA manifest** - the `site.webmanifest` already exists. Verify it has
       proper name, description, icons, theme colors, and `display: standalone`.
-- [x] **Service worker** — cache the app shell (HTML, CSS, JS, fonts, images)
+- [x] **Service worker** - cache the app shell (HTML, CSS, JS, fonts, images)
       on install. Serve from cache when offline, update in background. Use
       `workbox` or a lightweight custom SW.
-- [x] **Offline indicator** — a calm, non-intrusive banner when the network is
-      unavailable: "You're offline — reading cached content." Not a toast storm.
-- [x] **Search works offline** — Pagefind builds a static index. Cache the
+- [x] **Offline indicator** - a calm, non-intrusive banner when the network is
+      unavailable: "You're offline - reading cached content." Not a toast storm.
+- [x] **Search works offline** - Pagefind builds a static index. Cache the
       index files so search works without network.
-- [x] **View counter degrades gracefully** — when offline, the POST to
+- [x] **View counter degrades gracefully** - when offline, the POST to
       `/api/track` will fail silently (no error shown to reader). On reconnect,
       the next page load will track normally.
 
@@ -238,22 +238,22 @@ indicator appears and disappears cleanly.
 
 ## Phase 6: Security & Supply-Chain Hardening
 
-- [x] **Audit CSP in `vercel.json`** — the current CSP has `unsafe-inline` for
+- [x] **Audit CSP in `vercel.json`** - the current CSP has `unsafe-inline` for
       styles and `unsafe-inline` + `unsafe-eval` for scripts. Audit whether
       `unsafe-eval` is actually needed (Astro 7 may not require it). Remove if
       possible; document why if not. Add `upgrade-insecure-requests` if the site
       should be HTTPS-only.
-- [x] **Add `docs/security.md`** (if not done in Phase 1) — document the security
+- [x] **Add `docs/security.md`** (if not done in Phase 1) - document the security
       model: CSP, Supabase RLS, IP hashing, service role key usage, how to report
       vulnerabilities.
-- [x] **CodeQL + dependency audit** — CodeQL is already in CI. Add
+- [x] **CodeQL + dependency audit** - CodeQL is already in CI. Add
       `bun audit` (or equivalent) to CI to catch known vulnerabilities in
       dependencies. Renovate is already handling automated updates.
 - [x] **Verify `.env` not in git history** (if not done in Phase 1).
-- [x] **Add `permissions` to CI workflow** — the `ci.yml` already has
+- [x] **Add `permissions` to CI workflow** - the `ci.yml` already has
       `permissions: contents: read`. Verify `codeql.yml` has minimal permissions
       too.
-- [x] **Pin GitHub Actions to commit SHAs** — already done (checkout pinned
+- [x] **Pin GitHub Actions to commit SHAs** - already done (checkout pinned
       to `3d3c42e...`, setup-node to `8207627...`, setup-bun to `c05077e...`).
       Verify CodeQL action is also pinned.
 
@@ -264,15 +264,15 @@ all GitHub Actions pinned to SHAs; security.md exists.
 
 ## Phase 7: Performance Budgets (verified, not claimed)
 
-- [x] **Measure a baseline first** — on a mid-tier device (throttled CPU +
+- [x] **Measure a baseline first** - on a mid-tier device (throttled CPU +
       network): cold first-paint, LCP, CLS, FID/INP, total bundle size (JS + CSS),
       page weight (HTML + images). Record in `docs/perf-baseline.md`.
-- [x] **Set CI-enforced budgets** — bundle size ceiling that fails the build;
+- [x] **Set CI-enforced budgets** - bundle size ceiling that fails the build;
       Lighthouse score thresholds. Calibrated to real numbers, not guesses.
-- [x] **Image audit** — verify all images use Astro `<Image>` for WebP
+- [x] **Image audit** - verify all images use Astro `<Image>` for WebP
       conversion and responsive srcsets. Check for any `<img>` tags that bypass
       optimization.
-- [x] **Font loading audit** — the current approach uses `media="print" onload`
+- [x] **Font loading audit** - the current approach uses `media="print" onload`
       for non-render-blocking. Verify font-display is `swap` and no FOIT occurs.
 - [x] **Verify no layout shift** from async-loaded components (ViewCounter,
       ProgressBar). These should have reserved space or load without shifting.
@@ -288,16 +288,16 @@ The current version is `2.0.0`. The roadmap above adds significant
 capability (dark mode, RSS, offline, tests, security hardening). A v2.0.0
 marks the point where RxDev Man is a _complete_ developer knowledge base.
 
-- [x] **Reproducible build documented** — exact toolchain versions (Node,
+- [x] **Reproducible build documented** - exact toolchain versions (Node,
       Bun, Astro), env inputs → the same `dist/` from a given commit.
-- [x] **Vercel preview on every PR** — already works via Vercel's GitHub
+- [x] **Vercel preview on every PR** - already works via Vercel's GitHub
       integration. Verify that CSP + SPA fallback are tested in preview.
-- [x] **Branch protection on `main`** — strict required status checks (lint,
+- [x] **Branch protection on `main`** - strict required status checks (lint,
       type check, build, test), no force-push, no deletion.
-- [x] **User-facing getting-started** — a short guide in README: how to add a
+- [x] **User-facing getting-started** - a short guide in README: how to add a
       post, how to add a tool page, how to add a category. So the knowledge base
       is easy to extend.
-- [x] **`v2.0.0` tag** once Phases 1–7 acceptance checks pass, CHANGELOG cut
+- [x] **`v2.0.0` tag** once Phases 1-7 acceptance checks pass, CHANGELOG cut
       with git-cliff or similar.
 
 **Acceptance:** a tagged, reproducible release; branch protection live; docs
@@ -309,7 +309,7 @@ match the app.
 
 ```
 Phase 1 (Foundation: docs + design)  ─┐
-Phase 2 (Trust: tests)               ─┤ foundation — do these first
+Phase 2 (Trust: tests)               ─┤ foundation - do these first
 Phase 3 (Dark mode + themes)          ─┘
         │
         ▼
@@ -328,8 +328,8 @@ Phase 8 (v2.0.0)
 Phase 1 comes first on purpose: RxDev Man cannot grow sustainably without
 its identity on paper. Phase 2 comes with it because the view-counting
 pipeline and content schema are the two things a silent regression hurts most.
-Everything after is deepening the one loop RxDev Man has — write, read,
-discover — never adding a second product.
+Everything after is deepening the one loop RxDev Man has - write, read,
+discover - never adding a second product.
 
 ---
 
@@ -338,34 +338,34 @@ discover — never adding a second product.
 Each of these is valuable _for a different product_. RxDev Man stays small and
 single-author on purpose:
 
-- **Comment system / community features** — adds moderation, spam, abuse
+- **Comment system / community features** - adds moderation, spam, abuse
   surface. A developer's notebook doesn't need strangers talking on it.
   If comments are wanted later, a third-party embed (giscus/GitHub Discussions)
   is a better fit than self-hosted.
-- **Multi-author / collaborative editing** — out of scope; the blog is one
+- **Multi-author / collaborative editing** - out of scope; the blog is one
   person's public notebook.
-- **Analytics dashboard** — view counts are displayed honestly on articles.
+- **Analytics dashboard** - view counts are displayed honestly on articles.
   A full analytics dashboard with graphs, geographic breakdowns, and referral
   tracking adds complexity and privacy surface for no reader benefit.
-- **AI summarization / chat over content** — deferred indefinitely; adds a
+- **AI summarization / chat over content** - deferred indefinitely; adds a
   network dependency and a cost/privacy surface.
-- **Telemetry / analytics on reader behavior** — explicitly never. The visitor
+- **Telemetry / analytics on reader behavior** - explicitly never. The visitor
   tracking counts views; it doesn't track _readers_.
-- **Native mobile apps** — the PWA (Phase 5) is the mobile story.
+- **Native mobile apps** - the PWA (Phase 5) is the mobile story.
 
 ## Future / Ecosystem (post-v2.0.0, if they keep RxDev Man quiet)
 
-- **Book notes template** — a dedicated MDX layout for book notes (like the
+- **Book notes template** - a dedicated MDX layout for book notes (like the
   Ultralearning post) with structured fields: book title, author, rating,
   key takeaways, chapter-by-chapter notes.
-- **Interactive code playgrounds** — embed runnable Rust/Vue/TypeScript
+- **Interactive code playgrounds** - embed runnable Rust/Vue/TypeScript
   examples using StackBlitz or CodeSandbox iframes.
-- **Newsletter integration** — a simple "subscribe to RSS" or Buttondown/
+- **Newsletter integration** - a simple "subscribe to RSS" or Buttondown/
   Substack embed for readers who want email delivery.
-- **Multi-language support** — i18n for Thai/English content, since the blog
+- **Multi-language support** - i18n for Thai/English content, since the blog
   already has posts in both languages.
-- **API documentation pages** — for tools like CupsaBot and HerbReady, auto-
+- **API documentation pages** - for tools like CupsaBot and HerbReady, auto-
   generated API docs from code comments or OpenAPI specs.
-- **Reading list / bookmarks** — a private page (Supabase + auth) where the
+- **Reading list / bookmarks** - a private page (Supabase + auth) where the
   author saves links to interesting articles, creating a public "things I've
   read" page.

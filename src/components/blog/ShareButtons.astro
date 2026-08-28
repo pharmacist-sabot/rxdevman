@@ -187,7 +187,7 @@ const platforms = [
             });
           }
           catch (err) {
-            // User cancelled or share failed — silent
+            // User cancelled or share failed - silent
             if (err instanceof Error && err.name !== 'AbortError') {
               console.error('Share failed:', err);
             }
@@ -261,7 +261,7 @@ const platforms = [
     height: 2.75rem;
     border-radius: var(--radius-lg);
 
-    /* Colours — defaults, overridden by inline style */
+    /* Colours - defaults, overridden by inline style */
     color: var(--text-secondary);
     background-color: color-mix(in srgb, var(--surface-page) 60%, var(--surface-card) 40%);
     border: 1px solid var(--border-default);

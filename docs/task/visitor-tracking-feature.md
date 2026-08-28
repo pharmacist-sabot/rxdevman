@@ -4,8 +4,8 @@
 
 Add a visitor tracking system to **rxdevman.com** (Astro framework) that counts page views for:
 
-- The **Home page** (`/`) — display total unique visitors
-- **Blog post pages** (`.mdx` files under `/posts/*`) — display per-article view counts
+- The **Home page** (`/`) - display total unique visitors
+- **Blog post pages** (`.mdx` files under `/posts/*`) - display per-article view counts
 
 Data is stored in **Supabase**. Counting is IP-based with daily hashing for privacy. Refreshing the page counts as a new view; the goal is honest unique-visitor tracking, not bot/spam resistance.
 
@@ -29,7 +29,7 @@ Create the following tables in Supabase. All table names use the `rxdevman_` pre
 
 ### `rxdevman_page_views`
 
-Stores every individual hit. IP is never stored raw — always hashed.
+Stores every individual hit. IP is never stored raw - always hashed.
 
 ```sql
 CREATE TABLE rxdevman_page_views (
@@ -59,7 +59,7 @@ CREATE TABLE rxdevman_view_counts (
 );
 ```
 
-### RPC Function — `increment_view_count`
+### RPC Function - `increment_view_count`
 
 Must be created in Supabase SQL editor. Called server-side after every INSERT.
 
@@ -94,9 +94,9 @@ PUBLIC_SUPABASE_ANON_KEY=<anon-key>
 SUPABASE_SERVICE_ROLE_KEY=<service-role-key>
 ```
 
-- **`HASH_SALT`** — secret salt mixed into the IP hash. Generate once with `openssl rand -hex 16`.
-- **`PUBLIC_SUPABASE_URL`** and **`PUBLIC_SUPABASE_ANON_KEY`** — safe to expose client-side (read-only usage).
-- **`SUPABASE_SERVICE_ROLE_KEY`** — server-side only. Never expose to the browser.
+- **`HASH_SALT`** - secret salt mixed into the IP hash. Generate once with `openssl rand -hex 16`.
+- **`PUBLIC_SUPABASE_URL`** and **`PUBLIC_SUPABASE_ANON_KEY`** - safe to expose client-side (read-only usage).
+- **`SUPABASE_SERVICE_ROLE_KEY`** - server-side only. Never expose to the browser.
 
 ---
 
@@ -109,13 +109,13 @@ Initialize two Supabase clients: one for server (write), one for client (read).
 ```typescript
 import { createClient } from '@supabase/supabase-js';
 
-// Server-side client — has write access via service role key
+// Server-side client - has write access via service role key
 export const supabaseServer = createClient(
   import.meta.env.PUBLIC_SUPABASE_URL,
   import.meta.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-// Client-side client — anon key, read-only usage
+// Client-side client - anon key, read-only usage
 export const supabasePublic = createClient(
   import.meta.env.PUBLIC_SUPABASE_URL,
   import.meta.env.PUBLIC_SUPABASE_ANON_KEY
@@ -223,7 +223,7 @@ const count = data?.unique_visitors ?? 0;
 </span>
 
 <script>
-// Fire tracking call after page load — client-side only
+// Fire tracking call after page load - client-side only
 document.addEventListener('DOMContentLoaded', async () => {
   const el = document.querySelector<HTMLElement>('.view-counter');
   if (!el)
@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
   catch {
-    // Silently fail — tracking should never break the page
+    // Silently fail - tracking should never break the page
   }
 });
 </script>
@@ -316,8 +316,8 @@ Run in SQL editor to lock down table access. Both tables must have RLS enabled b
 -- ─────────────────────────────────────────────
 ALTER TABLE rxdevman_page_views ENABLE ROW LEVEL SECURITY;
 
--- No SELECT policy for anon — ip_hash must never be publicly readable
--- No INSERT policy for anon — all writes go through the service role key (API route)
+-- No SELECT policy for anon - ip_hash must never be publicly readable
+-- No INSERT policy for anon - all writes go through the service role key (API route)
 -- The increment_view_count RPC is defined with SECURITY DEFINER so it runs as
 -- the table owner and bypasses RLS on behalf of the service role.
 
@@ -326,7 +326,7 @@ ALTER TABLE rxdevman_page_views ENABLE ROW LEVEL SECURITY;
 -- ─────────────────────────────────────────────
 ALTER TABLE rxdevman_view_counts ENABLE ROW LEVEL SECURITY;
 
--- Anyone (anon) can read aggregate counts — this powers the public view counter UI
+-- Anyone (anon) can read aggregate counts - this powers the public view counter UI
 CREATE POLICY "rxdevman_view_counts: public select"
   ON rxdevman_view_counts
   FOR SELECT
@@ -362,7 +362,7 @@ CREATE POLICY "rxdevman_view_counts: service role update"
 
 - **Do not store raw IP addresses** anywhere. Always hash with `sha256(ip + date + HASH_SALT)`.
 - **Do not block the page render** on the tracking call. The `fetch('/api/track')` must be fire-and-forget inside a try/catch.
-- **The displayed count is SSR-rendered** (from `rxdevman_view_counts`), so it shows the count at request time. The +1 from the current visitor is added client-side after load — a slight lag is acceptable and expected.
+- **The displayed count is SSR-rendered** (from `rxdevman_view_counts`), so it shows the count at request time. The +1 from the current visitor is added client-side after load - a slight lag is acceptable and expected.
 - **One `ViewCounter` component per page.** Do not mount multiple instances on the same page.
 - **Slug format**: always use the pathname starting with `/`. Home is `"/"`, posts are `"/posts/<slug>"`.
-- If the `rxdevman_view_counts` row does not exist yet for a slug, the component displays `0` gracefully — no error handling needed beyond the null coalesce.
+- If the `rxdevman_view_counts` row does not exist yet for a slug, the component displays `0` gracefully - no error handling needed beyond the null coalesce.
