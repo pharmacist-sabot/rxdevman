@@ -1,178 +1,148 @@
 # RxDev Man
 
-> **The Developer's Living Knowledge Base.**
-> A high-performance, offline-capable knowledge base for software engineers.
-
-**[Live: rxdevman.com](https://www.rxdevman.com/)**
-
-![Astro](https://img.shields.io/badge/Astro-7.0-FF5D01?style=flat&logo=astro)
-![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=flat&logo=typescript)
-![Vitest](https://img.shields.io/badge/Vitest-4.1-6E9F18?style=flat&logo=vitest)
-![License](https://img.shields.io/badge/License-MIT-blue?style=flat)
-
-**RxDev Man** is a personal developer knowledge base - a blog with MDX content, tool showcases, visitor tracking, dark mode, offline support, and PWA capabilities. Built on **Astro 7** with zero-JS by default.
-
----
-
-## Features
-
-- **Dark Mode & Sepia** - three themes with FOUC prevention and code block switching
-- **Offline Support** - PWA with service worker, works without network
-- **MDX Content** - interactive components: `<CodeExplainer>`, `<InfoBox>`, `<ProsCons>`, `<GitCommand>`
-- **Search** - client-side typo-tolerant search via Pagefind
-- **RSS Feed** - `/rss.xml` for feed readers
-- **Series & Tags** - grouped posts with tag/category index pages
-- **Visitor Tracking** - Supabase-backed view counts (privacy-first, no cookies)
-- **37 Unit Tests** - Vitest coverage for core utilities
-- **Security Hardened** - CSP, CodeQL, dependency audits, SHA-pinned actions
-- **Performance Budgets** - 1.16 KB gzipped JS, 1.8 MB WebP images
-
----
-
-## Tech Stack
-
-| Category     | Technology                          |
-| ------------ | ----------------------------------- |
-| Framework    | [Astro 7](https://astro.build/)    |
-| Language     | [TypeScript 6](https://www.typescriptlang.org/) |
-| Content      | [MDX](https://mdxjs.com/)          |
-| Styling      | CSS custom properties (design tokens) |
-| Database     | [Supabase](https://supabase.com/)  |
-| Search       | [Pagefind](https://pagefind.app/)  |
-| Testing      | [Vitest](https://vitest.dev/)      |
-| Deploy       | [Vercel](https://vercel.com/)      |
-
----
-
-## Quick Start
-
-```bash
-git clone https://github.com/suradet-ps/rxdevman.git
-cd rxdevman
-bun install
-cp .env.example .env   # add Supabase credentials (optional for local dev)
-bun run dev
 ```
-
-Open `http://localhost:4321`.
-
----
-
-## Adding Content
-
-### New Blog Post
-
-Create a directory under `src/content/blog/<slug>/` with an `index.mdx` file:
-
-```yaml
----
-title: 'Your Post Title'
-description: 'Short description for SEO.'
-pubDate: 2026-08-03
-heroImage: './hero.png'       # relative to post directory
-category: 'Programming Languages'
-tags: ['Rust', 'Systems Programming']
-featured: false
-series: 'Rust Mastery'        # optional - groups posts in a series
----
-```
-
-Add a hero image next to the MDX file:
-
-```
-src/content/blog/your-post/
-├── index.mdx
-└── hero.png
-```
-
-**Available components** (auto-imported, no import needed):
-
-```mdx
-<InfoBox title="Note" type="info">Content here.</InfoBox>
-<InfoBox title="Warning" type="warning">Content here.</InfoBox>
-
-<CodeExplainer title="Step by step">
-  ```rust
-  fn main() { println!("Hello"); }
-  ```
-</CodeExplainer>
-
-<GitCommand>git commit -m "feat: add feature"</GitCommand>
-
-<ProsCons pros={["Fast", "Safe"]} cons={["Complex", "Steep learning"]} />
-```
-
-**Categories used in this project:** Programming Languages, DevOps & Infrastructure, Career & Soft Skills, Tools & Utilities, Web Development, AI & Machine Learning, Computer Science, System Design, Book Notes.
-
-### New Tool Page
-
-Create a file under `src/pages/tools/<name>.astro`. Follow the pattern of
-existing pages like `cupsabot.astro` or `herbs-app.astro`.
-
-### Add a Category or Tag
-
-Just use a new string in the `category` or `tags` fields of a blog post's
-frontmatter. The index pages are auto-generated.
-
----
-
-## Scripts
-
-| Command              | Description                         |
-| -------------------- | ----------------------------------- |
-| `bun run dev`        | Start dev server (port 4321)        |
-| `bun run build`      | Production build + search index     |
-| `bun run preview`    | Preview production build locally    |
-| `bun run lint`       | ESLint check                        |
-| `bun run lint:fix`   | ESLint auto-fix                     |
-| `bun run test`       | Run Vitest unit tests               |
-| `bun run audit`      | Dependency security audit           |
-| `bun run size`       | Check JS bundle size against budget |
-
----
-
-## Project Structure
-
-```text
-src/
-├── components/
-│   ├── blog/           # BlogPostCard, ShareButtons, BlogNav, etc.
-│   ├── content/        # MDX components: InfoBox, CodeExplainer, etc.
-│   ├── layout/         # Navbar, Footer
-│   └── ui/             # FeatureCard, OfflineIndicator, ProgressBar
-├── content/
-│   └── blog/           # MDX blog posts (each in its own directory)
-├── layouts/            # BaseLayout, BlogPostLayout
-├── lib/                # Supabase client
-├── pages/              # File-based routing
-│   ├── api/            # Server-side API endpoints
-│   ├── blog/           # Blog index, tags, categories, series
-│   ├── tools/          # Tool showcase pages
-│   └── hosxp/          # HosXP project pages
-├── styles/             # Global CSS and design tokens
-└── utils/              # Reading time, slugify, post-utils
-public/
-├── images/             # All images (WebP)
-├── sw.js               # Service worker
-└── site.webmanifest    # PWA manifest
+██████╗ ██╗  ██╗██████╗ ███████╗██╗   ██╗███╗   ███╗ █████╗ ███╗   ██╗
+██╔══██╗╚██╗██╔╝██╔══██╗██╔════╝██║   ██║████╗ ████║██╔══██╗████╗  ██║
+██████╔╝ ╚███╔╝ ██║  ██║█████╗  ██║   ██║██╔████╔██║███████║██╔██╗ ██║
+██╔══██╗ ███╔╝  ██║  ██║██╔══╝  ╚██╗ ██╔╝██║╚██╔╝██║██╔══██║██║╚██╗██║
+██║  ██║██╔██╗  ██████╔╝███████╗ ╚████╔╝ ██║ ╚═╝ ██║██║  ██║██║ ╚████║
+╚═╝  ╚═╝╚═╝ ╚═╝╚═════╝ ╚══════╝  ╚═══╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
 ```
 
 ---
 
-## Roadmap
+## ◆ PULSE
 
-See [docs/ROADMAP.md](docs/ROADMAP.md).
+A developer's knowledge is not the books they read; it is the notes
+they can find again. RxDev Man is a living knowledge base - MDX posts,
+tool showcases, series and tags - rendered with zero JS by default,
+searchable offline, and readable in light, dark, or sepia. Thirty-seven
+tests guard the core, the JS budget is 1.16 KB gzipped, and the visitor
+counter asks nothing but a number. Built for the eternal student:
+[rxdevman.com](https://www.rxdevman.com).
 
-## Changelog
+| P1-P5 ▣ | P6 ▣ | P7 ▣ | P8 ▣ |
+|---|---|---|---|
 
-See [docs/CHANGELOG.md](docs/CHANGELOG.md).
+*v2.0.0 - foundation, trust, themes, discovery, offline, security,
+budgets, and the stable release are all sealed.*
 
-## Contributing
+> Built with Astro 7 + TypeScript 6, searched by Pagefind, counted by
+> Supabase, shipped to Vercel - a knowledge base with the pages on the
+> page.
+>
+> **suradet-ps**, artifact keeper
 
-See [docs/contributing.md](docs/contributing.md).
+---
 
-## License
+## ◆ IGNITION
+
+One runtime, three commands.
+
+```
+⟫ git clone https://github.com/suradet-ps/rxdevman.git
+⟫ cd rxdevman
+⟫ bun install
+⟫ cp .env.example .env   # Supabase credentials, optional locally
+⟫ bun run dev
+```
+
+Open [http://localhost:4321](http://localhost:4321).
+
+```
+⟫ bun run build      # production build + search index
+⟫ bun run test       # Vitest, 37 tests
+⟫ bun run size       # JS bundle against the budget
+```
+
+<details>
+<summary>Adding a post</summary>
+
+A post is a directory: `src/content/blog/<slug>/index.mdx` plus a hero
+image beside it. The frontmatter carries title, description, `pubDate`,
+category, tags, and an optional series. MDX components are
+auto-imported: `<InfoBox>`, `<CodeExplainer>`, `<GitCommand>`,
+`<ProsCons>`. Categories and tags index themselves - a new string in
+the frontmatter is a new page.
+
+</details>
+
+---
+
+## ◆ ANATOMY
+
+One stack, zero JS by default, several quiet helpers.
+
+- **Publishes** - MDX content with interactive components
+  (`CodeExplainer`, `InfoBox`, `ProsCons`, `GitCommand`) - code that
+  explains itself inside the page that teaches it.
+- **Finds** - Pagefind builds a static, typo-tolerant search index at
+  build time; the index is cached by the service worker, so search
+  works where the network does not.
+- **Groups** - series, tags, and categories each generate their own
+  index pages - a post placed in a series joins a story, not just a
+  feed.
+- **Counts** - Supabase-backed view counts with no cookies: a hashed
+  identity and a number, nothing else asked.
+- **Wears** - three themes (light, dark, sepia) with FOUC prevention
+  and code-block switching; the offline banner is calm and honest.
+- **Guards** - CSP, CodeQL, dependency audits, SHA-pinned actions,
+  and CI-enforced performance budgets - 1.16 KB gzipped JS, WebP
+  images, no layout shift from async components.
+
+---
+
+## ◆ RITUALS
+
+**The core ceremony** - the weekly note:
+
+1. Open a post or a tool page. The page is already there - static
+   HTML, no JS waiting to be born.
+2. Read in the theme that suits the hour; search across the whole
+   base when the memory needs jogging.
+3. Write the next note: a directory, an `index.mdx`, a hero image,
+   and a series name if the thought continues.
+4. Build, test, ship. The budget holds, the tests pass, the note is
+   live.
+
+**The ceremony of the offline page** - the train loses signal and the
+knowledge base does not. Cached shell, cached index, cached images:
+reading and searching survive the tunnel.
+
+**The ceremony of the quiet counter** - a visit is a number, not a
+profile. No cookies, no fingerprint, no surprise: privacy-first is a
+feature, and the page says so in its architecture.
+
+---
+
+## ◆ ECHOES
+
+**Where this artifact is heading**
+
+```
+P1-P2 ▸ foundation docs, design system, test trust ─────────────────── ▸ sealed
+P3-P4 ▸ themes, discovery, RSS, series ──────────────────────────────── ▸ sealed
+P5    ▸ offline-first PWA, search offline ──────────────────────────── ▸ sealed
+P6-P7 ▸ security hardening, enforced budgets ───────────────────────── ▸ sealed
+P8    ▸ v2.0.0 stable release ───────────────────────────────────────── ▸ sealed
+```
+
+**Raising the artifact** - the honest path lives in
+`docs/ROADMAP.md`; the version story in `docs/CHANGELOG.md`; the
+contribution rules in `docs/contributing.md`. New posts follow the
+frontmatter contract in the README's own ritual section. Open an issue
+first to discuss a change.
+
+**Status** - CI gates lint, type-check, build, tests, audit, and the
+size budget on every push. [Watch the gates](.github/workflows).
+
+---
+
+```
+  ─────────────────────────────────────────
+   The best developers are eternal students.
+   This is their library.
+  ─────────────────────────────────────────
+```
 
 [MIT](LICENSE)
-
-> **"The best developers are eternal students."**
