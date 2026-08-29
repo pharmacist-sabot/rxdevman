@@ -145,4 +145,4 @@ size budget on every push. [Watch the gates](.github/workflows).
   ─────────────────────────────────────────
 ```
 
-[MIT](LICENSE)
+Source code under the [MIT License](LICENSE).
