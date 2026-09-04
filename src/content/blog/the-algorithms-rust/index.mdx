@@ -1,0 +1,258 @@
+---
+title: 'TheAlgorithms/Rust คลังอัลกอริทึม 400+ ในภาษา Rust ที่อ่านโค้ดแล้วเข้าใจ Algorithm ได้จริง'
+description: 'เจาะลึก repository TheAlgorithms/Rust หนึ่งในคลังอัลกอริทึมที่ใหญ่ที่สุดบน GitHub พร้อมตัวอย่างโค้ดจริง'
+pubDate: '2026-09-04'
+heroImage: './the-algorithms-rust-cover.png'
+category: 'Programming Languages'
+tags: ['Rust', 'Algorithms', 'Data Structures', 'Open Source', 'Guide']
+featured: true
+---
+
+ถ้าคุณเคยคิดว่า "การเรียนอัลกอริทึมต้องกางตำราเล่มหนา ๆ หรือนั่งแกะ pseudo-code บนกระดานเท่านั้น" บทความนี้จะเปลี่ยนมุมมองของคุณอย่างแน่นอน
+
+Repository <a href="https://github.com/TheAlgorithms/Rust" target="_blank" rel="noopener noreferrer"><code>TheAlgorithms/Rust</code></a> คือขุมทรัพย์ของอัลกอริทึมและโครงสร้างข้อมูล (Data Structures) ที่เขียนด้วยภาษา Rust เพื่อการศึกษาโดยเฉพาะ จุดเด่นคือทุกไฟล์เขียนขึ้นให้อ่านง่าย มี doc comment อธิบายหลักการทำงานอย่างละเอียด และที่สำคัญที่สุดคือ **มี Unit Test ครอบคลุมทุกระดับ** ไม่ใช่โค้ดลอย ๆ ที่แค่แปะทิ้งไว้ให้อ่านเล่น แต่เป็นโค้ดที่คอมไพล์ผ่านและรันเทสต์ได้จริงทุกบรรทัด
+
+<InfoBox title="ภาพรวม Repository">
+  <ul>
+    <li><strong>จำนวนไฟล์อัลกอริทึม</strong> 400+ ไฟล์ ครอบคลุมแทบทุกหัวข้อในสายวิทยาการคอมพิวเตอร์ (Computer Science)</li>
+    <li><strong>หมวดหมู่</strong> 22 หมวด เช่น Math, Sorting, Graph, Ciphers, Dynamic Programming และ Machine Learning</li>
+    <li><strong>ชุดการทดสอบ</strong> มากกว่า 1,600 เทสต์ พร้อม Property-based testing โดยใช้ <code>quickcheck</code></li>
+    <li><strong>มาตรฐาน CI</strong> ตรวจสอบคุณภาพอัตโนมัติด้วย GitHub Actions + CodeQL พร้อมรายงาน Code Coverage ผ่าน Codecov ทุกครั้งที่มีการ commit</li>
+    <li><strong>จุดประสงค์</strong> เพื่อการศึกษา (Educational Purpose) เน้นอ่านง่าย เข้าใจหลักการ ไม่ได้ออกแบบมาเพื่อเป็น Production Library</li>
+  </ul>
+</InfoBox>
+
+---
+
+## ทำไมต้องเรียนรู้อัลกอริทึมจาก Repository นี้?
+
+แม้จะมีหนังสือและคอร์สออนไลน์มากมาย แต่การได้อ่านโค้ดจริงจากโปรเจกต์ Open Source คุณภาพสูง จะมอบมุมมองเชิงปฏิบัติที่ตำราทั่วไปให้ไม่ได้
+
+<FeatureGrid>
+  <FeatureCard title="โค้ดอ่านง่าย ดีไซน์มาเพื่อการสอน" icon="book-open">
+    ทุกไฟล์เริ่มต้นด้วย doc comment สรุปแนวคิด ที่มา และตัวอย่างการเรียกใช้งาน ทำให้ศึกษาและทำความเข้าใจได้ด้วยตัวเองตั้งแต่ต้นจนจบ
+  </FeatureCard>
+  <FeatureCard title="เทสต์ที่เปรียบเสมือนโจทย์ฝึกหัด" icon="shield-check">
+    มีเทสต์มากกว่า 1,600 ตัว ครอบคลุมทั้งกรณีทั่วไปและ Edge Cases ครบถ้วน (เช่น อาร์เรย์ว่าง, ข้อมูลซ้ำ, ค่าติดลบ) ถือเป็นตัวอย่างการเขียน Test ชั้นยอดที่คุณสามารถนำไปปรับใช้จริงได้
+  </FeatureCard>
+  <FeatureCard title="เขียนแบบ Rust Idiomatic แท้ ๆ" icon="code-bracket-square">
+    ใช้ Generics, Slices, Iterators, Result/Option และ Traits อย่างเป็นธรรมชาติ ช่วยให้คุณซึมซับแนวทางการเขียน Rust ที่ถูกต้องและปลอดภัยไปพร้อมกัน
+  </FeatureCard>
+  <FeatureCard title="จัดหมวดหมู่เหมือนสารบัญตำรา" icon="folder-open">
+    โครงสร้างโฟลเดอร์แบ่งตามหัวข้อวิชา CS อย่างเป็นระบบ พร้อมไฟล์ <code>DIRECTORY.md</code> ที่ทำหน้าที่เหมือนดัชนี ช่วยให้ค้นหาอัลกอริทึมที่ต้องการได้ในคลิกเดียว
+  </FeatureCard>
+</FeatureGrid>
+
+---
+
+## โครงสร้างภายใน สารบัญของตำราเล่มนี้
+
+โค้ดอัลกอริทึมทั้งหมดจะอยู่ในไดเรกทอรี `src/` และถูก export ผ่าน `src/lib.rs` โดยมีไฟล์ `DIRECTORY.md` (ความยาวกว่า 422 บรรทัด) ทำหน้าที่เป็นสารบัญลิงก์ไปยังไฟล์ต้นฉบับบน GitHub โดยตรง
+
+| หมวดหมู่ | จำนวนไฟล์ | ตัวอย่างอัลกอริทึมที่น่าสนใจ |
+|---|---|---|
+| `math` | 84 | Sieve of Eratosthenes, Miller-Rabin, Fast Fourier Transform |
+| `sorting` | 37 | Quick Sort, Tim Sort, Bead Sort, Sleep Sort |
+| `graph` | 30 | Dijkstra, BFS, DFS, Topological Sort |
+| `ciphers` | 28 | RSA, AES, Caesar, Vigenère, Diffie-Hellman |
+| `conversions` | 27 | Binary ↔ Hex ↔ Decimal, การแปลงหน่วยพลังงานและอุณหภูมิ |
+| `dynamic_programming` | 27 | Knapsack, LCS, Rod Cutting, Coin Change |
+| `string` | 25 | KMP, Rabin-Karp, Manacher, Edit Distance |
+| `data_structures` | 22 | AVL Tree, Red-Black Tree, Fenwick Tree, Trie, Union-Find |
+| `bit_manipulation` | 17 | Gray Code, Hamming Distance, Two's Complement |
+| `searching` | 17 | Binary Search, Jump Search, Interpolation Search |
+| `machine_learning` | 12 | Linear/Logistic Regression, K-Means, Naive Bayes |
+| `backtracking` | 11 | N-Queens, Sudoku, Knight's Tour, Graph Coloring |
+
+<SideNote>
+  นอกจากนี้ยังมีหมวดหมู่อื่น ๆ ที่น่าสนใจไม่แพ้กัน เช่น <code>financial</code> (การเงินเชิงคำนวณ), <code>geometry</code>, <code>hashing</code>, <code>compression</code> (Huffman, LZ77), <code>big_integer</code> และ <code>signal_analysis</code>
+</SideNote>
+
+---
+
+## เจาะลึกโค้ดจริง 5 ตัวอย่างที่แสดงจุดเด่นของ Rust
+
+### 1. Binary Search ที่รองรับทั้งเรียงจากน้อยไปมากและมากไปน้อย `src/searching/binary_search.rs`
+
+ความพิเศษของไฟล์นี้คือ ไม่ได้จำกัดว่าอาร์เรย์ต้องเรียงจากน้อยไปมากเท่านั้น แต่ตัวฟังก์ชันสามารถตรวจสอบทิศทางของข้อมูลผ่าน `is_asc_arr` แล้วใช้ Pattern Matching จัดการเงื่อนไขได้อย่างเป็นระเบียบ
+
+```rust
+pub fn binary_search<T: Ord>(item: &T, arr: &[T]) -> Option<usize> {
+    let is_asc = is_asc_arr(arr);
+
+    let mut left = 0;
+    let mut right = arr.len();
+
+    while left < right {
+        if match_compare(item, arr, &mut left, &mut right, is_asc) {
+            return Some(left);
+        }
+    }
+
+    None
+}
+```
+
+จุดที่น่าเรียนรู้คือการใช้ generic constraint `T: Ord` ทำให้ฟังก์ชันนี้ใช้ค้นหาข้อมูลชนิดใดก็ได้ที่เปรียบเทียบค่าได้ (ไม่ว่าจะเป็นตัวเลขหรือสตริง) และคืนค่าเป็น `Option<usize>` แทนการคืนค่า Magic Number อย่าง `-1` ตามแนวคิด Type Safety ของ Rust
+
+### 2. Quick Sort แบบ in-place `src/sorting/quick_sort.rs`
+
+Quick Sort มักเป็นอัลกอริทึมที่เขียนแล้วเกิดบั๊กได้ง่ายเรื่อง index bounds แต่โค้ดชุดนี้เลือกใช้เมธอด `arr.swap(i, j)` ของ Rust ซึ่งช่วยสลับตำแหน่งในหน่วยความจำโดยตรงได้อย่างปลอดภัย
+
+```rust
+fn _quick_sort<T: Ord>(arr: &mut [T], mut lo: usize, mut hi: usize) {
+    while lo < hi {
+        let pivot = partition(arr, lo, hi);
+
+        if pivot - lo < hi - pivot {
+            if pivot > 0 {
+                _quick_sort(arr, lo, pivot - 1);
+            }
+            lo = pivot + 1;
+        } else {
+            _quick_sort(arr, pivot + 1, hi);
+            hi = pivot - 1;
+        }
+    }
+}
+```
+
+สังเกตเทคนิคการเขียน โค้ดจะเลือกทำ recursion ฝั่งที่มีขนาดสั้นกว่าก่อนเสมอ (smaller side first) แล้วเปลี่ยนอีกฝั่งเป็น loop (Tail Call Elimination) เพื่อจำกัดความลึกของ Call Stack ไม่ให้เกิด Stack Overflow รายละเอียดระดับนี้ไม่ค่อยพบในตำราทั่วไป แต่เห็นได้ชัดในโค้ดชุดนี้
+
+### 3. Sieve of Eratosthenes แบบ Clean Code `src/math/sieve_of_eratosthenes.rs`
+
+อัลกอริทึมหาจำนวนเฉพาะสุดคลาสสิก โดยไฟล์นี้เลือก optimize ลูปให้หยุดตรวจสอบที่รากที่สองของตัวเลขเป้าหมาย (`(num as f64).sqrt()`) และแบ่งขั้นตอนการกรองข้อมูลออกจากกันอย่างชัดเจน
+
+```rust
+pub fn sieve_of_eratosthenes(num: usize) -> Vec<usize> {
+    let mut result: Vec<usize> = Vec::new();
+    if num >= 2 {
+        let mut sieve: Vec<bool> = vec![true; num + 1];
+
+        sieve[0] = false;
+        sieve[1] = false;
+
+        let end: usize = (num as f64).sqrt() as usize;
+
+        update_sieve(&mut sieve, end, num, &mut result);
+        result.extend(extract_remaining_primes(&sieve, end + 1));
+    }
+    result
+}
+```
+
+<InfoBox title="เกร็ดน่าสนใจจากโค้ด" type="info">
+  ไฟล์นี้ใช้ความสามารถของ <code>macro_rules!</code> ในการสร้างเคสทดสอบ 22 กรณีจากชุดข้อมูลเดียว ช่วยลดโค้ดซ้ำซ้อนได้อย่างมาก และทุกกรณีจะถูกเทียบกับตารางจำนวนเฉพาะจริงสูงสุดถึงค่า 997
+</InfoBox>
+
+### 4. Caesar Cipher กับการจัดการ Unicode `src/ciphers/caesar.rs`
+
+ตัวอย่างการออกแบบ API ที่ดีด้วยการส่งคืนค่าความผิดพลาดผ่าน `Result` เพื่อบังคับให้ผู้เรียกใช้จัดการ error case เสมอ
+
+```rust
+pub fn caesar(text: &str, rotation: isize) -> Result<String, &'static str> {
+    if !(0..ALPHABET_LENGTH as isize).contains(&rotation) {
+        return Err(ERROR_MESSAGE);
+    }
+
+    let result = text
+        .chars()
+        .map(|c| {
+            if c.is_ascii_alphabetic() {
+                shift_char(c, rotation)
+            } else {
+                c
+            }
+        })
+        .collect();
+
+    Ok(result)
+}
+```
+
+จุดสำคัญคือการใช้ `.chars()` แทนการเข้าถึงผ่าน byte index โดยตรง ทำให้โปรแกรมไม่แครชเมื่อเจอกับตัวอักษร Multi-byte อย่างภาษาไทยหรืออักษรจีน พร้อมทั้งจัดการ shift ตัวอักษรผ่านระดับไบต์ (`u8`) ได้อย่างมีประสิทธิภาพ
+
+### 5. Tower of Hanoi สไตล์ Recursive สั้นกระชับ `src/general/hanoi.rs`
+
+ปิดท้ายด้วยตัวอย่างที่สั้นและคมชัด แสดงรูปแบบการส่ง `&mut Vec` เข้าไปสะสมประวัติการย้ายจานผ่านขั้นตอน Recursion
+
+```rust
+pub fn hanoi(n: i32, from: i32, to: i32, via: i32, moves: &mut Vec<(i32, i32)>) {
+    if n > 0 {
+        hanoi(n - 1, from, via, to, moves);
+        moves.push((from, to));
+        hanoi(n - 1, via, to, from, moves);
+    }
+}
+```
+
+---
+
+## สิ่งที่คุณจะได้รับจากการศึกษาโปรเจกต์นี้
+
+<ProsCons>
+  <Fragment slot="pros">
+    - **เข้าใจ Rust Idioms จากตัวอย่างจริง** ซึมซับการใช้ Generics, Iterator Chaining, <code>Option</code>/<code>Result</code> และ Pattern Matching อย่างเป็นธรรมชาติ
+    - **เห็นแนวทางการเขียนเทสต์ที่มีมาตรฐาน** ได้เรียนรู้เทคนิค Table-driven Tests ด้วย <code>macro_rules!</code> และ Property-based Testing ผ่าน <code>quickcheck</code>
+    - **เข้าใจ Time & Space Complexity เชิงปฏิบัติ** เห็นภาพชัดเจนว่าโครงสร้างข้อมูลแบบไหนเหมาะกับโจทย์ประเภทใด
+    - **แทบไม่มี External Dependencies** ส่วนใหญ่ใช้เพียง Rust Standard Library ทำให้แกะโค้ดทำความเข้าใจได้ทันทีโดยไม่ต้องเปิดคู่มือ library อื่น
+    - **เรียนรู้จากพลังของ Open Source** เป็นพื้นที่ฝึกฝนของนักพัฒนาทั่วโลก ทุก Pull Request ผ่านการ Code Review อย่างละเอียด
+  </Fragment>
+  <Fragment slot="cons">
+    - **ไม่ได้ออกแบบมาสำหรับ Production** โค้ดเน้นความเรียบง่ายเพื่อความเข้าใจ อาจไม่ได้ปรับจูน Performance ถึงขีดสุดสำหรับระบบขนาดใหญ่
+    - **ระดับความยากไม่เท่ากันในแต่ละไฟล์** บางหมวด (เช่น Ciphers หรือ Machine Learning) อาจต้องใช้พื้นฐานคณิตศาสตร์เฉพาะทาง
+    - **ไม่มีบทเรียนเรียงลำดับ 1-2-3** คุณต้องวางแผนเลือกศึกษาตามหมวดหมู่ที่ตนเองสนใจ
+  </Fragment>
+</ProsCons>
+
+---
+
+## เริ่มต้นศึกษาได้ใน 5 นาที
+
+<GitCommand command="git clone https://github.com/TheAlgorithms/Rust.git" icon="archive-box-arrow-down">
+  โคลน Repository มายังเครื่องของคุณ
+</GitCommand>
+
+จากนั้นรันเทสต์ทั้งหมดเพื่อดูผลการทำงานจริง
+
+```bash
+cd Rust
+cargo test --all-features
+```
+
+คุณจะได้เห็นเทสต์กว่า 1,600 ตัวผ่านการทดสอบภายในไม่กี่วินาที ซึ่งเป็นภาพสะท้อนที่ดีว่า "โค้ดที่ผ่านการทดสอบอย่างรัดกุม" หน้าตาเป็นอย่างไร
+
+### แนวทางการอ่านโค้ดตามระดับทักษะ
+
+<CodeExplainer title="คู่มือเลือกลำดับการอ่านตามระดับของคุณ">
+  <details>
+    <summary><strong>ระดับเริ่มต้น (เพิ่งเริ่มศึกษา Rust)</strong></summary>
+    <p>
+      เริ่มต้นที่หมวด <code>src/math</code> และ <code>src/sorting</code> เพื่อดูฟังก์ชันขนาดสั้น อ่านง่าย เช่น <code>factorial.rs</code>, <code>greatest_common_divisor.rs</code>, <code>bubble_sort.rs</code> แล้วลองแก้ไขค่าในเทสต์เพื่อสังเกตพฤติกรรมของโค้ด
+    </p>
+  </details>
+  <details>
+    <summary><strong>ระดับกลาง (พอมีพื้นฐาน Rust และอยากต่อยอด)</strong></summary>
+    <p>
+      ขยับไปที่ <code>src/searching/binary_search.rs</code>, <code>src/data_structures/linked_list.rs</code> และ <code>src/ciphers/caesar.rs</code> เพื่อศึกษาการออกแบบ API ด้วย <code>Option</code>/<code>Result</code> รวมถึงการจัดการ Ownership และ Borrowing
+    </p>
+  </details>
+  <details>
+    <summary><strong>ระดับแอดวานซ์ (ต้องการลงลึกทั้ง Algorithm และ Rust)</strong></summary>
+    <p>
+      ท้าทายตัวเองด้วยหมวด <code>src/dynamic_programming</code>, <code>src/graph</code>, <code>src/backtracking/n_queens.rs</code> ตลอดจนหมวด <code>src/machine_learning</code> ที่มีการใช้งานไลบรารีคำนวณเชิงตัวเลขอย่าง <code>nalgebra</code> และ <code>ndarray</code>
+    </p>
+  </details>
+</CodeExplainer>
+
+### ก้าวต่อไป ลองเปิด Pull Request แรกของคุณ
+
+โปรเจกต์นี้เปิดรับการมีส่วนร่วม (Contribution) จากทุกคนเสมอ โดยมีคู่มือ `CONTRIBUTING.md` สรุปแนวทางไว้อย่างชัดเจน เหมาะมากสำหรับการเป็นสนามฝึกส่ง Pull Request แรกของคุณ เพราะจะมีทั้ง Bot ตรวจสอบโค้ดอัตโนมัติและ Reviewer ช่วยตรวจทานข้อผิดพลาดให้ฟรี
+
+---
+
+TheAlgorithms/Rust ไม่ใช่แค่คลังโค้ดทั่วไปบน GitHub แต่มันคือตำรา Computer Science ฉบับมีชีวิตที่เขียนด้วยภาษา Rust โดยมีชุดเทสต์กว่า 1,600 ตัวทำหน้าที่เป็นเฉลยท้ายบท ทุกบรรทัดถูกออกแบบมาเพื่อให้คนอ่านเข้าใจ ไม่ใช่เพื่อให้เครื่องจักรประมวลผลเพียงอย่างเดียว
+
+ไม่ว่าคุณจะกำลังเริ่มหัดเขียน Rust หรือเตรียมตัวสัมภาษณ์งานสาย Software Engineer คลังโค้ดแห่งนี้คือแหล่งอ้างอิงชั้นเยี่ยมที่คุณไม่ควรพลาด ลองเปิด Repository แล้วเลือกอ่านไฟล์แรกของคุณวันนี้ได้เลย
+
+**ขอให้สนุกกับการอ่านโค้ด และอย่าลืมรัน `cargo test` ก่อนนอน 🦀**
